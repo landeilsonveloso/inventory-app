@@ -5,6 +5,9 @@ import Link from "next/link"
 import Logo from "src/components/Logo"
 import Main from "src/containers/Main"
 import Title from "src/components/Title"
+import Div from "src/containers/Div"
+import { HiMail } from "react-icons/hi"
+import Navigation from "src/components/Navigation"
 
 export default function ForgotPassword() {
     return (
@@ -14,19 +17,23 @@ export default function ForgotPassword() {
         <Title>Recuperar Senha</Title>
 
         <Form className="flex flex-col">
-            <Input
-                id="email"
-                name="email"
-                type="email"
-                maxLength={60}
-                placeholder="Email"
-            />
+            <Div>
+                <HiMail className="text-2xl"/>
+
+                <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    maxLength={60}
+                    placeholder="Email"
+                />
+            </Div>
 
             <Button>Enviar</Button>
                 
-            <Link className="text-center text-sm text-blue-400 hover:underline mt-4 cursor-pointer" href="/">
+            <Navigation className="text-center my-2" href="/">
                 Voltar
-            </Link>
+            </Navigation>
         </Form>
     </Main>
   )
