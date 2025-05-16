@@ -1,23 +1,29 @@
+"use client"
+
 import Button from "src/components/Button"
+import DivInput from "src/components/DivInput"
 import Form from "src/components/Form"
+import { HiMail } from "react-icons/hi"
 import Input from "src/components/Input"
-import Link from "next/link"
 import Logo from "src/components/Logo"
 import Main from "src/containers/Main"
-import Title from "src/components/Title"
-import Div from "src/containers/Div"
-import { HiMail } from "react-icons/hi"
 import Navigation from "src/components/Navigation"
+import Title from "src/components/Title"
+import useUser from "src/hooks/useUser"
 
 export default function ForgotPassword() {
+    const {setEmail, forgotPassword} = useUser()
+
     return (
     <Main>
-        <Logo/>
 
-        <Title>Recuperar Senha</Title>
 
-        <Form className="flex flex-col">
-            <Div>
+        <Form className="flex flex-col" onSubimit={forgotPassword}>
+            <Logo/>
+
+            <Title>Recuperar Senha</Title>
+
+            <DivInput>
                 <HiMail className="text-2xl"/>
 
                 <Input
@@ -26,8 +32,9 @@ export default function ForgotPassword() {
                     type="email"
                     maxLength={60}
                     placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
                 />
-            </Div>
+            </DivInput>
 
             <Button>Enviar</Button>
                 
