@@ -15,7 +15,6 @@ export default function RedefinePassword() {
 
     return (
         <Main>
-
             <Form className="flex flex-col" onSubimit={redefinePassword}>
                 <Logo/>
 
@@ -25,12 +24,13 @@ export default function RedefinePassword() {
                     <HiLockClosed className="text-2xl"/>
                     
                     <Input
-                        id="password"
+                        id="newPassword"
                         name="password"
                         type="password"
+                        minLength={6}
                         maxLength={18}
                         placeholder="Senha"
-                         onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)}
                     />
                 </DivInput>
 
@@ -41,6 +41,7 @@ export default function RedefinePassword() {
                         id="confirmPassword"
                         name="confirmPassword"
                         type="password"
+                        minLength={6}
                         maxLength={18}
                         placeholder="Confirmar Senha"
                         onChange={(e) => setConfirmPassword(e.target.value)}
