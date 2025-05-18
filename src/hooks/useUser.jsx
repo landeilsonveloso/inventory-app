@@ -59,7 +59,6 @@ export default function useUser() {
                     .then((res) => {
                         if (res.status === 200) {
                             alert("Pedido de solicitação enviado para seu email!")
-                            console.log(res.data)
                             localStorage.setItem("token", res.data)
                             return
                         }
