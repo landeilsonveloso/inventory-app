@@ -8,48 +8,51 @@ import Input from "src/components/Input"
 import Logo from "src/components/Logo"
 import Title from "src/components/Title"
 import Main from "src/containers/Main"
+import AuthProvider from "src/contexts/AuthContext"
 import useUser from "src/hooks/useUser"
 
 export default function RedefinePassword() {
     const {setPassword, setConfirmPassword, redefinePassword} = useUser()
 
     return (
-        <Main>
-            <Form className="flex flex-col" onSubimit={redefinePassword}>
-                <Logo/>
+        <AuthProvider>
+            <Main>
+                <Form className="flex flex-col" onSubimit={redefinePassword}>
+                    <Logo/>
 
-                <Title>Redefinir Senha</Title>
+                    <Title>Redefinir Senha</Title>
 
-                <DivInput>
-                    <HiLockClosed className="text-2xl"/>
-                    
-                    <Input
-                        id="newPassword"
-                        name="password"
-                        type="password"
-                        minLength={6}
-                        maxLength={18}
-                        placeholder="Senha"
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </DivInput>
+                    <DivInput>
+                        <HiLockClosed className="text-2xl"/>
+                        
+                        <Input
+                            id="newPassword"
+                            name="password"
+                            type="password"
+                            minLength={6}
+                            maxLength={18}
+                            placeholder="Senha"
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </DivInput>
 
-                <DivInput>
-                    <HiLockClosed className="text-2xl"/>
-                    
-                    <Input
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        type="password"
-                        minLength={6}
-                        maxLength={18}
-                        placeholder="Confirmar Senha"
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </DivInput>
+                    <DivInput>
+                        <HiLockClosed className="text-2xl"/>
+                        
+                        <Input
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            type="password"
+                            minLength={6}
+                            maxLength={18}
+                            placeholder="Confirmar Senha"
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
+                    </DivInput>
 
-                <Button>Redefinir</Button>
-            </Form>
-        </Main>
+                    <Button>Redefinir</Button>
+                </Form>
+            </Main>
+        </AuthProvider>
     )
 }

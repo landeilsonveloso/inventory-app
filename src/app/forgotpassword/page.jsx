@@ -16,8 +16,6 @@ export default function ForgotPassword() {
 
     return (
     <Main>
-
-
         <Form className="flex flex-col" onSubimit={forgotPassword}>
             <Logo/>
 

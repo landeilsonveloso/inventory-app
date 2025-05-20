@@ -16,12 +16,10 @@ export default function SignInPage() {
 
     return (
         <Main>
-
-
             <Form className="flex flex-col" onSubimit={signIn}>
                 <Logo/>
 
-                <Title>Login</Title>
+                <Title>Entrar</Title>
                 
                 <DivInput>
                     <HiMail className="text-2xl"/>
