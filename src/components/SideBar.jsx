@@ -15,11 +15,12 @@ export default function SideBar() {
         <aside className="w-60 h-screen bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white p-4 shadow-lg flex flex-col justify-between">
             
             <div>
-                <Link href="/profile">
-                    <div className="flex flex-col items-center cursor-pointer mb-10">
-                        <img className="w-16 h-16 rounded-full mb-2 border-2 border-pink-500" src="/logo.png" alt="Logo AS Cell"/>
-                    </div>
-                </Link>
+                <div className="flex justify-center">
+                    <Link className='flex flex-col items-center cursor-pointer w-20 mb-10' href="/profile">
+                        <img className="rounded-full mb-2 border-2 border-pink-500" src="/logo.png" alt="Logo A. S. Cell"/>
+                        <span>Meu Perfil</span>
+                    </Link>
+                </div>
 
                 <nav className="flex flex-col gap-4">
                     <NavItem href="/dashboard" label="Painel" icon={<MdDashboard size={20} />} />
