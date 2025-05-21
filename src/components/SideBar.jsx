@@ -1,14 +1,7 @@
 'use client'
+
 import Link from 'next/link'
-import {
-    MdDashboard,
-    MdInventory,
-    MdPeople,
-    MdPerson,
-    MdLocalShipping,
-    MdAttachMoney,
-    MdLogout,
-} from 'react-icons/md'
+import {MdDashboard, MdInventory, MdPeople, MdPerson, MdLocalShipping, MdAttachMoney, MdLogout} from 'react-icons/md'
 
 export default function SideBar() {
     return (
