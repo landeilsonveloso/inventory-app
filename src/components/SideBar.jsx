@@ -20,7 +20,6 @@ export default function SideBar() {
                     <NavItem href="/dashboard" label="Painel" icon={<MdDashboard size={20} />} />
                     <NavItem href="/products" label="Produtos" icon={<MdInventory size={20} />} />
                     <NavItem href="/categories" label="Categorias" icon={<MdCategory size={20} />} />
-                    <NavItem href="/clients" label="Clientes" icon={<MdPeople size={20} />} />
                     <NavItem href="/suppliers" label="Fornecedores" icon={<MdLocalShipping size={20} />} />
                     <NavItem href="/finance" label="Financeiro" icon={<MdAttachMoney size={20} />} />
                 </nav>
