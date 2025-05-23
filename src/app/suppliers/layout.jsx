@@ -1,6 +1,6 @@
 import SideBar from "src/components/SideBar"
 
-export default function ProductsPageLayout({children}) {
+export default function SuppliersPageLayout({children}) {
   return (
     <div className="flex min-h-screen bg-black text-white ml-60">
       <SideBar/>

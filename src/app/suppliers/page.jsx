@@ -1,6 +1,6 @@
 import AuthProvider from "src/contexts/AuthContext"
 
-export default function DashboardPage() {
+export default function SuppliersPage() {
     return (
         <AuthProvider>
             Em Desenvolvimmento...
