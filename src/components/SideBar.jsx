@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import {MdDashboard, MdInventory, MdPeople, MdPerson, MdLocalShipping, MdAttachMoney, MdLogout, MdCategory} from 'react-icons/md'
+import {MdDashboard, MdInventory, MdLogout} from 'react-icons/md'
 
 export default function SideBar() {
     return (
@@ -19,15 +19,12 @@ export default function SideBar() {
                 <nav className="flex flex-col gap-4">
                     <NavItem href="/dashboard" label="Painel" icon={<MdDashboard size={20} />} />
                     <NavItem href="/products" label="Produtos" icon={<MdInventory size={20} />} />
-                    <NavItem href="/categories" label="Categorias" icon={<MdCategory size={20} />} />
-                    <NavItem href="/suppliers" label="Fornecedores" icon={<MdLocalShipping size={20} />} />
-                    <NavItem href="/finance" label="Financeiro" icon={<MdAttachMoney size={20} />} />
                 </nav>
             </div>
 
             <Link className="flex px-4 py-3 gap-3 rounded-md transition hover:bg-red-600 hover:text-white mt-10"  href="/">
-                <MdLogout/>
-                <span>Sair</span>
+                <MdLogout className="pt-2"/>
+                <span >Sair</span>
             </Link>
         </aside>
     )
