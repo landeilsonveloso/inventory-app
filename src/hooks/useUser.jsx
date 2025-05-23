@@ -1,3 +1,5 @@
+"use client"
+
 import axios from "axios"
 import config from "src/config/config"
 import { useCallback, useState } from "react"

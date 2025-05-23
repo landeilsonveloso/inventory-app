@@ -2,7 +2,7 @@
 
 import { HiLockClosed } from "react-icons/hi"
 import Button from "src/components/Button"
-import DivInput from "src/components/DivInput"
+import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
 import Logo from "src/components/Logo"
@@ -11,7 +11,7 @@ import Main from "src/containers/Main"
 import AuthProvider from "src/contexts/AuthContext"
 import useUser from "src/hooks/useUser"
 
-export default function RedefinePassword() {
+export default function RedefinePasswordPage() {
     const {setPassword, setConfirmPassword, redefinePassword} = useUser()
 
     return (
@@ -22,10 +22,11 @@ export default function RedefinePassword() {
 
                     <Title>Redefinir Senha</Title>
 
-                    <DivInput>
+                    <Div className="flex items-center w-full mb-4 p-2 bg-black/30 text-white border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
                         <HiLockClosed className="text-2xl"/>
                         
                         <Input
+                            className="w-full px-2 text-white outline-none"
                             id="newPassword"
                             name="password"
                             type="password"
@@ -34,12 +35,13 @@ export default function RedefinePassword() {
                             placeholder="Senha"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </DivInput>
+                    </Div>
 
-                    <DivInput>
+                    <Div className="flex items-center w-full mb-4 p-2 bg-black/30 text-white border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
                         <HiLockClosed className="text-2xl"/>
                         
                         <Input
+                            className="w-full px-2 text-white outline-none"
                             id="confirmPassword"
                             name="confirmPassword"
                             type="password"
@@ -48,9 +50,11 @@ export default function RedefinePassword() {
                             placeholder="Confirmar Senha"
                             onChange={(e) => setConfirmPassword(e.target.value)}
                         />
-                    </DivInput>
+                    </Div>
 
-                    <Button>Redefinir</Button>
+                    <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer">
+                        Redefinir
+                    </Button>
                 </Form>
             </Main>
         </AuthProvider>

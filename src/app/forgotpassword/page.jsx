@@ -1,7 +1,7 @@
 "use client"
 
 import Button from "src/components/Button"
-import DivInput from "src/components/DivInput"
+import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import { HiMail } from "react-icons/hi"
 import Input from "src/components/Input"
@@ -11,7 +11,7 @@ import Navigation from "src/components/Navigation"
 import Title from "src/components/Title"
 import useUser from "src/hooks/useUser"
 
-export default function ForgotPassword() {
+export default function ForgotPasswordPage() {
     const {setEmail, forgotPassword} = useUser()
 
     return (
@@ -21,10 +21,11 @@ export default function ForgotPassword() {
 
             <Title>Recuperar Senha</Title>
 
-            <DivInput>
+            <Div className="flex items-center w-full mb-4 p-2 bg-black/30 text-white border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500">
                 <HiMail className="text-2xl"/>
 
                 <Input
+                    className="w-full px-2 text-white outline-none"
                     id="email"
                     name="email"
                     type="email"
@@ -32,9 +33,11 @@ export default function ForgotPassword() {
                     placeholder="Email"
                     onChange={(e) => setEmail(e.target.value)}
                 />
-            </DivInput>
+            </Div>
 
-            <Button>Enviar</Button>
+            <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer">
+                Enviar
+            </Button>
                 
             <Navigation className="text-center my-2" href="/">
                 Voltar

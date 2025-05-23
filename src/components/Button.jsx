@@ -1,6 +1,6 @@
-export default function Button({children}) {
+export default function Button({className, type, onClick, children}) {
   return (
-    <button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer">
+    <button className={className} type={type} onClick={onClick}>
       {children}
     </button>
   )
