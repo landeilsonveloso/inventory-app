@@ -1,5 +1,3 @@
-'use client'
-
 import { MdEdit, MdDelete} from 'react-icons/md'
 
 export default function Table({columns, data, onEdit, onDelete}) {

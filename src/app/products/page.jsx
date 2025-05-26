@@ -40,7 +40,7 @@ export default function ProductsPage() {
     
     return (
         <AuthProvider>
-            <Div className="p-6 text-white min-h-screen bg-black">
+            <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
                     <Title>Produtos</Title>
 
