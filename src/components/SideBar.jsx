@@ -36,9 +36,10 @@ export default function SideBar() {
                     </Link>
                 </aside>
             </nav>
-
         ) : (
-            <MdMenu className="cursor-pointer m-8" size={30} onClick={() => setIsOpen(true)}/>
+            <nav>
+                <MdMenu className="cursor-pointer m-8" size={30} onClick={() => setIsOpen(true)}/>
+            </nav>
         )
     )
 }
