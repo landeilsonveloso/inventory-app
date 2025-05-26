@@ -5,7 +5,7 @@ import { MdEdit, MdDelete} from 'react-icons/md'
 export default function Table({columns, data, onEdit, onDelete}) {
     return (
         <div className="overflow-x-auto rounded-md shadow">
-            <table className="min-w-full text-left text-sm bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e]">
+            <table className="min-w-full text-center text-sm bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e]">
                 <thead className="uppercase text-gray-300 bg-[#1c1a3a]">
                     <tr>
                         <th className="px-6 py-4">ID</th>
@@ -20,14 +20,20 @@ export default function Table({columns, data, onEdit, onDelete}) {
                 <tbody>
                     {data.length > 0 ? (
                         data.map((item, index) => (
-                            <tr key={item.id || index} className="border-b border-gray-700 hover:bg-[#34315d] transition">
+                            <tr key={item.id || index} className={`border-b border-gray-700 hover:bg-[#34315d] transition`}>
                                 <td className="px-6 py-4">{index + 1}</td>
                                 {columns.map((col) => (
-                                    <td key={col.key} className="px-6 py-4">
-                                        {item[col.key]}
-                                    </td>
+                                    col.key === "cost" || col.key === "price" ? (
+                                        <td key={col.key} className="px-6 py-4">
+                                            {"R$ " + item[col.key] + ",00"}
+                                        </td>
+                                    ) : (
+                                        <td key={col.key} className="px-6 py-4">
+                                            {item[col.key]}
+                                        </td>
+                                    )
                                 ))}
-                                <td className="px-6 py-4 flex gap-4">
+                                <td className="flex justify-center px-6 py-4 gap-4">
                                     <button onClick={() => onEdit?.(item)} className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition">
                                         <MdEdit/>
                                     </button>
