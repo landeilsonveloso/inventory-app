@@ -31,7 +31,7 @@ export default function Table({columns, data, onEdit, onDelete}) {
                                         </td>
                                     )
                                 ))}
-                                <td className="flex justify-center px-6 py-4 gap-4">
+                                <td className="flex px-6 py-4 gap-4">
                                     <button onClick={() => onEdit?.(item)} className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition">
                                         <MdEdit/>
                                     </button>
