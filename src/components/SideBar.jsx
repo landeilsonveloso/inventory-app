@@ -10,8 +10,7 @@ export default function SideBar() {
 
     return (
         isOpen ? (
-            <nav className="mr-72">
-                <aside className="w-72 h-screen fixed top-0 left-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white px-4 py-8 shadow-lg flex flex-col justify-between">
+                <aside className="w-72 h-full fixed top-0 left-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white px-4 py-8 shadow-lg flex flex-col justify-between">
                     <div>
                         <div className='w-full flex justify-end'>
                             <MdClose className="cursor-pointer" size={30} onClick={() => setIsOpen(false)}/>
@@ -30,12 +29,11 @@ export default function SideBar() {
                         </nav>
                     </div>
 
-                    <Link className="flex px-4 py-3 gap-3 rounded-md transition hover:bg-red-600 hover:text-white mt-10"  href="/">
+                    <Link className="flex px-4 py-3 gap-3 rounded-md transition hover:bg-red-600 hover:text-white"  href="/">
                         <MdLogout size={20}/>
                         <span >Sair</span>
                     </Link>
                 </aside>
-            </nav>
         ) : (
             <nav>
                 <MdMenu className="cursor-pointer m-8" size={30} onClick={() => setIsOpen(true)}/>
