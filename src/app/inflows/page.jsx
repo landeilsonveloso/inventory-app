@@ -5,7 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdAttachMoney, MdClose, MdDateRange, MdMonetizationOn, MdNotes } from "react-icons/md"
+import { MdAdd, MdAttachMoney, MdCategory, MdClose, MdDateRange, MdMonetizationOn, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
@@ -90,8 +90,6 @@ export default function InflowssPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdDateRange className="text-gray-600 text-xl mr-2"/>
-
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="date"
@@ -103,7 +101,7 @@ export default function InflowssPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdAttachMoney className="text-gray-600 text-xl mr-2"/>
+                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
@@ -116,7 +114,7 @@ export default function InflowssPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
+                                <MdCategory className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
@@ -168,8 +166,6 @@ export default function InflowssPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdDateRange className="text-gray-600 text-xl mr-2"/>
-
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="date"
@@ -182,7 +178,7 @@ export default function InflowssPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdAttachMoney className="text-gray-600 text-xl mr-2"/>
+                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
@@ -196,7 +192,7 @@ export default function InflowssPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
+                                <MdCategory className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
