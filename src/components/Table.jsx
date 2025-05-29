@@ -19,7 +19,7 @@ export default function Table({columns, data, onEdit, onDelete}) {
                         data.map((item, index) => (
                             <tr key={item.id || index} className={`border-b border-gray-700 hover:bg-[#34315d] transition`}>
                                 {columns.map((col) => (
-                                    col.key === "cost" || col.key === "price" ? (
+                                    col.key === "cost" || col.key === "price" || col.key === "value" ? (
                                         <td key={col.key} className="px-6 py-4">
                                             {"R$ " + item[col.key] + ",00"}
                                         </td>
