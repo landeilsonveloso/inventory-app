@@ -5,7 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdClose, MdDescription, MdInventory, MdLabel, MdMonetizationOn, MdMoneyOff, MdNotes } from "react-icons/md"
+import { MdAdd, MdClose, MdDescription, MdInventory, MdMonetizationOn, MdMoneyOff, MdNotes, MdNumbers } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
@@ -133,7 +133,7 @@ export default function ProductsPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdLabel className="text-gray-600 text-xl mr-2"/>
+                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
@@ -229,7 +229,7 @@ export default function ProductsPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdLabel className="text-gray-600 text-xl mr-2"/>
+                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"

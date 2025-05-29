@@ -46,7 +46,7 @@ export default function SideBar() {
                         </nav>
                     </div>
 
-                    <NavItem href="/" icon={<MdLogout size={20}/>}/>
+                    <NavItem href="/" icon={<MdLogout title="Sair" size={20}/>}/>
                 </aside>
             </nav>            
         )
