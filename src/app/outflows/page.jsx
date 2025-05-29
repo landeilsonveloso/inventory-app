@@ -10,6 +10,8 @@ import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
 import useOutflow from "src/hooks/useOutflow"
+import Select from "src/components/Select"
+import Option from "src/components/Option"
 
 export default function InflowssPage() {
     const {
@@ -116,14 +118,23 @@ export default function InflowssPage() {
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="method"
-                                    name="method"
-                                    type="text"
-                                    placeholder="Forma de Pagamento"
-                                    onChange={(e) => setMethod(e.target.value)}
-                                />
+                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
+                                    <Option value="">
+                                        Forma de Pagamento
+                                    </Option>
+
+                                    <Option value="Cartão">
+                                        Cartão
+                                    </Option>
+
+                                    <Option value="Espécie">
+                                        Espécie
+                                    </Option>
+
+                                    <Option value="Pix">
+                                        Pix
+                                    </Option>
+                                </Select>                                
                             </Div>
 
                             <Div className="flex justify-end gap-3">
@@ -194,15 +205,23 @@ export default function InflowssPage() {
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="method"
-                                    name="method"
-                                    type="text"
-                                    placeholder="Forma de Pagamento"
-                                    value={method}
-                                    onChange={(e) => setMethod(e.target.value)}
-                                />
+                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
+                                    <Option value="">
+                                        Forma de Pagamento
+                                    </Option>
+
+                                    <Option value="Cartão">
+                                        Cartão
+                                    </Option>
+
+                                    <Option value="Espécie">
+                                        Espécie
+                                    </Option>
+
+                                    <Option value="Pix">
+                                        Pix
+                                    </Option>
+                                </Select>
                             </Div>
 
                             <Div className="flex justify-end gap-3">
