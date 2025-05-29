@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import {MdClose, MdDashboard, MdInventory, MdLogout, MdMenu, MdMonetizationOn, MdShoppingCart} from 'react-icons/md'
+import {MdClose, MdDashboard, MdInventory, MdLogout, MdMenu, MdMonetizationOn} from 'react-icons/md'
 
 export default function SideBar() {
     const [isOpen, setIsOpen] = useState(true)
@@ -15,14 +15,14 @@ export default function SideBar() {
                     <div>
                         <div className="w-full text-end">
                             <button className="cursor-pointer p-4 rounded-full hover:bg-gray-600 hover:text-white" onClick={() => setIsOpen(false)}>
-                                <MdClose size={20}/>
+                                <MdClose title="Fechar Menu" size={20}/>
                             </button>
                         </div>
 
                         <nav className="flex flex-col gap-4">
                             <NavItem href="/dashboard" label="Painel" icon={<MdDashboard size={20}/>} />
                             <NavItem href="/products" label="Produtos" icon={<MdInventory size={20}/>} />
-                            <NavItem href="/inflows" label="Entrada" icon={<MdShoppingCart size={20}/>} />
+                            <NavItem href="/inflows" label="Entradas" icon={<MdMonetizationOn size={20}/>} />
                         </nav>
                     </div>
 
@@ -34,13 +34,13 @@ export default function SideBar() {
                 <aside className="w-20 h-full fixed top-0 left-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white py-5 px-4 shadow-lg flex flex-col justify-between">
                     <div>
                         <button className="cursor-pointer p-4 rounded-full hover:bg-gray-600 hover:text-white" onClick={() => setIsOpen(true)}>
-                            <MdMenu size={20}/>
+                            <MdMenu title="Abrir Menu" size={20}/>
                         </button>
 
                         <nav className="flex flex-col items-center gap-4">
-                            <NavItem href="/dashboard" icon={<MdDashboard size={20}/>}/>
-                            <NavItem href="/products" icon={<MdInventory size={20}/>}/>
-                            <NavItem href="/inflows" icon={<MdShoppingCart size={20}/>} />
+                            <NavItem href="/dashboard" icon={<MdDashboard title="Painel" size={20}/>}/>
+                            <NavItem href="/products" icon={<MdInventory title="Produtos" size={20}/>}/>
+                            <NavItem href="/inflows" icon={<MdMonetizationOn title="Entradas" size={20}/>} />
                         </nav>
                     </div>
 
