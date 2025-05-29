@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
-import {MdClose, MdDashboard, MdInventory, MdLogout, MdMenu} from 'react-icons/md'
+import {MdClose, MdDashboard, MdInventory, MdLogout, MdMenu, MdMonetizationOn, MdShoppingCart} from 'react-icons/md'
 
 export default function SideBar() {
     const [isOpen, setIsOpen] = useState(true)
@@ -22,6 +22,7 @@ export default function SideBar() {
                         <nav className="flex flex-col gap-4">
                             <NavItem href="/dashboard" label="Painel" icon={<MdDashboard size={20}/>} />
                             <NavItem href="/products" label="Produtos" icon={<MdInventory size={20}/>} />
+                            <NavItem href="/inflows" label="Entrada" icon={<MdShoppingCart size={20}/>} />
                         </nav>
                     </div>
 
@@ -39,6 +40,7 @@ export default function SideBar() {
                         <nav className="flex flex-col items-center gap-4">
                             <NavItem href="/dashboard" icon={<MdDashboard size={20}/>}/>
                             <NavItem href="/products" icon={<MdInventory size={20}/>}/>
+                            <NavItem href="/inflows" icon={<MdShoppingCart size={20}/>} />
                         </nav>
                     </div>
 

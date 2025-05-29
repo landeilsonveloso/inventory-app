@@ -4,14 +4,13 @@ import { useCallback, useEffect, useState } from "react"
 import useModal from "./useModal"
 import { useRouter } from "next/navigation"
 
-export default function useProduct() {
+export default function useInflow() {
     const [id, setId] = useState(0)
-    const [name, setName] = useState("")
     const [description, setDescription] = useState("")
-    const [cost, setCost] = useState(0)
-    const [price, setPrice] = useState(0)
-    const [quantity, setQuantity] = useState(0)
-    const [products, setProducts] = useState([])
+    const [date, setDate] = useState(new Date())
+    const [value, setValue] = useState(0)
+    const [method, setMethod] = useState("")
+    const [inflows, setInflows] = useState([])
     const [filtered, setFiltered] = useState([])
     const [search, setSearch] = useState("")
 
@@ -19,31 +18,30 @@ export default function useProduct() {
 
     const apiUrlBase = config.API_URL_BASE
 
-    const readProductsUrl = `${apiUrlBase}/products`
-    const createProductUrl = `${apiUrlBase}/products`
-    const updateProductUrl = `${apiUrlBase}/products/${id}`
-    const deleteProductUrl = `${apiUrlBase}/products/${id}`
+    const readInflowsUrl = `${apiUrlBase}/inflows`
+    const createInflowUrl = `${apiUrlBase}/inflows`
+    const updateInflowUrl = `${apiUrlBase}/inflows/${id}`
+    const deleteInflowUrl = `${apiUrlBase}/inflows/${id}`
 
     const columns = [
-        {key: 'name', label: 'Nome'},
         {key: "description", label: "Descrição"},
-        {key: "cost", label: "Custo"},
-        {key: "price", label: "Preço"},
-        {key: "quantity", label: "Quantidade"}
+        {key: "date", label: "Data"},
+        {key: "value", label: "Valor"},
+        {key: "method", label: "Forma de Pagamento"}
     ]
     
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
-    const readProducts = useCallback(async () => {
+    const readInflows = useCallback(async () => {
         await axios
-                    .get(readProductsUrl, {headers: {
+                    .get(readInflowsUrl, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
                     }})
                     .then((res) => {
                         if (res.status === 200) {
-                            setProducts(res.data)
+                            setInflows(res.data)
                             setFiltered(res.data)
                             return
                         }
@@ -71,13 +69,13 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [readProductsUrl, router])
+    }, [readInflowsUrl, router])
 
-    const createProduct = useCallback(async (e) => {
+    const createInflow = useCallback(async (e) => {
         e.preventDefault()
         
         await axios
-                    .post(createProductUrl, {name, description, cost, price, quantity}, {headers: {
+                    .post(createInflowUrl, {description, date, value, method}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -86,7 +84,7 @@ export default function useProduct() {
                         if (res.status === 201) {
                             alert(res.data)
                             closingModal()
-                            readProducts()
+                            readInflows()
                             return
                         }
 
@@ -113,13 +111,13 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [createProductUrl, name, description, cost, price, quantity, closingModal, readProducts, router])
+    }, [createInflowUrl, description, date, value, method, closingModal, readInflows, router])
 
-    const updateProduct = useCallback(async (e) => {
+    const updateInflow = useCallback(async (e) => {
         e.preventDefault()
 
         await axios
-                    .put(updateProductUrl, {name, description, cost, price, quantity}, {headers: {
+                    .put(updateInflowUrl, {description, date, value, method}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -128,7 +126,7 @@ export default function useProduct() {
                         if (res.status === 200) {
                             alert(res.data)
                             closingModal()
-                            readProducts()
+                            readInflows()
                             return
                         }
 
@@ -155,13 +153,13 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [updateProductUrl, name, description, cost, price, quantity, closingModal, readProducts, router])
+    }, [updateInflowUrl, description, date, value, method, closingModal, readInflows, router])
 
-    const deleteProduct = useCallback(async (e) => {
+    const deleteInflow = useCallback(async (e) => {
         e.preventDefault()
 
         await axios
-                    .delete(deleteProductUrl, {headers: {
+                    .delete(deleteInflowUrl, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -170,7 +168,7 @@ export default function useProduct() {
                         if (res.status === 200) {
                             alert(res.data)
                             closingModal()
-                            readProducts()
+                            readInflows()
                             return
                         }
 
@@ -198,26 +196,26 @@ export default function useProduct() {
                         }
                     })
                     
-    }, [deleteProductUrl, closingModal, readProducts, router])
+    }, [deleteInflowUrl, closingModal, readInflows, router])
 
     useEffect(() => {
-        readProducts()
-    }, [readProducts])
+        readInflows()
+    }, [readInflows])
 
     useEffect(() => {
         const term = search.trim().toLowerCase()
 
         if (!term) {
-            setFiltered(products)
+            setFiltered(inflows)
             return
         }
 
-        const results = products.filter((cat) =>
-            cat.name.toLowerCase().includes(term)
+        const results = inflows.filter((cat) =>
+            cat.description.toLowerCase().includes(term)
         )
 
         setFiltered(results)
-    }, [search, products])
+    }, [search, inflows])
 
     const handleAdd = useCallback(() => {
         setTag("Create")
@@ -228,11 +226,10 @@ export default function useProduct() {
         setTag("Edit")
         openingModal()
         setId(item.id)
-        setName(item.name)
         setDescription(item.description)
-        setCost(item.cost)
-        setPrice(item.price)
-        setQuantity(item.quantity)
+        setDate(item.date)
+        setValue(item.value)
+        setMethod(item.method)
     }, [openingModal])
 
     const handleDelete = useCallback((item) => {
@@ -246,26 +243,24 @@ export default function useProduct() {
     }, [closingModal])
 
     return {
-        name,
-        setName,
         description,
         setDescription,
-        cost,
-        setCost,
-        price,
-        setPrice,
-        quantity,
-        setQuantity,
-        products,
+        date,
+        setDate,
+        value,
+        setValue,
+        method,
+        setMethod,
+        inflows,
         filtered,
         search,
         setSearch,
         columns,
         isOpen,
         tag,
-        createProduct,
-        updateProduct,
-        deleteProduct,
+        createInflow,
+        updateInflow,
+        deleteInflow,
         handleAdd,
         handleEdit,
         handleDelete,

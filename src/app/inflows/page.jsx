@@ -5,49 +5,47 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdAttachMoney, MdClose, MdDescription, MdInventory, MdLabel, MdMonetizationOn, MdNotes } from "react-icons/md"
+import { MdAdd, MdAttachMoney, MdClose, MdDateRange, MdMonetizationOn, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
-import useProduct from "src/hooks/useProduct"
+import useInflow from "src/hooks/useInflow"
 
-export default function ProductsPage() {
+export default function InflowssPage() {
     const {
-        name,
-        setName,
         description,
         setDescription,
-        cost,
-        setCost,
-        price,
-        setPrice,
-        quantity,
-        setQuantity,
-        products,
+        date,
+        setDate,
+        value,
+        setValue,
+        method,
+        setMethod,
+        inflows,
         filtered,
         search,
         setSearch,
         columns,
         isOpen,
         tag,
-        createProduct,
-        updateProduct,
-        deleteProduct,
+        createInflow,
+        updateInflow,
+        deleteInflow,
         handleAdd,
         handleEdit,
         handleDelete,
         handleCancel
-    } = useProduct()
+    } = useInflow()
     
     return (
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Total de Produtos: {products.length}</Title>
+                    <Title>Total de Entradas: {inflows.length}</Title>
 
                     <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
-                        Novo Produto
+                        Nova Entrada
                     </Button>
                 </Div>
 
@@ -56,7 +54,7 @@ export default function ProductsPage() {
                     id="search"
                     name="search"
                     type="search"
-                    placeholder="Busque por um produto..."
+                    placeholder="Busque por uma entrada..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
@@ -70,27 +68,12 @@ export default function ProductsPage() {
 
                 {isOpen && tag === "Create" ? (
                     <Modal>
-                        <Form onSubimit={createProduct}>
+                        <Form onSubimit={createInflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
 
-                            <Title>Novo Produto</Title>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdInventory className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={30}
-                                    placeholder="Nome"
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </Div>
+                            <Title>Nova Entrada</Title>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
@@ -107,15 +90,28 @@ export default function ProductsPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdDateRange className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="date"
+                                    name="date"
+                                    type="date"
+                                    placeholder="Data"
+                                    onChange={(e) => setDate(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdAttachMoney className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="cost"
-                                    name="cost"
+                                    id="value"
+                                    name="value"
                                     type="number"
-                                    placeholder="Custo"
-                                    onChange={(e) => setCost(e.target.value)}
+                                    placeholder="Valor"
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 
@@ -124,24 +120,11 @@ export default function ProductsPage() {
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="price"
-                                    name="price"
-                                    type="number"
-                                    placeholder="Preço"
-                                    onChange={(e) => setPrice(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdLabel className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="quantity"
-                                    name="quantity"
-                                    type="number"
-                                    placeholder="Quantidade"
-                                    onChange={(e) => setQuantity(e.target.value)}
+                                    id="method"
+                                    name="method"
+                                    type="text"
+                                    placeholder="Forma de Pagamento"
+                                    onChange={(e) => setMethod(e.target.value)}
                                 />
                             </Div>
 
@@ -162,31 +145,15 @@ export default function ProductsPage() {
 
                 {isOpen && tag === "Edit" ? (
                     <Modal>
-                        <Form onSubimit={updateProduct}>
+                        <Form onSubimit={updateInflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
 
-                            <Title>Editar Produto</Title>
+                            <Title>Editar Entrada</Title>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdInventory className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={30}
-                                    placeholder="Nome"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdDescription className="text-gray-600 text-xl mr-2"/>
+                                <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
@@ -201,16 +168,30 @@ export default function ProductsPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdDateRange className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="date"
+                                    name="date"
+                                    type="date"
+                                    placeholder="Data"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdAttachMoney className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="cost"
-                                    name="cost"
+                                    id="value"
+                                    name="value"
                                     type="number"
-                                    placeholder="Custo"
-                                    value={cost}
-                                    onChange={(e) => setCost(e.target.value)}
+                                    placeholder="Valor"
+                                    value={value}
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 
@@ -219,26 +200,12 @@ export default function ProductsPage() {
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="price"
-                                    name="price"
-                                    type="number"
-                                    placeholder="Preço"
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdLabel className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="quantity"
-                                    name="quantity"
-                                    type="number"
-                                    placeholder="Quantidade"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
+                                    id="method"
+                                    name="method"
+                                    type="text"
+                                    placeholder="Forma de Pagamento"
+                                    value={method}
+                                    onChange={(e) => setMethod(e.target.value)}
                                 />
                             </Div>
 
@@ -259,13 +226,13 @@ export default function ProductsPage() {
 
                 {isOpen && tag === "Delete" ? (
                     <Modal>
-                        <Form className="flex flex-col" onSubimit={deleteProduct}>
+                        <Form className="flex flex-col" onSubimit={deleteInflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
 
                             <Div className="text-center text-xl mt-4 mb-8">
-                                Deseja excluir esse produto?
+                                Deseja excluir essa entrada?
                             </Div>
 
                              <Div className="flex justify-end gap-3">
