@@ -1,4 +1,4 @@
-import { MdEdit, MdDelete} from 'react-icons/md'
+import { MdEdit, MdDelete } from 'react-icons/md'
 
 export default function Table({columns, data, onEdit, onDelete}) {
     return (
@@ -14,34 +14,52 @@ export default function Table({columns, data, onEdit, onDelete}) {
                         <th className="px-6 py-4">Ações</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     {data.length > 0 ? (
                         data.map((item, index) => (
-                            <tr key={item.id || index} className={`border-b border-gray-700 hover:bg-[#34315d] transition`}>
-                                {columns.map((col) => (
-                                    col.key === "cost" || col.key === "price" || col.key === "value" ? (
+                            <tr key={item.id || index} className="border-b border-gray-700 hover:bg-[#34315d] transition">
+                                {columns.map((col) => {
+                                    const value = item[col.key]
+
+                                    if (["cost", "price", "value"].includes(col.key)) {
+                                        return (
+                                            <td key={col.key} className="px-6 py-4">
+                                                {"R$ " + value + ",00"}
+                                            </td>
+                                        )
+                                    }
+
+                                    if (["date", "createdAt", "updatedAt"].includes(col.key)) {
+                                        const formattedDate = new Date(value).toLocaleDateString("pt-BR");
+                                        return (
+                                            <td key={col.key} className="px-6 py-4">
+                                                {formattedDate}
+                                            </td>
+                                        )
+                                    }
+
+                                    return (
                                         <td key={col.key} className="px-6 py-4">
-                                            {"R$ " + item[col.key] + ",00"}
-                                        </td>
-                                    ) : (
-                                        <td key={col.key} className="px-6 py-4">
-                                            {item[col.key]}
+                                            {value}
                                         </td>
                                     )
-                                ))}
+                                })}
+
                                 <td className="flex justify-center items-center px-6 py-4 gap-4">
-                                    <button onClick={() => onEdit?.(item)} className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition">
-                                        <MdEdit/>
+                                    <button className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition" onClick={() => onEdit?.(item)}>
+                                        <MdEdit />
                                     </button>
-                                    <button onClick={() => onDelete?.(item)} className="p-2 rounded-md bg-red-600 hover:bg-red-700 cursor-pointer transition">
-                                        <MdDelete/>
+
+                                    <button className="p-2 rounded-md bg-red-600 hover:bg-red-700 cursor-pointer transition" onClick={() => onDelete?.(item)}>
+                                        <MdDelete />
                                     </button>
                                 </td>
                             </tr>
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={columns.length + 2} className="px-6 py-4 text-center text-white">
+                            <td colSpan={columns.length + 1} className="px-6 py-4 text-center text-white">
                                 Nenhum registro encontrado
                             </td>
                         </tr>
