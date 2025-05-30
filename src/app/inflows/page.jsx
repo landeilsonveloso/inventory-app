@@ -5,7 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdAttachMoney, MdCategory, MdClose, MdDateRange, MdMonetizationOn, MdNotes } from "react-icons/md"
+import { MdAdd, MdCategory, MdClose, MdMonetizationOn, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
@@ -24,9 +24,6 @@ export default function InflowssPage() {
         method,
         setMethod,
         inflows,
-        filtered,
-        search,
-        setSearch,
         columns,
         isOpen,
         tag,
@@ -36,14 +33,19 @@ export default function InflowssPage() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        filterType,
+        setFilterType,
+        filtered,
+        selectedDate,
+        setSelectedDate,
     } = useInflow()
     
     return (
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Total de Entradas: {inflows.length}</Title>
+                    <Title>Total de Entradas: {filtered.length} / {inflows.length}</Title>
 
                     <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
@@ -51,15 +53,36 @@ export default function InflowssPage() {
                     </Button>
                 </Div>
 
-                <Input
-                    className="w-full p-3 mb-16 rounded-md bg-white text-black focus:outline-none"
-                    id="search"
-                    name="search"
-                    type="search"
-                    placeholder="Busque por uma entrada..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
+                <Div className="w-full flex items-center justify-center gap-4 mb-8">
+                    <Title>Filtrar</Title>
+                    
+                    <Select className="w-1/5 bg-black border rounded px-4 py-2 mb-4" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+                        <Option value="">
+                            
+                        </Option>
+
+                        <Option value="day">
+                            Dia
+                        </Option>
+
+                        <Option value="week">
+                            Semana
+                        </Option>
+
+                        <Option value="month">
+                            Mês
+                        </Option>
+                    </Select>
+
+                    <Input
+                        className="border rounded px-4 py-2 mb-4"
+                        id="date"
+                        name="date"
+                        type="date"
+                        value={selectedDate.toISOString().split('T')[0]}
+                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                    />
+                </Div>
                 
                 <Table
                     columns={columns}

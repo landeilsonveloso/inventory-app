@@ -11,8 +11,9 @@ export default function useInflow() {
     const [value, setValue] = useState(0)
     const [method, setMethod] = useState("")
     const [inflows, setInflows] = useState([])
-    const [filtered, setFiltered] = useState([])
-    const [search, setSearch] = useState("")
+    const [selectedDate, setSelectedDate] = useState(new Date())
+    const [filtered, setFiltered]  = useState([])
+    const [filterType, setFilterType] = useState("")
 
     const router = useRouter()
 
@@ -42,7 +43,6 @@ export default function useInflow() {
                     .then((res) => {
                         if (res.status === 200) {
                             setInflows(res.data)
-                            setFiltered(res.data)
                             return
                         }
                         
@@ -202,20 +202,64 @@ export default function useInflow() {
         readInflows()
     }, [readInflows])
 
-    useEffect(() => {
-        const term = search.trim().toLowerCase()
+    const filterByDay = useCallback(() =>  {
+        return inflows.filter(inflow => {
+            const inflowDate = new Date(inflow.date)
+                return (
+                    inflowDate.getDate() === selectedDate.getDate() &&
+                    inflowDate.getMonth() === selectedDate.getMonth() &&
+                    inflowDate.getFullYear() === selectedDate.getFullYear()
+                )
+            })
+    }, [inflows, selectedDate])
 
-        if (!term) {
-            setFiltered(inflows)
-            return
+    const filterByWeek = useCallback(() =>  {
+        const startOfWeek = new Date(selectedDate)
+
+        startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay())
+        startOfWeek.setHours(0, 0, 0, 0)
+
+        const endOfWeek = new Date(startOfWeek)
+
+        endOfWeek.setDate(startOfWeek.getDate() + 6)
+        endOfWeek.setHours(23, 59, 59, 999)
+
+        return inflows.filter(inflow => {
+            const inflowDate = new Date(inflow.date)
+            return inflowDate >= startOfWeek && inflowDate <= endOfWeek
+        })
+    }, [selectedDate, inflows])
+
+    const filterByMonth = useCallback(() =>  {
+        return inflows.filter(inflow => {
+            const inflowDate = new Date(inflow.date)
+                return (
+                    inflowDate.getMonth() === selectedDate.getMonth() &&
+                    inflowDate.getFullYear() === selectedDate.getFullYear()
+                )
+            })
+    }, [selectedDate, inflows])
+
+    const filterInflows = useCallback(() => {
+        switch (filterType) {
+            case "day":
+                return filterByDay()
+
+            case "week":
+                return filterByWeek()
+
+            case 'month':
+                return filterByMonth()
+
+            default:
+                return inflows
         }
+    }, [filterType, inflows, filterByDay, filterByWeek, filterByMonth])
 
-        const results = inflows.filter((cat) =>
-            cat.description.toLowerCase().includes(term)
-        )
-
-        setFiltered(results)
-    }, [search, inflows])
+    useEffect(() => {
+        const filtered = filterInflows()
+        setFiltered(filtered)
+    }, [selectedDate, filterInflows])
 
     const handleAdd = useCallback(() => {
         setTag("Create")
@@ -252,9 +296,6 @@ export default function useInflow() {
         method,
         setMethod,
         inflows,
-        filtered,
-        search,
-        setSearch,
         columns,
         isOpen,
         tag,
@@ -264,6 +305,11 @@ export default function useInflow() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        filtered,
+        filterType,
+        setFilterType,
+        selectedDate,
+        setSelectedDate
     }
 }
