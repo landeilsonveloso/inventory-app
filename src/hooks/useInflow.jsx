@@ -10,10 +10,10 @@ export default function useInflow() {
     const [date, setDate] = useState(new Date())
     const [value, setValue] = useState(0)
     const [method, setMethod] = useState("")
-    const [inflows, setInflows] = useState([])
     const [selectedDate, setSelectedDate] = useState(new Date())
-    const [filtered, setFiltered]  = useState([])
     const [filterType, setFilterType] = useState("")
+    const [filtered, setFiltered]  = useState([])
+    const [inflows, setInflows] = useState([])
 
     const router = useRouter()
 
@@ -295,6 +295,11 @@ export default function useInflow() {
         setValue,
         method,
         setMethod,
+        selectedDate,
+        setSelectedDate,
+        filterType,
+        setFilterType,
+        filtered,
         inflows,
         columns,
         isOpen,
@@ -306,10 +311,5 @@ export default function useInflow() {
         handleEdit,
         handleDelete,
         handleCancel,
-        filtered,
-        filterType,
-        setFilterType,
-        selectedDate,
-        setSelectedDate
     }
 }

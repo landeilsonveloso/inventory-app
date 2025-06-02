@@ -7,11 +7,11 @@ import Form from "src/components/Form"
 import Input from "src/components/Input"
 import { MdAdd, MdCategory, MdClose, MdMonetizationOn, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
+import Option from "src/components/Option"
+import Select from "src/components/Select"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
 import useInflow from "src/hooks/useInflow"
-import Select from "src/components/Select"
-import Option from "src/components/Option"
 
 export default function InflowssPage() {
     const {
@@ -23,6 +23,11 @@ export default function InflowssPage() {
         setValue,
         method,
         setMethod,
+        selectedDate,
+        setSelectedDate,
+        filterType,
+        setFilterType,
+        filtered,
         inflows,
         columns,
         isOpen,
@@ -33,12 +38,7 @@ export default function InflowssPage() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel,
-        filterType,
-        setFilterType,
-        filtered,
-        selectedDate,
-        setSelectedDate,
+        handleCancel
     } = useInflow()
     
     return (
