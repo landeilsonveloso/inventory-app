@@ -259,7 +259,7 @@ export default function useInflow() {
     useEffect(() => {
         const filtered = filterInflows()
         setFiltered(filtered)
-    }, [selectedDate, filterInflows])
+    }, [filterInflows])
 
     const handleAdd = useCallback(() => {
         setTag("Create")
@@ -310,6 +310,6 @@ export default function useInflow() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel,
+        handleCancel
     }
 }

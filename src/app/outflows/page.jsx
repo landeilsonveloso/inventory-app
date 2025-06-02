@@ -23,10 +23,12 @@ export default function InflowssPage() {
         setValue,
         method,
         setMethod,
-        outflows,
+        selectedDate,
+        setSelectedDate,
+        filterType,
+        setFilterType,
         filtered,
-        search,
-        setSearch,
+        outflows,
         columns,
         isOpen,
         tag,
@@ -43,7 +45,7 @@ export default function InflowssPage() {
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Total de Saídas: {outflows.length}</Title>
+                    <Title>Total de Saídas: {filtered.length} / {outflows.length}</Title>
 
                     <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
@@ -51,15 +53,36 @@ export default function InflowssPage() {
                     </Button>
                 </Div>
 
-                <Input
-                    className="w-full p-3 mb-16 rounded-md bg-white text-black focus:outline-none"
-                    id="search"
-                    name="search"
-                    type="search"
-                    placeholder="Busque por uma saída..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                />
+                <Div className="w-full flex items-center justify-center gap-4 mb-8">
+                    <Title>Filtrar</Title>
+                    
+                    <Select className="w-1/5 bg-black border rounded px-4 py-2 mb-4" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+                        <Option value="">
+                            
+                        </Option>
+
+                        <Option value="day">
+                            Dia
+                        </Option>
+
+                        <Option value="week">
+                            Semana
+                        </Option>
+
+                        <Option value="month">
+                            Mês
+                        </Option>
+                    </Select>
+
+                    <Input
+                        className="border rounded px-4 py-2 mb-4"
+                        id="date"
+                        name="date"
+                        type="date"
+                        value={selectedDate.toISOString().split('T')[0]}
+                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                    />
+                </Div>
                 
                 <Table
                     columns={columns}

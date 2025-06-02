@@ -10,9 +10,10 @@ export default function useOutflow() {
     const [date, setDate] = useState(new Date())
     const [value, setValue] = useState(0)
     const [method, setMethod] = useState("")
+    const [selectedDate, setSelectedDate] = useState(new Date())
+    const [filterType, setFilterType] = useState("")
+    const [filtered, setFiltered]  = useState([])
     const [outflows, setOutflows] = useState([])
-    const [filtered, setFiltered] = useState([])
-    const [search, setSearch] = useState("")
 
     const router = useRouter()
 
@@ -72,8 +73,7 @@ export default function useOutflow() {
     }, [readOutflowsUrl, router])
 
     const createOutflow = useCallback(async (e) => {
-        e.preventDefault()
-        
+        e.preventDefault()        
         await axios
                     .post(createOutflowUrl, {description, date, value, method}, {headers: {
                         "Accept": "application/json",
@@ -202,20 +202,64 @@ export default function useOutflow() {
         readOutflows()
     }, [readOutflows])
 
-    useEffect(() => {
-        const term = search.trim().toLowerCase()
+    const filterByDay = useCallback(() =>  {
+        return outflows.filter(outflow => {
+            const outflowDate = new Date(outflow.date)
+                return (
+                    outflowDate.getDate() === selectedDate.getDate() &&
+                    outflowDate.getMonth() === selectedDate.getMonth() &&
+                    outflowDate.getFullYear() === selectedDate.getFullYear()
+                )
+            })
+    }, [outflows, selectedDate])
 
-        if (!term) {
-            setFiltered(outflows)
-            return
+    const filterByWeek = useCallback(() =>  {
+        const startOfWeek = new Date(selectedDate)
+
+        startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay())
+        startOfWeek.setHours(0, 0, 0, 0)
+
+        const endOfWeek = new Date(startOfWeek)
+
+        endOfWeek.setDate(startOfWeek.getDate() + 6)
+        endOfWeek.setHours(23, 59, 59, 999)
+
+        return outflows.filter(outflow => {
+            const outflowDate = new Date(outflow.date)
+            return outflowDate >= startOfWeek && outflowDate <= endOfWeek
+        })
+    }, [selectedDate, outflows])
+
+    const filterByMonth = useCallback(() =>  {
+        return outflows.filter(outflow => {
+            const outflowDate = new Date(outflow.date)
+                return (
+                    outflowDate.getMonth() === selectedDate.getMonth() &&
+                    outflowDate.getFullYear() === selectedDate.getFullYear()
+                )
+            })
+    }, [selectedDate, outflows])
+
+    const filterOutflows = useCallback(() => {
+        switch (filterType) {
+            case "day":
+                return filterByDay()
+
+            case "week":
+                return filterByWeek()
+
+            case 'month':
+                return filterByMonth()
+
+            default:
+                return outflows
         }
+    }, [filterType, outflows, filterByDay, filterByWeek, filterByMonth])
 
-        const results = outflows.filter((cat) =>
-            cat.description.toLowerCase().includes(term)
-        )
-
-        setFiltered(results)
-    }, [search, outflows])
+    useEffect(() => {
+        const filtered = filterOutflows()
+        setFiltered(filtered)
+    }, [selectedDate, filterOutflows])
 
     const handleAdd = useCallback(() => {
         setTag("Create")
@@ -251,10 +295,12 @@ export default function useOutflow() {
         setValue,
         method,
         setMethod,
-        outflows,
+        selectedDate,
+        setSelectedDate,
+        filterType,
+        setFilterType,
         filtered,
-        search,
-        setSearch,
+        outflows,
         columns,
         isOpen,
         tag,

@@ -31,7 +31,8 @@ export default function Table({columns, data, onEdit, onDelete}) {
                                     }
 
                                     if (["date", "createdAt", "updatedAt"].includes(col.key)) {
-                                        const formattedDate = new Date(value).toLocaleDateString("pt-BR");
+                                        const formattedDate = new Date(value).toLocaleDateString("pt-BR", {timeZone: "UTC"})
+                                        
                                         return (
                                             <td key={col.key} className="px-6 py-4">
                                                 {formattedDate}
