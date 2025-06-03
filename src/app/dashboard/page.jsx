@@ -24,9 +24,9 @@ export default function DashboardPage() {
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Entrada: R$ {filteredValues.inflow}</Title>
-                    <Title>Saída: R$ {filteredValues.outflow}</Title>
-                    <Title>Lucro: R$ {filteredValues.lucre}</Title>
+                    <Title>Entrada: R$ {filteredValues.inflow},00</Title>
+                    <Title>Saída: R$ {filteredValues.outflow},00</Title>
+                    <Title>Lucro: R$ {filteredValues.lucre},00</Title>
                 </Div>
 
                 <Div className="w-full flex items-center justify-center gap-4 mb-8">
