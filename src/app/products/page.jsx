@@ -66,6 +66,7 @@ export default function ProductsPage() {
                     data={filtered}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
+                    action={true}
                 />
 
                 {isOpen && tag === "Create" ? (

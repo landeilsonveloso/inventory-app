@@ -257,8 +257,7 @@ export default function useInflow() {
     }, [filterType, inflows, filterByDay, filterByWeek, filterByMonth])
 
     useEffect(() => {
-        const filtered = filterInflows()
-        setFiltered(filtered)
+        setFiltered(filterInflows())
     }, [filterInflows])
 
     const handleAdd = useCallback(() => {

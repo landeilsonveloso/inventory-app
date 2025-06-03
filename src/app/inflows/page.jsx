@@ -13,7 +13,7 @@ import Table from "src/components/Table"
 import Title from "src/components/Title"
 import useInflow from "src/hooks/useInflow"
 
-export default function InflowssPage() {
+export default function InflowsPage() {
     const {
         description,
         setDescription,
@@ -79,8 +79,16 @@ export default function InflowssPage() {
                         id="date"
                         name="date"
                         type="date"
-                        value={selectedDate.toISOString().split('T')[0]}
-                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                        value={selectedDate ? selectedDate.toISOString().split('T')[0] : ""}
+                        onChange={(e) => {
+                            const newValue = e.target.value
+                            
+                            if (newValue) {
+                                setSelectedDate(new Date(newValue))
+                            } else {
+                                setSelectedDate(new Date())
+                            }
+                        }}
                     />
                 </Div>
                 
@@ -89,6 +97,7 @@ export default function InflowssPage() {
                     data={filtered}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
+                    action={true}
                 />
 
                 {isOpen && tag === "Create" ? (

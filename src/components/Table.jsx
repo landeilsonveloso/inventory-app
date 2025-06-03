@@ -1,6 +1,6 @@
 import { MdEdit, MdDelete } from 'react-icons/md'
 
-export default function Table({columns, data, onEdit, onDelete}) {
+export default function Table({columns, data, onEdit, onDelete, action}) {
     return (
         <div className="overflow-x-auto rounded-md shadow">
             <table className="min-w-full text-center text-sm bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e]">
@@ -11,7 +11,8 @@ export default function Table({columns, data, onEdit, onDelete}) {
                                 {col.label}
                             </th>
                         ))}
-                        <th className="px-6 py-4">Ações</th>
+
+                        {action ? (<th className="px-6 py-4">Ações</th>) : null}
                     </tr>
                 </thead>
                 
@@ -22,7 +23,7 @@ export default function Table({columns, data, onEdit, onDelete}) {
                                 {columns.map((col) => {
                                     const value = item[col.key]
 
-                                    if (["cost", "price", "value"].includes(col.key)) {
+                                    if (["cost", "price", "value", "inflow", "outflow", "lucre"].includes(col.key)) {
                                         return (
                                             <td key={col.key} className="px-6 py-4">
                                                 {"R$ " + value + ",00"}
@@ -32,7 +33,7 @@ export default function Table({columns, data, onEdit, onDelete}) {
 
                                     if (["date", "createdAt", "updatedAt"].includes(col.key)) {
                                         const formattedDate = new Date(value).toLocaleDateString("pt-BR", {timeZone: "UTC"})
-                                        
+
                                         return (
                                             <td key={col.key} className="px-6 py-4">
                                                 {formattedDate}
@@ -47,15 +48,19 @@ export default function Table({columns, data, onEdit, onDelete}) {
                                     )
                                 })}
 
-                                <td className="flex justify-center items-center px-6 py-4 gap-4">
-                                    <button className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition" onClick={() => onEdit?.(item)}>
-                                        <MdEdit />
-                                    </button>
+                                {action ? (
+                                    <td className="flex justify-center items-center px-6 py-4 gap-4">
+                                        <button className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition" onClick={() => onEdit?.(item)}>
+                                            <MdEdit />
+                                        </button>
 
-                                    <button className="p-2 rounded-md bg-red-600 hover:bg-red-700 cursor-pointer transition" onClick={() => onDelete?.(item)}>
-                                        <MdDelete />
-                                    </button>
-                                </td>
+                                        <button className="p-2 rounded-md bg-red-600 hover:bg-red-700 cursor-pointer transition" onClick={() => onDelete?.(item)}>
+                                            <MdDelete />
+                                        </button>
+                                    </td>
+                                ) : (
+                                    null
+                                )}
                             </tr>
                         ))
                     ) : (

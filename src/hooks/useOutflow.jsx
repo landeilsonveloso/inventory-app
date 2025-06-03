@@ -257,9 +257,8 @@ export default function useOutflow() {
     }, [filterType, outflows, filterByDay, filterByWeek, filterByMonth])
 
     useEffect(() => {
-        const filtered = filterOutflows()
-        setFiltered(filtered)
-    }, [selectedDate, filterOutflows])
+        setFiltered(filterOutflows())
+    }, [filterOutflows])
 
     const handleAdd = useCallback(() => {
         setTag("Create")
