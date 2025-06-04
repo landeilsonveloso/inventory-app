@@ -54,12 +54,7 @@ export default function useOutflow() {
                         }
                     })
                     .catch((err) => {
-                        if (err.response.status === 400) {
-                            alert(err.response.data)
-                            return
-                        }
-
-                        else if (err.response.status === 401) {
+                        if (err.response.status === 401) {
                             localStorage.clear()
                             router.replace("/")
                             return
@@ -85,6 +80,11 @@ export default function useOutflow() {
                             alert(res.data)
                             closingModal()
                             readOutflows()
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
                             return
                         }
 
@@ -127,6 +127,11 @@ export default function useOutflow() {
                             alert(res.data)
                             closingModal()
                             readOutflows()
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
                             return
                         }
 
@@ -179,12 +184,7 @@ export default function useOutflow() {
                         }
                     })
                     .catch((err) => {
-                        if (err.response.status === 400) {
-                            alert(err.response.data)
-                            return
-                        }
-
-                        else if (err.response.status === 401) {
+                        if (err.response.status === 401) {
                             localStorage.clear()
                             router.replace("/")
                             return

@@ -44,7 +44,6 @@ export default function useProduct() {
                     .then((res) => {
                         if (res.status === 200) {
                             setProducts(res.data)
-                            setFiltered(res.data)
                             return
                         }
                         
@@ -55,12 +54,7 @@ export default function useProduct() {
                         }
                     })
                     .catch((err) => {
-                        if (err.response.status === 400) {
-                            alert(err.response.data)
-                            return
-                        }
-
-                        else if (err.response.status === 401) {
+                        if (err.response.status === 401) {
                             localStorage.clear()
                             router.replace("/")
                             return
@@ -87,6 +81,11 @@ export default function useProduct() {
                             alert(res.data)
                             closingModal()
                             readProducts()
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
                             return
                         }
 
@@ -129,6 +128,11 @@ export default function useProduct() {
                             alert(res.data)
                             closingModal()
                             readProducts()
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
                             return
                         }
 
@@ -181,12 +185,7 @@ export default function useProduct() {
                         }
                     })
                     .catch((err) => {
-                        if (err.response.status === 400) {
-                            alert(err.response.data)
-                            return
-                        }
-
-                        else if (err.response.status === 401) {
+                        if (err.response.status === 401) {
                             localStorage.clear()
                             router.replace("/")
                             return

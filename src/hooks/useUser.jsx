@@ -39,6 +39,11 @@ export default function useUser() {
                             router.replace("/dashboard")
                             return
                         }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
+                            return
+                        }
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
@@ -62,6 +67,11 @@ export default function useUser() {
                         if (res.status === 200) {
                             alert("Pedido de solicitação enviado para seu email!")
                             localStorage.setItem("token", res.data)
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
                             return
                         }
                     })
@@ -92,6 +102,11 @@ export default function useUser() {
                             alert(res.data)
                             localStorage.clear()
                             router.replace("/")
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            alert(res.data)
                             return
                         }
 
