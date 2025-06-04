@@ -202,6 +202,10 @@ export default function useOutflow() {
         readOutflows()
     }, [readOutflows])
 
+    const formatToBRL = useCallback((value) => {
+        return new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(value)
+    }, [])
+
     const filterByDay = useCallback(() =>  {
         return outflows.filter(outflow => {
             const outflowDate = new Date(outflow.date)
@@ -309,6 +313,7 @@ export default function useOutflow() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        formatToBRL
     }
 }

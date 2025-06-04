@@ -1,6 +1,11 @@
+import { useCallback } from 'react'
 import { MdEdit, MdDelete } from 'react-icons/md'
 
 export default function Table({columns, data, onEdit, onDelete, action}) {
+    const formatToBRL = useCallback((value) => {
+        return new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(value)
+    }, [])
+
     return (
         <div className="overflow-x-auto rounded-md shadow">
             <table className="min-w-full text-center text-sm bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e]">
@@ -26,7 +31,7 @@ export default function Table({columns, data, onEdit, onDelete, action}) {
                                     if (["cost", "price", "value", "inflow", "outflow", "lucre"].includes(col.key)) {
                                         return (
                                             <td key={col.key} className="px-6 py-4">
-                                                {"R$ " + value + ",00"}
+                                                {formatToBRL(value)}
                                             </td>
                                         )
                                     }

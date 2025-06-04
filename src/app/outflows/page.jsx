@@ -28,7 +28,6 @@ export default function OutflowsPage() {
         filterType,
         setFilterType,
         filtered,
-        outflows,
         columns,
         isOpen,
         tag,
@@ -38,14 +37,15 @@ export default function OutflowsPage() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        formatToBRL
     } = useOutflow()
     
     return (
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Saída: R$ {filtered.reduce((sum, item) => sum + item.value, 0)},00</Title>
+                    <Title>Saída: {formatToBRL(filtered.reduce((sum, item) => sum + parseFloat(item.value), 0))}</Title>
 
                     <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
@@ -117,6 +117,7 @@ export default function OutflowsPage() {
                                     id="description"
                                     name="description"
                                     type="text"
+                                    minLength={3}
                                     maxLength={30}
                                     placeholder="Descrição"
                                     onChange={(e) => setDescription(e.target.value)}
@@ -143,7 +144,7 @@ export default function OutflowsPage() {
                                     name="value"
                                     type="number"
                                     placeholder="Valor"
-                                    onChange={(e) => setValue(e.target.value)}
+                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 
@@ -230,7 +231,7 @@ export default function OutflowsPage() {
                                     type="number"
                                     placeholder="Valor"
                                     value={value}
-                                    onChange={(e) => setValue(e.target.value)}
+                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 

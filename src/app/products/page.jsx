@@ -87,7 +87,7 @@ export default function ProductsPage() {
                                     name="name"
                                     type="text"
                                     minLength={3}
-                                    maxLength={30}
+                                    maxLength={60}
                                     placeholder="Nome"
                                     onChange={(e) => setName(e.target.value)}
                                 />
@@ -101,7 +101,7 @@ export default function ProductsPage() {
                                     id="description"
                                     name="description"
                                     type="text"
-                                    maxLength={30}
+                                    maxLength={60}
                                     placeholder="Descrição"
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
@@ -116,7 +116,7 @@ export default function ProductsPage() {
                                     name="cost"
                                     type="number"
                                     placeholder="Custo"
-                                    onChange={(e) => setCost(e.target.value)}
+                                    onChange={(e) => setCost(parseFloat(e.target.value))}
                                 />
                             </Div>
 
@@ -129,7 +129,7 @@ export default function ProductsPage() {
                                     name="price"
                                     type="number"
                                     placeholder="Preço"
-                                    onChange={(e) => setPrice(e.target.value)}
+                                    onChange={(e) => setPrice(parseFloat(e.target.value))}
                                 />
                             </Div>
 
@@ -179,7 +179,7 @@ export default function ProductsPage() {
                                     name="name"
                                     type="text"
                                     minLength={3}
-                                    maxLength={30}
+                                    maxLength={60}
                                     placeholder="Nome"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
@@ -194,7 +194,7 @@ export default function ProductsPage() {
                                     id="description"
                                     name="description"
                                     type="text"
-                                    maxLength={30}
+                                    maxLength={60}
                                     placeholder="Descrição"
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}
@@ -211,7 +211,7 @@ export default function ProductsPage() {
                                     type="number"
                                     placeholder="Custo"
                                     value={cost}
-                                    onChange={(e) => setCost(e.target.value)}
+                                    onChange={(e) => setCost(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 
@@ -225,7 +225,7 @@ export default function ProductsPage() {
                                     type="number"
                                     placeholder="Preço"
                                     value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
+                                    onChange={(e) => setPrice(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 
