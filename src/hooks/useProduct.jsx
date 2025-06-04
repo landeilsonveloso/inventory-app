@@ -208,15 +208,23 @@ export default function useProduct() {
         const term = search.trim().toLowerCase()
 
         if (!term) {
-            setFiltered(products)
+            const sorted = [...products].sort((a, b) =>
+                a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: "base"})
+            )
+
+            setFiltered(sorted)
             return
         }
 
-        const results = products.filter((cat) =>
-            cat.name.toLowerCase().includes(term)
+        const results = products.filter((item) =>
+            item.name.toLowerCase().includes(term)
         )
 
-        setFiltered(results)
+        const sorted = results.sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: "base"})
+        )
+
+        setFiltered(sorted)
     }, [search, products])
 
     const handleAdd = useCallback(() => {
