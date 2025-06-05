@@ -12,6 +12,7 @@ import Select from "src/components/Select"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
 import useInflow from "src/hooks/useInflow"
+import useUtilities from "src/hooks/useUtilities"
 
 export default function InflowsPage() {
     const {
@@ -38,9 +39,12 @@ export default function InflowsPage() {
         handleEdit,
         handleDelete,
         handleCancel,
-        formatToBRL,
         disabledButton
     } = useInflow()
+
+    const {
+        formatToBRL
+    } = useUtilities()
     
     return (
         <AuthProvider>

@@ -12,6 +12,7 @@ import Title from "src/components/Title"
 import useOutflow from "src/hooks/useOutflow"
 import Select from "src/components/Select"
 import Option from "src/components/Option"
+import useUtilities from "src/hooks/useUtilities"
 
 export default function OutflowsPage() {
     const {
@@ -38,9 +39,12 @@ export default function OutflowsPage() {
         handleEdit,
         handleDelete,
         handleCancel,
-        formatToBRL,
         disabledButton
     } = useOutflow()
+
+    const {
+        formatToBRL
+    } = useUtilities()
     
     return (
         <AuthProvider>

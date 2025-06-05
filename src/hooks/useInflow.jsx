@@ -219,10 +219,6 @@ export default function useInflow() {
         readInflows()
     }, [readInflows])
 
-    const formatToBRL = useCallback((value) => {
-        return new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(value)
-    }, [])
-
     const filterByDay = useCallback(() =>  {
         return inflows.filter(inflow => {
             const inflowDate = new Date(inflow.date)
@@ -331,7 +327,6 @@ export default function useInflow() {
         handleEdit,
         handleDelete,
         handleCancel,
-        formatToBRL,
         disabledButton
     }
 }

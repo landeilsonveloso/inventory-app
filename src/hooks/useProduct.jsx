@@ -280,7 +280,6 @@ export default function useProduct() {
         setPrice,
         quantity,
         setQuantity,
-        products,
         filtered,
         search,
         setSearch,

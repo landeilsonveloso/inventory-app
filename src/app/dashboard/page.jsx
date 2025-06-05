@@ -8,6 +8,7 @@ import Select from "src/components/Select"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
 import useDashboard from "src/hooks/useDashboard"
+import useUtilities from "src/hooks/useUtilities"
 
 export default function DashboardPage() {
     const {
@@ -19,14 +20,18 @@ export default function DashboardPage() {
         filteredValues,
         columns
     } = useDashboard()
+
+    const {
+        formatToBRL
+    } = useUtilities()
     
     return (
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Entrada: R$ {filteredValues.inflow},00</Title>
-                    <Title>Saída: R$ {filteredValues.outflow},00</Title>
-                    <Title>Lucro: R$ {filteredValues.lucre},00</Title>
+                    <Title>Entrada: {formatToBRL(filteredValues.inflow)}</Title>
+                    <Title>Saída: {formatToBRL(filteredValues.outflow)}</Title>
+                    <Title>Lucro: {formatToBRL(filteredValues.lucre)}</Title>
                 </Div>
 
                 <Div className="w-full flex items-center justify-center gap-4 mb-8">

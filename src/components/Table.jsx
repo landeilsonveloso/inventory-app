@@ -1,10 +1,10 @@
-import { useCallback } from 'react'
 import { MdEdit, MdDelete } from 'react-icons/md'
+import useUtilities from 'src/hooks/useUtilities'
 
 export default function Table({columns, data, onEdit, onDelete, action}) {
-    const formatToBRL = useCallback((value) => {
-        return new Intl.NumberFormat("pt-BR", {style: "currency", currency: "BRL"}).format(value)
-    }, [])
+    const {
+        formatToBRL
+    } = useUtilities()
 
     return (
         <div className="overflow-x-auto rounded-md shadow">
