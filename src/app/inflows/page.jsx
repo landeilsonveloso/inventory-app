@@ -146,7 +146,7 @@ export default function InflowsPage() {
                                     type="number"
                                     placeholder="Valor"
                                     step={0.01}
-                                    onChange={(e) => setValue(parseFloat(e.target.value))}
+                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 
@@ -233,7 +233,7 @@ export default function InflowsPage() {
                                     placeholder="Valor"
                                     step={0.01}
                                     value={value}
-                                    onChange={(e) => setValue(parseFloat(e.target.value))}
+                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 

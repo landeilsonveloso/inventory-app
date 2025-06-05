@@ -116,7 +116,7 @@ export default function ProductsPage() {
                                     name="cost"
                                     type="number"
                                     placeholder="Custo"
-                                    onChange={(e) => setCost(parseFloat(e.target.value))}
+                                    onChange={(e) => setCost(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 
@@ -129,7 +129,7 @@ export default function ProductsPage() {
                                     name="price"
                                     type="number"
                                     placeholder="Preço"
-                                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                                    onChange={(e) => setPrice(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 

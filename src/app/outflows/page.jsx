@@ -145,7 +145,7 @@ export default function OutflowsPage() {
                                     type="number"
                                     placeholder="Valor"
                                     step={0.01}
-                                    onChange={(e) => setValue(parseFloat(e.target.value))}
+                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
                                 />
                             </Div>
 
