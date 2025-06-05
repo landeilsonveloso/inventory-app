@@ -14,6 +14,7 @@ export default function useOutflow() {
     const [filterType, setFilterType] = useState("")
     const [filtered, setFiltered]  = useState([])
     const [outflows, setOutflows] = useState([])
+    const [disabledButton, setDisabledButton] = useState(false)
 
     const router = useRouter()
 
@@ -68,7 +69,10 @@ export default function useOutflow() {
     }, [readOutflowsUrl, router])
 
     const createOutflow = useCallback(async (e) => {
-        e.preventDefault()        
+        e.preventDefault()
+
+        setDisabledButton(true)
+
         await axios
                     .post(createOutflowUrl, {description, date, value, method}, {headers: {
                         "Accept": "application/json",
@@ -77,6 +81,7 @@ export default function useOutflow() {
                     }})
                     .then((res) => {
                         if (res.status === 201) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readOutflows()
@@ -84,6 +89,7 @@ export default function useOutflow() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -96,6 +102,7 @@ export default function useOutflow() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -107,6 +114,7 @@ export default function useOutflow() {
                        }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -116,6 +124,8 @@ export default function useOutflow() {
     const updateOutflow = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .put(updateOutflowUrl, {description, date, value, method}, {headers: {
                         "Accept": "application/json",
@@ -124,6 +134,7 @@ export default function useOutflow() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readOutflows()
@@ -131,6 +142,7 @@ export default function useOutflow() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -143,6 +155,7 @@ export default function useOutflow() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -154,6 +167,7 @@ export default function useOutflow() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -163,6 +177,8 @@ export default function useOutflow() {
     const deleteOutflow = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .delete(deleteOutflowUrl, {headers: {
                         "Accept": "application/json",
@@ -171,6 +187,7 @@ export default function useOutflow() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readOutflows()
@@ -191,6 +208,7 @@ export default function useOutflow() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -314,6 +332,7 @@ export default function useOutflow() {
         handleEdit,
         handleDelete,
         handleCancel,
-        formatToBRL
+        formatToBRL,
+        disabledButton
     }
 }

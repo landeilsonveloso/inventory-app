@@ -14,6 +14,7 @@ export default function useInflow() {
     const [filterType, setFilterType] = useState("")
     const [filtered, setFiltered]  = useState([])
     const [inflows, setInflows] = useState([])
+    const [disabledButton, setDisabledButton] = useState(false)
 
     const router = useRouter()
 
@@ -68,6 +69,8 @@ export default function useInflow() {
 
     const createInflow = useCallback(async (e) => {
         e.preventDefault()
+
+        setDisabledButton(true)
         
         await axios
                     .post(createInflowUrl, {description, date, value, method}, {headers: {
@@ -77,6 +80,7 @@ export default function useInflow() {
                     }})
                     .then((res) => {
                         if (res.status === 201) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readInflows()
@@ -84,6 +88,7 @@ export default function useInflow() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -96,6 +101,7 @@ export default function useInflow() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -107,6 +113,7 @@ export default function useInflow() {
                        }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -116,6 +123,8 @@ export default function useInflow() {
     const updateInflow = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .put(updateInflowUrl, {description, date, value, method}, {headers: {
                         "Accept": "application/json",
@@ -124,6 +133,7 @@ export default function useInflow() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readInflows()
@@ -131,6 +141,7 @@ export default function useInflow() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -143,6 +154,7 @@ export default function useInflow() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -154,6 +166,7 @@ export default function useInflow() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -163,6 +176,8 @@ export default function useInflow() {
     const deleteInflow = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .delete(deleteInflowUrl, {headers: {
                         "Accept": "application/json",
@@ -171,6 +186,7 @@ export default function useInflow() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readInflows()
@@ -191,6 +207,7 @@ export default function useInflow() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -314,6 +331,7 @@ export default function useInflow() {
         handleEdit,
         handleDelete,
         handleCancel,
-        formatToBRL
+        formatToBRL,
+        disabledButton
     }
 }

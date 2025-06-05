@@ -14,6 +14,7 @@ export default function useProduct() {
     const [products, setProducts] = useState([])
     const [filtered, setFiltered] = useState([])
     const [search, setSearch] = useState("")
+    const [disabledButton, setDisabledButton] = useState(false)
 
     const router = useRouter()
 
@@ -69,6 +70,8 @@ export default function useProduct() {
 
     const createProduct = useCallback(async (e) => {
         e.preventDefault()
+
+        setDisabledButton(true)
         
         await axios
                     .post(createProductUrl, {name, description, cost, price, quantity}, {headers: {
@@ -78,6 +81,7 @@ export default function useProduct() {
                     }})
                     .then((res) => {
                         if (res.status === 201) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readProducts()
@@ -85,6 +89,7 @@ export default function useProduct() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -97,6 +102,7 @@ export default function useProduct() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -108,6 +114,7 @@ export default function useProduct() {
                        }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -117,6 +124,8 @@ export default function useProduct() {
     const updateProduct = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .put(updateProductUrl, {name, description, cost, price, quantity}, {headers: {
                         "Accept": "application/json",
@@ -125,6 +134,7 @@ export default function useProduct() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readProducts()
@@ -132,6 +142,7 @@ export default function useProduct() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -144,6 +155,7 @@ export default function useProduct() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -155,6 +167,7 @@ export default function useProduct() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -164,6 +177,8 @@ export default function useProduct() {
     const deleteProduct = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .delete(deleteProductUrl, {headers: {
                         "Accept": "application/json",
@@ -172,6 +187,7 @@ export default function useProduct() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             closingModal()
                             readProducts()
@@ -192,6 +208,7 @@ export default function useProduct() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -276,6 +293,7 @@ export default function useProduct() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        disabledButton
     }
 }

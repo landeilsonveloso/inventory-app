@@ -38,7 +38,8 @@ export default function OutflowsPage() {
         handleEdit,
         handleDelete,
         handleCancel,
-        formatToBRL
+        formatToBRL,
+        disabledButton
     } = useOutflow()
     
     return (
@@ -176,7 +177,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-700 transition">
+                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-700 transition" disabled={disabledButton}>
                                     Adicionar
                                 </Button>
                             </Div>
@@ -264,7 +265,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-600 transition">
+                                <Button className="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-600 transition" disabled={disabledButton}>
                                     Salvar
                                 </Button>
                             </Div>
@@ -290,7 +291,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-400 transition">
+                                <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-400 transition" disabled={disabledButton}>
                                     Excluir
                                 </Button>
                             </Div>
