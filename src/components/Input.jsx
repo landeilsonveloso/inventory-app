@@ -1,4 +1,4 @@
-export default function Input({className, id, name, type, minLength, maxLength, placeholder, value, onChange}) {
+export default function Input({className, id, name, type, minLength, maxLength, placeholder, step, value, onChange}) {
     return (
         <input
             className={className}
@@ -8,6 +8,7 @@ export default function Input({className, id, name, type, minLength, maxLength, 
             minLength={minLength}
             maxLength={maxLength}
             placeholder={placeholder}
+            step={step}
             value={value}
             onChange={onChange}
             required

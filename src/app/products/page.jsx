@@ -210,6 +210,7 @@ export default function ProductsPage() {
                                     name="cost"
                                     type="number"
                                     placeholder="Custo"
+                                    step={0.01}
                                     value={cost}
                                     onChange={(e) => setCost(parseFloat(e.target.value) || "")}
                                 />
@@ -224,6 +225,7 @@ export default function ProductsPage() {
                                     name="price"
                                     type="number"
                                     placeholder="Preço"
+                                    step={0.01}
                                     value={price}
                                     onChange={(e) => setPrice(parseFloat(e.target.value) || "")}
                                 />
