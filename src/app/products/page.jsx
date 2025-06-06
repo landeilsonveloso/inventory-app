@@ -116,7 +116,8 @@ export default function ProductsPage() {
                                     name="cost"
                                     type="number"
                                     placeholder="Custo"
-                                    onChange={(e) => setCost(parseFloat(e.target.value) || "")}
+                                    step={0.01}
+                                    onChange={(e) => setCost(e.target.value)}
                                 />
                             </Div>
 
@@ -129,7 +130,8 @@ export default function ProductsPage() {
                                     name="price"
                                     type="number"
                                     placeholder="Preço"
-                                    onChange={(e) => setPrice(parseFloat(e.target.value) || "")}
+                                    step={0.01}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 />
                             </Div>
 
@@ -212,7 +214,7 @@ export default function ProductsPage() {
                                     placeholder="Custo"
                                     step={0.01}
                                     value={cost}
-                                    onChange={(e) => setCost(parseFloat(e.target.value) || "")}
+                                    onChange={(e) => setCost(e.target.value)}
                                 />
                             </Div>
 
@@ -227,7 +229,7 @@ export default function ProductsPage() {
                                     placeholder="Preço"
                                     step={0.01}
                                     value={price}
-                                    onChange={(e) => setPrice(parseFloat(e.target.value) || "")}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 />
                             </Div>
 

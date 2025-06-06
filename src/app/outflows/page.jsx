@@ -90,7 +90,9 @@ export default function OutflowsPage() {
                             
                             if (newValue) {
                                 setSelectedDate(new Date(newValue))
-                            } else {
+                            }
+                            
+                            else {
                                 setSelectedDate(new Date())
                             }
                         }}
@@ -150,7 +152,7 @@ export default function OutflowsPage() {
                                     type="number"
                                     placeholder="Valor"
                                     step={0.01}
-                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 
@@ -238,7 +240,7 @@ export default function OutflowsPage() {
                                     placeholder="Valor"
                                     step={0.01}
                                     value={value}
-                                    onChange={(e) => setValue(parseFloat(e.target.value) || "")}
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 
