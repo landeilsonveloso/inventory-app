@@ -14,7 +14,7 @@ export default function SideBar() {
                 <aside className="w-72 h-full fixed top-0 left-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white py-5 px-4 shadow-lg flex flex-col justify-between">
                     <div>
                         <div className="w-full text-end">
-                            <button className="cursor-pointer p-4 rounded-full hover:bg-gray-600 hover:text-white" onClick={() => setIsOpen(false)}>
+                            <button className="cursor-pointer p-4 rounded-full hover:bg-gray-600 hover:text-white" type="button" onClick={() => setIsOpen(false)}>
                                 <MdClose title="Fechar Menu" size={20}/>
                             </button>
                         </div>
@@ -34,7 +34,7 @@ export default function SideBar() {
             <nav className="mr-20">
                 <aside className="w-20 h-full fixed top-0 left-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e] text-white py-5 px-4 shadow-lg flex flex-col justify-between">
                     <div>
-                        <button className="cursor-pointer p-4 rounded-full hover:bg-gray-600 hover:text-white" onClick={() => setIsOpen(true)}>
+                        <button className="cursor-pointer p-4 rounded-full hover:bg-gray-600 hover:text-white" type="button" onClick={() => setIsOpen(true)}>
                             <MdMenu title="Abrir Menu" size={20}/>
                         </button>
 

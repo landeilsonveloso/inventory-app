@@ -75,6 +75,7 @@ export default function DashboardPage() {
                 </Div>
                 
                 <Table
+                    name="dashboard"
                     columns={columns}
                     data={filtered}
                 />

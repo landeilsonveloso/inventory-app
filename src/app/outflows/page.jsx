@@ -52,7 +52,7 @@ export default function OutflowsPage() {
                 <Div className="flex justify-between items-center mb-6">
                     <Title>Saída: {formatToBRL(filtered.reduce((sum, item) => sum + parseFloat(item.value), 0))}</Title>
 
-                    <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
+                    <Button className="flex items-center gap-2 bg-red-600 hover:bg-red-800 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
                         Nova Saída
                     </Button>
@@ -100,11 +100,11 @@ export default function OutflowsPage() {
                 </Div>
                 
                 <Table
+                    name="outflows"
                     columns={columns}
                     data={filtered}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
-                    action={true}
                 />
 
                 {isOpen && tag === "Create" ? (
@@ -179,11 +179,11 @@ export default function OutflowsPage() {
                             </Div>
 
                             <Div className="flex justify-end gap-3">
-                                <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-400 transition" type="button" onClick={handleCancel}>
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-700 transition" disabled={disabledButton}>
+                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledButton}>
                                     Adicionar
                                 </Button>
                             </Div>
@@ -267,11 +267,11 @@ export default function OutflowsPage() {
                             </Div>
 
                             <Div className="flex justify-end gap-3">
-                                <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-400 transition" type="button" onClick={handleCancel}>
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-blue-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-600 transition" disabled={disabledButton}>
+                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledButton}>
                                     Salvar
                                 </Button>
                             </Div>
@@ -293,11 +293,11 @@ export default function OutflowsPage() {
                             </Div>
 
                              <Div className="flex justify-end gap-3">
-                                <Button className="bg-gray-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-gray-400 transition" type="button" onClick={handleCancel}>
+                                <Button className="bg-gray-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-gray-800 transition" type="button" onClick={handleCancel}>
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-400 transition" disabled={disabledButton}>
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledButton}>
                                     Excluir
                                 </Button>
                             </Div>

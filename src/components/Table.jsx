@@ -1,7 +1,7 @@
-import { MdEdit, MdDelete } from 'react-icons/md'
+import { MdEdit, MdDelete, MdShoppingCart } from 'react-icons/md'
 import useUtilities from 'src/hooks/useUtilities'
 
-export default function Table({columns, data, onEdit, onDelete, action}) {
+export default function Table({name, columns, data, onEdit, onDelete}) {
     const {
         formatToBRL
     } = useUtilities()
@@ -17,7 +17,7 @@ export default function Table({columns, data, onEdit, onDelete, action}) {
                             </th>
                         ))}
 
-                        {action ? (<th className="px-6 py-4">Ações</th>) : null}
+                        {name === "dashboard" ? null : (<th className="px-6 py-4">Ações</th>)}
                     </tr>
                 </thead>
                 
@@ -53,18 +53,34 @@ export default function Table({columns, data, onEdit, onDelete, action}) {
                                     )
                                 })}
 
-                                {action ? (
-                                    <td className="flex justify-center items-center px-6 py-4 gap-4">
-                                        <button className="p-2 rounded-md bg-blue-600 hover:bg-blue-700 cursor-pointer transition" onClick={() => onEdit?.(item)}>
-                                            <MdEdit />
-                                        </button>
-
-                                        <button className="p-2 rounded-md bg-red-600 hover:bg-red-700 cursor-pointer transition" onClick={() => onDelete?.(item)}>
-                                            <MdDelete />
-                                        </button>
-                                    </td>
-                                ) : (
+                                {name === "dashboard" ? (
                                     null
+                                ) : (
+
+                                    name === "products" ? 
+                                        <td className="flex justify-center items-center px-6 py-4 gap-4">
+                                            <button className="p-2 rounded-md bg-green-600 hover:bg-green-800 cursor-pointer transition" onClick={() => onDelete?.(item)}>
+                                                <MdShoppingCart/>
+                                            </button>
+
+                                            <button className="p-2 rounded-md bg-blue-600 hover:bg-blue-800 cursor-pointer transition" onClick={() => onEdit?.(item)}>
+                                                <MdEdit/>
+                                            </button>
+
+                                            <button className="p-2 rounded-md bg-red-600 hover:bg-red-800 cursor-pointer transition" onClick={() => onDelete?.(item)}>
+                                                <MdDelete/>
+                                            </button>
+                                        </td>
+                                    : 
+                                        <td className="flex justify-center items-center px-6 py-4 gap-4">
+                                            <button className="p-2 rounded-md bg-blue-600 hover:bg-blue-900 cursor-pointer transition" onClick={() => onEdit?.(item)}>
+                                                <MdEdit/>
+                                            </button>
+    
+                                            <button className="p-2 rounded-md bg-red-600 hover:bg-red-800 cursor-pointer transition" onClick={() => onDelete?.(item)}>
+                                                <MdDelete/>
+                                            </button>
+                                        </td>
                                 )}
                             </tr>
                         ))
