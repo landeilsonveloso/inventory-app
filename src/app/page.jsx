@@ -12,7 +12,12 @@ import Div from "src/containers/Div"
 import Navigation from "src/components/Navigation"
 
 export default function SignInPage() {
-    const {signIn, setEmail, setPassword} = useUser()
+    const {
+            signIn,
+            setEmail,
+            setPassword,
+            disabledButton
+        } = useUser()
 
     return (
         <Main>
@@ -53,7 +58,7 @@ export default function SignInPage() {
                     Esqueceu a senha?
                 </Navigation>
 
-                <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer">
+                <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer"disabled={disabledButton}>
                     Entrar
                 </Button>
             </Form>

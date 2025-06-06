@@ -12,7 +12,11 @@ import Title from "src/components/Title"
 import useUser from "src/hooks/useUser"
 
 export default function ForgotPasswordPage() {
-    const {setEmail, forgotPassword} = useUser()
+    const {
+            setEmail,
+            forgotPassword,
+            disabledButton
+        } = useUser()
 
     return (
     <Main>
@@ -35,7 +39,7 @@ export default function ForgotPasswordPage() {
                 />
             </Div>
 
-            <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer">
+            <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer" disabled={disabledButton}>
                 Enviar
             </Button>
                 

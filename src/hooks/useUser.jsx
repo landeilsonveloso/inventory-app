@@ -9,6 +9,7 @@ export default function useUser() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [disabledButton, setDisabledButton] = useState(false)
 
     const router = useRouter()
 
@@ -30,28 +31,34 @@ export default function useUser() {
 
     const signIn = useCallback(async (e) => {
         e.preventDefault()
+
+        setDisabledButton(true)
         
         await axios
                     .post(signInUrl, {email, password})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             localStorage.setItem("token", res.data)
                             router.replace("/dashboard")
                             return
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -61,27 +68,33 @@ export default function useUser() {
     const forgotPassword = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .post(forgotPasswordUrl, {email})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert("Pedido de solicitação enviado para seu email!")
                             localStorage.setItem("token", res.data)
                             return
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -91,6 +104,8 @@ export default function useUser() {
     const redefinePassword = useCallback(async (e) => {
         e.preventDefault()
 
+        setDisabledButton(true)
+
         await axios
                     .put(redefinePasswordUrl, {password, confirmPassword}, {headers: {
                         "Accept": "application/json",
@@ -99,6 +114,7 @@ export default function useUser() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
+                            setDisabledButton(false)
                             alert(res.data)
                             localStorage.clear()
                             router.replace("/")
@@ -106,6 +122,7 @@ export default function useUser() {
                         }
 
                         else if (res.status === 400) {
+                            setDisabledButton(false)
                             alert(res.data)
                             return
                         }
@@ -118,6 +135,7 @@ export default function useUser() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
+                            setDisabledButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -129,6 +147,7 @@ export default function useUser() {
                         }
 
                         else if (err.response.status >= 500) {
+                            setDisabledButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -145,6 +164,7 @@ export default function useUser() {
         verifyToken,
         signIn,
         forgotPassword,
-        redefinePassword
+        redefinePassword,
+        disabledButton
     }
 }

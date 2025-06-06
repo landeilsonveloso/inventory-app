@@ -12,7 +12,12 @@ import AuthProvider from "src/contexts/AuthContext"
 import useUser from "src/hooks/useUser"
 
 export default function RedefinePasswordPage() {
-    const {setPassword, setConfirmPassword, redefinePassword} = useUser()
+    const {
+            setPassword,
+            setConfirmPassword,
+            redefinePassword,
+            disabledButton
+        } = useUser()
 
     return (
         <AuthProvider>
@@ -52,7 +57,7 @@ export default function RedefinePasswordPage() {
                         />
                     </Div>
 
-                    <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer">
+                    <Button className="w-full py-2 rounded-lg bg-blue-600 text-white font-bold hover:bg-blue-700 transition cursor-pointer" disabled={disabledButton}>
                         Redefinir
                     </Button>
                 </Form>
