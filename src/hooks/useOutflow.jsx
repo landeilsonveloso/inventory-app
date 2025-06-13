@@ -8,13 +8,14 @@ export default function useOutflow() {
     const [id, setId] = useState(0)
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(new Date())
-    const [value, setValue] = useState(0)
+    const [unitValue, setUnitValue] = useState(0)
+    const [quantity, setQuantity] = useState(0)
     const [method, setMethod] = useState("")
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [filterType, setFilterType] = useState("")
     const [filtered, setFiltered]  = useState([])
     const [outflows, setOutflows] = useState([])
-    const [disabledButton, setDisabledButton] = useState(false)
+    const [disabledOutflowsButton, setDisabledOutflowsButton] = useState(false)
 
     const router = useRouter()
 
@@ -28,8 +29,10 @@ export default function useOutflow() {
     const columns = [
         {key: "description", label: "Descrição"},
         {key: "date", label: "Data"},
-        {key: "value", label: "Valor"},
-        {key: "method", label: "Forma de Pagamento"}
+        {key: "unitValue", label: "Valor Unitário"},
+        {key: "quantity", label: "Quantidade"},
+        {key: "method", label: "Forma de Pagamento"},
+        {key: "totalValue", label: "Valor Total"},
     ]
     
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
@@ -71,17 +74,17 @@ export default function useOutflow() {
     const createOutflow = useCallback(async (e) => {
         e.preventDefault()
 
-        setDisabledButton(true)
+        setDisabledOutflowsButton(true)
 
         await axios
-                    .post(createOutflowUrl, {description, date, value, method}, {headers: {
+                    .post(createOutflowUrl, {description, date, unitValue, quantity, method, totalValue: unitValue * quantity}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
                     }})
                     .then((res) => {
                         if (res.status === 201) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(res.data)
                             closingModal()
                             readOutflows()
@@ -89,7 +92,7 @@ export default function useOutflow() {
                         }
 
                         else if (res.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(res.data)
                             return
                         }
@@ -102,7 +105,7 @@ export default function useOutflow() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -114,27 +117,27 @@ export default function useOutflow() {
                        }
 
                         else if (err.response.status >= 500) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
                     })
-    }, [createOutflowUrl, description, date, value, method, closingModal, readOutflows, router])
+    }, [createOutflowUrl, description, date, unitValue, quantity, method, closingModal, readOutflows, router])
 
     const updateOutflow = useCallback(async (e) => {
         e.preventDefault()
 
-        setDisabledButton(true)
+        setDisabledOutflowsButton(true)
 
         await axios
-                    .put(updateOutflowUrl, {description, date, value, method}, {headers: {
+                    .put(updateOutflowUrl, {description, date, unitValue, quantity, method, totalValue: unitValue * quantity}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
                     }})
                     .then((res) => {
                         if (res.status === 200) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(res.data)
                             closingModal()
                             readOutflows()
@@ -142,7 +145,7 @@ export default function useOutflow() {
                         }
 
                         else if (res.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(res.data)
                             return
                         }
@@ -155,7 +158,7 @@ export default function useOutflow() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -167,17 +170,17 @@ export default function useOutflow() {
                         }
 
                         else if (err.response.status >= 500) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
                     })
-    }, [updateOutflowUrl, description, date, value, method, closingModal, readOutflows, router])
+    }, [updateOutflowUrl, description, date, unitValue, quantity, method, closingModal, readOutflows, router])
 
     const deleteOutflow = useCallback(async (e) => {
         e.preventDefault()
 
-        setDisabledButton(true)
+        setDisabledOutflowsButton(true)
 
         await axios
                     .delete(deleteOutflowUrl, {headers: {
@@ -187,7 +190,7 @@ export default function useOutflow() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert(res.data)
                             closingModal()
                             readOutflows()
@@ -208,7 +211,7 @@ export default function useOutflow() {
                         }
 
                         else if (err.response.status >= 500) {
-                            setDisabledButton(false)
+                            setDisabledOutflowsButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -280,6 +283,8 @@ export default function useOutflow() {
 
     const handleAdd = useCallback(() => {
         setTag("Create")
+        setUnitValue(0)
+        setQuantity(0)
         openingModal()
     }, [openingModal])
 
@@ -289,7 +294,8 @@ export default function useOutflow() {
         setId(item.id)
         setDescription(item.description)
         setDate(item.date)
-        setValue(item.value)
+        setUnitValue(item.unitValue)
+        setQuantity(item.quantity)
         setMethod(item.method)
     }, [openingModal])
 
@@ -308,8 +314,10 @@ export default function useOutflow() {
         setDescription,
         date,
         setDate,
-        value,
-        setValue,
+        unitValue,
+        setUnitValue,
+        quantity,
+        setQuantity,
         method,
         setMethod,
         selectedDate,
@@ -328,6 +336,6 @@ export default function useOutflow() {
         handleEdit,
         handleDelete,
         handleCancel,
-        disabledButton
+        disabledOutflowsButton
     }
 }

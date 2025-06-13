@@ -9,7 +9,9 @@ import { MdAdd, MdClose, MdDescription, MdInventory, MdMonetizationOn, MdMoneyOf
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
+import Option from "src/components/Option"
 import useProduct from "src/hooks/useProduct"
+import Select from "src/components/Select"
 
 export default function ProductsPage() {
     const {
@@ -17,12 +19,14 @@ export default function ProductsPage() {
         setName,
         description,
         setDescription,
+        setDate,
         cost,
         setCost,
         price,
         setPrice,
         quantity,
         setQuantity,
+        setMethod,
         filtered,
         search,
         setSearch,
@@ -30,13 +34,15 @@ export default function ProductsPage() {
         isOpen,
         tag,
         createProduct,
+        sellProduct,
         updateProduct,
         deleteProduct,
         handleAdd,
+        handleSell,
         handleEdit,
         handleDelete,
         handleCancel,
-        disabledButton
+        disabledProductsButton
     } = useProduct()
     
     return (
@@ -65,6 +71,7 @@ export default function ProductsPage() {
                     name="products"
                     columns={columns}
                     data={filtered}
+                    onSell={handleSell}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
                 />
@@ -153,7 +160,7 @@ export default function ProductsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledButton}>
+                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledProductsButton}>
                                     Adicionar
                                 </Button>
                             </Div>
@@ -162,6 +169,61 @@ export default function ProductsPage() {
                 ) : 
                     null
                 }
+
+                {isOpen && tag === "Sell" ? (
+                    <Modal>
+                        <Form onSubimit={sellProduct}>
+                            <Div className="w-full flex justify-end">
+                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
+                            </Div>
+
+                            <Title>Nova Venda</Title>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="date"
+                                    name="date"
+                                    type="date"
+                                    placeholder="Data"
+                                    onChange={(e) => setDate(e.target.value)}
+                                />
+                            </Div>                
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
+                                    <Option value="">
+                                        Forma de Pagamento
+                                    </Option>
+
+                                    <Option value="Cartão">
+                                        Cartão
+                                    </Option>
+
+                                    <Option value="Espécie">
+                                        Espécie
+                                    </Option>
+
+                                    <Option value="Pix">
+                                        Pix
+                                    </Option>
+                                </Select>
+                            </Div>
+
+                            <Div className="flex justify-end gap-3">
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
+                                    Cancelar
+                                </Button>
+
+                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledProductsButton}>
+                                    Vender
+                                </Button>
+                            </Div>
+                        </Form>
+                    </Modal>
+                ) : (
+                    null
+                )}
 
                 {isOpen && tag === "Edit" ? (
                     <Modal>
@@ -252,7 +314,7 @@ export default function ProductsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledButton}>
+                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledProductsButton}>
                                     Salvar
                                 </Button>
                             </Div>
@@ -278,7 +340,7 @@ export default function ProductsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledButton}>
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledProductsButton}>
                                     Excluir
                                 </Button>
                             </Div>

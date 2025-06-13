@@ -8,20 +8,25 @@ export default function useProduct() {
     const [id, setId] = useState(0)
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
+    const [date, setDate] = useState(new Date())
     const [cost, setCost] = useState(0)
     const [price, setPrice] = useState(0)
     const [quantity, setQuantity] = useState(0)
+    const [method, setMethod] = useState("")
     const [products, setProducts] = useState([])
     const [filtered, setFiltered] = useState([])
     const [search, setSearch] = useState("")
-    const [disabledButton, setDisabledButton] = useState(false)
+    const [disabledProductsButton, setDisabledProductsButton] = useState(false)
 
     const router = useRouter()
+
+    const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
     const apiUrlBase = config.API_URL_BASE
 
     const readProductsUrl = `${apiUrlBase}/products`
     const createProductUrl = `${apiUrlBase}/products`
+    const sellProductUrl = `${apiUrlBase}/products/sell/${id}`
     const updateProductUrl = `${apiUrlBase}/products/${id}`
     const deleteProductUrl = `${apiUrlBase}/products/${id}`
 
@@ -33,8 +38,6 @@ export default function useProduct() {
         {key: "quantity", label: "Quantidade"}
     ]
     
-    const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
-
     const readProducts = useCallback(async () => {
         await axios
                     .get(readProductsUrl, {headers: {
@@ -71,7 +74,7 @@ export default function useProduct() {
     const createProduct = useCallback(async (e) => {
         e.preventDefault()
 
-        setDisabledButton(true)
+        setDisabledProductsButton(true)
         
         await axios
                     .post(createProductUrl, {name, description, cost, price, quantity}, {headers: {
@@ -81,7 +84,7 @@ export default function useProduct() {
                     }})
                     .then((res) => {
                         if (res.status === 201) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert(res.data)
                             closingModal()
                             readProducts()
@@ -89,7 +92,7 @@ export default function useProduct() {
                         }
 
                         else if (res.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert(res.data)
                             return
                         }
@@ -102,7 +105,7 @@ export default function useProduct() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -114,27 +117,27 @@ export default function useProduct() {
                        }
 
                         else if (err.response.status >= 500) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
                     })
     }, [createProductUrl, name, description, cost, price, quantity, closingModal, readProducts, router])
 
-    const updateProduct = useCallback(async (e) => {
+    const sellProduct = useCallback(async (e) => {
         e.preventDefault()
 
-        setDisabledButton(true)
+        setDisabledProductsButton(true)
 
         await axios
-                    .put(updateProductUrl, {name, description, cost, price, quantity}, {headers: {
+                    .put(sellProductUrl, {description, date, unitValue: price, quantity: 1, method, totalValue: price}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
                     }})
                     .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledButton(false)
+                        if (res.status === 201) {
+                            setDisabledProductsButton(false)
                             alert(res.data)
                             closingModal()
                             readProducts()
@@ -142,7 +145,7 @@ export default function useProduct() {
                         }
 
                         else if (res.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert(res.data)
                             return
                         }
@@ -155,7 +158,60 @@ export default function useProduct() {
                     })
                     .catch((err) => {
                         if (err.response.status === 400) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
+                            alert(err.response.data)
+                            return
+                        }
+
+                        else if (err.response.status === 401) {
+                            localStorage.clear()
+                            router.replace("/")
+                            return
+                       }
+
+                        else if (err.response.status >= 500) {
+                            setDisabledProductsButton(false)
+                            alert("Erro no servidor, recarregue a página!")
+                            return
+                        }
+                    })
+    }, [description, date, price, method, closingModal, readProducts, router])
+
+    const updateProduct = useCallback(async (e) => {
+        e.preventDefault()
+
+        setDisabledProductsButton(true)
+
+        await axios
+                    .put(updateProductUrl, {name, description, cost, price, quantity}, {headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json",
+                        "Authorization": localStorage.getItem("token")
+                    }})
+                    .then((res) => {
+                        if (res.status === 200) {
+                            setDisabledProductsButton(false)
+                            alert(res.data)
+                            closingModal()
+                            readProducts()
+                            return
+                        }
+
+                        else if (res.status === 400) {
+                            setDisabledProductsButton(false)
+                            alert(res.data)
+                            return
+                        }
+
+                        else if (res.status === 401) {
+                            localStorage.clear()
+                            router.replace("/")
+                            return
+                        }
+                    })
+                    .catch((err) => {
+                        if (err.response.status === 400) {
+                            setDisabledProductsButton(false)
                             alert(err.response.data)
                             return
                         }
@@ -167,7 +223,7 @@ export default function useProduct() {
                         }
 
                         else if (err.response.status >= 500) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -177,7 +233,7 @@ export default function useProduct() {
     const deleteProduct = useCallback(async (e) => {
         e.preventDefault()
 
-        setDisabledButton(true)
+        setDisabledProductsButton(true)
 
         await axios
                     .delete(deleteProductUrl, {headers: {
@@ -187,7 +243,7 @@ export default function useProduct() {
                     }})
                     .then((res) => {
                         if (res.status === 200) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert(res.data)
                             closingModal()
                             readProducts()
@@ -208,7 +264,7 @@ export default function useProduct() {
                         }
 
                         else if (err.response.status >= 500) {
-                            setDisabledButton(false)
+                            setDisabledProductsButton(false)
                             alert("Erro no servidor, recarregue a página!")
                             return
                         }
@@ -248,6 +304,14 @@ export default function useProduct() {
         openingModal()
     }, [openingModal])
 
+    const handleSell = useCallback((item) => {
+        setTag("Sell")
+        openingModal()
+        setId(item.id)
+        setDescription(item.name)
+        setPrice(item.price)
+    }, [openingModal])
+
     const handleEdit = useCallback((item) => {
         setTag("Edit")
         openingModal()
@@ -274,12 +338,14 @@ export default function useProduct() {
         setName,
         description,
         setDescription,
+        setDate,
         cost,
         setCost,
         price,
         setPrice,
         quantity,
         setQuantity,
+        setMethod,
         filtered,
         search,
         setSearch,
@@ -287,12 +353,14 @@ export default function useProduct() {
         isOpen,
         tag,
         createProduct,
+        sellProduct,
         updateProduct,
         deleteProduct,
         handleAdd,
+        handleSell,
         handleEdit,
         handleDelete,
         handleCancel,
-        disabledButton
+        disabledProductsButton
     }
 }

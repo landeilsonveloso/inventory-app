@@ -1,4 +1,4 @@
-export default function Input({className, id, name, type, minLength, maxLength, placeholder, step, value, onChange}) {
+export default function Input({className, id, name, type, minLength, maxLength, placeholder, step, value, onChange, readOnly}) {
     return (
         <input
             className={className}
@@ -11,6 +11,7 @@ export default function Input({className, id, name, type, minLength, maxLength, 
             step={step}
             value={value}
             onChange={onChange}
+            readOnly={readOnly}
             required
         />
     )

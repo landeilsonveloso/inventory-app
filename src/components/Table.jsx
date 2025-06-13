@@ -1,7 +1,7 @@
 import { MdEdit, MdDelete, MdShoppingCart } from 'react-icons/md'
 import useUtilities from 'src/hooks/useUtilities'
 
-export default function Table({name, columns, data, onEdit, onDelete}) {
+export default function Table({name, columns, data, onSell, onEdit, onDelete}) {
     const {
         formatToBRL
     } = useUtilities()
@@ -28,7 +28,7 @@ export default function Table({name, columns, data, onEdit, onDelete}) {
                                 {columns.map((col) => {
                                     const value = item[col.key]
 
-                                    if (["cost", "price", "value", "inflow", "outflow", "lucre"].includes(col.key)) {
+                                    if (["cost", "price", "unitValue", "totalValue", "inflow", "outflow", "lucre"].includes(col.key)) {
                                         return (
                                             <td key={col.key} className="px-6 py-4">
                                                 {formatToBRL(value)}
@@ -59,7 +59,7 @@ export default function Table({name, columns, data, onEdit, onDelete}) {
 
                                     name === "products" ? 
                                         <td className="flex justify-center items-center px-6 py-4 gap-4">
-                                            <button className="p-2 rounded-md bg-green-600 hover:bg-green-800 cursor-pointer transition" onClick={() => onDelete?.(item)}>
+                                            <button className="p-2 rounded-md bg-green-600 hover:bg-green-800 cursor-pointer transition" onClick={() => onSell?.(item)}>
                                                 <MdShoppingCart/>
                                             </button>
 
