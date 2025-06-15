@@ -130,7 +130,7 @@ export default function useProduct() {
         setDisabledProductsButton(true)
 
         await axios
-                    .put(sellProductUrl, {description, date, unitValue: price, quantity: 1, method, totalValue: price}, {headers: {
+                    .put(sellProductUrl, {description: name, date, unitValue: price, quantity, method, totalValue: price * quantity, productId: id}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -175,7 +175,7 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [description, date, price, method, closingModal, readProducts, router])
+    }, [name, date, price, quantity, method, id, closingModal, readProducts, router])
 
     const updateProduct = useCallback(async (e) => {
         e.preventDefault()
@@ -308,8 +308,16 @@ export default function useProduct() {
         setTag("Sell")
         openingModal()
         setId(item.id)
-        setDescription(item.name)
+        setName(item.name)
         setPrice(item.price)
+        setMethod("Pix")
+
+        if (item.quantity === 0) {
+            setQuantity(0)
+            return
+        }
+
+        setQuantity(1)
     }, [openingModal])
 
     const handleEdit = useCallback((item) => {
@@ -338,6 +346,7 @@ export default function useProduct() {
         setName,
         description,
         setDescription,
+        date,
         setDate,
         cost,
         setCost,
@@ -345,6 +354,7 @@ export default function useProduct() {
         setPrice,
         quantity,
         setQuantity,
+        method,
         setMethod,
         filtered,
         search,

@@ -11,6 +11,7 @@ export default function useInflow() {
     const [unitValue, setUnitValue] = useState(0)
     const [quantity, setQuantity] = useState(0)
     const [method, setMethod] = useState("")
+    const [productId, setProductId] = useState(0)
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [filterType, setFilterType] = useState("")
     const [filtered, setFiltered]  = useState([])
@@ -129,7 +130,7 @@ export default function useInflow() {
         setDisabledInflowsButton(true)
 
         await axios
-                    .put(updateInflowUrl, {description, date, unitValue, quantity, method, totalValue: unitValue * quantity}, {headers: {
+                    .put(updateInflowUrl, {description, date, unitValue, quantity, method, totalValue: unitValue * quantity, productId}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -283,6 +284,8 @@ export default function useInflow() {
     const handleAdd = useCallback(() => {
         setTag("Create")
         openingModal()
+        setUnitValue(0)
+        setQuantity(0)
     }, [openingModal])
 
     const handleEdit = useCallback((item) => {
@@ -294,6 +297,7 @@ export default function useInflow() {
         setUnitValue(item.unitValue)
         setQuantity(item.quantity)
         setMethod(item.method)
+        setProductId(item.productId)
     }, [openingModal])
 
     const handleDelete = useCallback((item) => {
@@ -317,6 +321,7 @@ export default function useInflow() {
         setQuantity,
         method,
         setMethod,
+        productId,
         selectedDate,
         setSelectedDate,
         filterType,

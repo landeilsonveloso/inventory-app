@@ -26,6 +26,7 @@ export default function InflowsPage() {
         setQuantity,
         method,
         setMethod,
+        productId,
         selectedDate,
         setSelectedDate,
         filterType,
@@ -167,9 +168,11 @@ export default function InflowsPage() {
                                     placeholder="Quantidade"
                                     onChange={(e) => setQuantity(e.target.value)}
                                 />
-                            </Div>                        
+                            </Div>                     
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdCategory className="text-gray-600 text-xl mr-2"/>
+                                
                                 <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
                                         Forma de Pagamento
@@ -189,7 +192,7 @@ export default function InflowsPage() {
                                 </Select>
                             </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
@@ -228,21 +231,40 @@ export default function InflowsPage() {
 
                             <Title>Editar Entrada</Title>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNotes className="text-gray-600 text-xl mr-2"/>
+                            {productId ? (
+                                <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                    <MdNotes className="text-gray-600 text-xl mr-2"/>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="description"
-                                    name="description"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={60}
-                                    placeholder="Descrição"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                            </Div>
+                                    <Input
+                                        className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                        id="description"
+                                        name="description"
+                                        type="text"
+                                        minLength={3}
+                                        maxLength={60}
+                                        placeholder="Descrição"
+                                        value={description}
+                                        readOnly={true}
+                                    />
+                                </Div>
+                            ) : (
+                                <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                    <MdNotes className="text-gray-600 text-xl mr-2"/>
+
+                                    <Input
+                                        className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                        id="description"
+                                        name="description"
+                                        type="text"
+                                        minLength={3}
+                                        maxLength={60}
+                                        placeholder="Descrição"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                </Div>
+                            )}
+
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
                                 <Input
@@ -307,7 +329,7 @@ export default function InflowsPage() {
                                 </Select>                         
                             </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input

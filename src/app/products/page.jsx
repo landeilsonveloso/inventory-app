@@ -5,7 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdClose, MdDescription, MdInventory, MdMonetizationOn, MdMoneyOff, MdNotes, MdNumbers } from "react-icons/md"
+import { MdAdd, MdCategory, MdClose, MdDescription, MdInventory, MdMonetizationOn, MdMoneyOff, MdNotes, MdNumbers } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
@@ -19,6 +19,7 @@ export default function ProductsPage() {
         setName,
         description,
         setDescription,
+        date,
         setDate,
         cost,
         setCost,
@@ -26,6 +27,7 @@ export default function ProductsPage() {
         setPrice,
         quantity,
         setQuantity,
+        method,
         setMethod,
         filtered,
         search,
@@ -179,6 +181,22 @@ export default function ProductsPage() {
 
                             <Title>Nova Venda</Title>
 
+                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdNotes className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    minLength={3}
+                                    maxLength={60}
+                                    placeholder="Nome"
+                                    value={name}
+                                    readOnly={true}
+                                />
+                            </Div>
+
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
@@ -186,12 +204,52 @@ export default function ProductsPage() {
                                     name="date"
                                     type="date"
                                     placeholder="Data"
-                                    onChange={(e) => setDate(e.target.value)}
+                                    value={date.toISOString().split('T')[0]}
+                                    onChange={(e) => {
+                                        const newValue = e.target.value
+                                        
+                                        if (newValue) {
+                                            setDate(new Date(newValue))
+                                        } else {
+                                            setDate(new Date())
+                                        }
+                                    }}
                                 />
-                            </Div>                
+                            </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
+                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="price"
+                                    name="price"
+                                    type="number"
+                                    placeholder="Preço"
+                                    step={0.01}
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="quantity"
+                                    name="quantity"
+                                    type="number"
+                                    placeholder="Quantidade"
+                                    value={quantity}
+                                    onChange={(e) => setQuantity(e.target.value)}
+                                />
+                            </Div> 
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdCategory className="text-gray-600 text-xl mr-2"/>
+                                    
+                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
                                         Forma de Pagamento
                                     </Option>
@@ -208,6 +266,21 @@ export default function ProductsPage() {
                                         Pix
                                     </Option>
                                 </Select>
+                            </Div>
+                        
+                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="totalValue"
+                                    name="totalValue"
+                                    type="number"
+                                    placeholder="Valor Total"
+                                    step={0.01}
+                                    value={price * quantity}
+                                    readOnly={true}
+                                />
                             </Div>
 
                             <Div className="flex justify-end gap-3">
