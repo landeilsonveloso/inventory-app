@@ -3,12 +3,12 @@ import useInflow from "./useInflow"
 import useOutflow from "./useOutflow"
 
 export default function useDashboard() {
-    const [selectedDate, setSelectedDate] = useState(new Date())
-    const [filterType, setFilterType] = useState("")
-    const [filtered, setFiltered]  = useState([])
     const [transactions, setTransactions] = useState([])
+    const [filtered, setFiltered]  = useState([])
+    const [filterType, setFilterType] = useState("")
     const [filteredValues, setFilteredValues] = useState({})
-
+    const [selectedDate, setSelectedDate] = useState(new Date())
+    
     const {inflows} = useInflow()
     const {outflows} = useOutflow()
 
@@ -47,8 +47,8 @@ export default function useDashboard() {
         const result = []
 
         for (const date of allDates) {
-            const totalInflow = inflowsByDate[date]?.reduce((sum, item) => sum + Number(item.totalValue), 0) || 0
-            const totalOutflow = outflowsByDate[date]?.reduce((sum, item) => sum + Number(item.totalValue), 0) || 0
+            const totalInflow = inflowsByDate[date]?.reduce((sum, item) => sum + Number(item.value), 0) || 0
+            const totalOutflow = outflowsByDate[date]?.reduce((sum, item) => sum + Number(item.value), 0) || 0
 
             result.push({
                 date,
@@ -136,12 +136,12 @@ export default function useDashboard() {
     }, [getTotals])
 
     return {
-        selectedDate,
-        setSelectedDate,
-        filterType,
-        setFilterType,
         filtered,
+        filterType,
+        selectedDate,
         filteredValues,
+        setSelectedDate,
+        setFilterType,
         columns
     }
 }

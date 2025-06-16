@@ -13,11 +13,11 @@ import Navigation from "src/components/Navigation"
 
 export default function SignInPage() {
     const {
-            signIn,
-            setEmail,
-            setPassword,
-            disabledUserButton
-        } = useUser()
+        setEmail,
+        setPassword,
+        disabledUserButton,
+        signIn,
+    } = useUser()
 
     return (
         <Main>

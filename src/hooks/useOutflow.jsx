@@ -8,14 +8,15 @@ export default function useOutflow() {
     const [id, setId] = useState(0)
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(new Date())
-    const [unitValue, setUnitValue] = useState(0)
-    const [quantity, setQuantity] = useState(0)
     const [method, setMethod] = useState("")
-    const [selectedDate, setSelectedDate] = useState(new Date())
-    const [filterType, setFilterType] = useState("")
-    const [filtered, setFiltered]  = useState([])
+    const [value, setValue] = useState(0)
     const [outflows, setOutflows] = useState([])
+    const [filtered, setFiltered]  = useState([])
+    const [filterType, setFilterType] = useState("")
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const [disabledOutflowsButton, setDisabledOutflowsButton] = useState(false)
+
+    const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
     const router = useRouter()
 
@@ -29,14 +30,10 @@ export default function useOutflow() {
     const columns = [
         {key: "description", label: "Descrição"},
         {key: "date", label: "Data"},
-        {key: "unitValue", label: "Valor Unitário"},
-        {key: "quantity", label: "Quantidade"},
         {key: "method", label: "Forma de Pagamento"},
-        {key: "totalValue", label: "Valor Total"},
+        {key: "value", label: "Valor"}
     ]
     
-    const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
-
     const readOutflows = useCallback(async () => {
         await axios
                     .get(readOutflowsUrl, {headers: {
@@ -47,7 +44,6 @@ export default function useOutflow() {
                     .then((res) => {
                         if (res.status === 200) {
                             setOutflows(res.data)
-                            setFiltered(res.data)
                             return
                         }
                         
@@ -75,9 +71,9 @@ export default function useOutflow() {
         e.preventDefault()
 
         setDisabledOutflowsButton(true)
-
+        
         await axios
-                    .post(createOutflowUrl, {description, date, unitValue, quantity, method, totalValue: unitValue * quantity}, {headers: {
+                    .post(createOutflowUrl, {description, date, method, value}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -122,7 +118,7 @@ export default function useOutflow() {
                             return
                         }
                     })
-    }, [createOutflowUrl, description, date, unitValue, quantity, method, closingModal, readOutflows, router])
+    }, [createOutflowUrl, description, date, method, value, closingModal, readOutflows, router])
 
     const updateOutflow = useCallback(async (e) => {
         e.preventDefault()
@@ -130,7 +126,7 @@ export default function useOutflow() {
         setDisabledOutflowsButton(true)
 
         await axios
-                    .put(updateOutflowUrl, {description, date, unitValue, quantity, method, totalValue: unitValue * quantity}, {headers: {
+                    .put(updateOutflowUrl, {description, date, method, value}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -175,7 +171,7 @@ export default function useOutflow() {
                             return
                         }
                     })
-    }, [updateOutflowUrl, description, date, unitValue, quantity, method, closingModal, readOutflows, router])
+    }, [updateOutflowUrl, description, date, method, value, closingModal, readOutflows, router])
 
     const deleteOutflow = useCallback(async (e) => {
         e.preventDefault()
@@ -224,12 +220,12 @@ export default function useOutflow() {
     }, [readOutflows])
 
     const filterByDay = useCallback(() =>  {
-        return outflows.filter(outflow => {
-            const outflowDate = new Date(outflow.date)
+        return outflows.filter(inflow => {
+            const inflowDate = new Date(inflow.date)
                 return (
-                    outflowDate.getDate() === selectedDate.getDate() &&
-                    outflowDate.getMonth() === selectedDate.getMonth() &&
-                    outflowDate.getFullYear() === selectedDate.getFullYear()
+                    inflowDate.getDate() === selectedDate.getDate() &&
+                    inflowDate.getMonth() === selectedDate.getMonth() &&
+                    inflowDate.getFullYear() === selectedDate.getFullYear()
                 )
             })
     }, [outflows, selectedDate])
@@ -245,18 +241,18 @@ export default function useOutflow() {
         endOfWeek.setDate(startOfWeek.getDate() + 6)
         endOfWeek.setHours(23, 59, 59, 999)
 
-        return outflows.filter(outflow => {
-            const outflowDate = new Date(outflow.date)
-            return outflowDate >= startOfWeek && outflowDate <= endOfWeek
+        return outflows.filter(inflow => {
+            const inflowDate = new Date(inflow.date)
+            return inflowDate >= startOfWeek && inflowDate <= endOfWeek
         })
     }, [selectedDate, outflows])
 
     const filterByMonth = useCallback(() =>  {
-        return outflows.filter(outflow => {
-            const outflowDate = new Date(outflow.date)
+        return outflows.filter(inflow => {
+            const inflowDate = new Date(inflow.date)
                 return (
-                    outflowDate.getMonth() === selectedDate.getMonth() &&
-                    outflowDate.getFullYear() === selectedDate.getFullYear()
+                    inflowDate.getMonth() === selectedDate.getMonth() &&
+                    inflowDate.getFullYear() === selectedDate.getFullYear()
                 )
             })
     }, [selectedDate, outflows])
@@ -283,8 +279,6 @@ export default function useOutflow() {
 
     const handleAdd = useCallback(() => {
         setTag("Create")
-        setUnitValue(0)
-        setQuantity(0)
         openingModal()
     }, [openingModal])
 
@@ -294,15 +288,13 @@ export default function useOutflow() {
         setId(item.id)
         setDescription(item.description)
         setDate(item.date)
-        setUnitValue(item.unitValue)
-        setQuantity(item.quantity)
         setMethod(item.method)
+        setValue(item.value)
     }, [openingModal])
 
     const handleDelete = useCallback((item) => {
         setTag("Delete")
         openingModal()
-        setId(item.id)
     }, [openingModal])
 
     const handleCancel = useCallback(() => {
@@ -314,28 +306,26 @@ export default function useOutflow() {
         setDescription,
         date,
         setDate,
-        unitValue,
-        setUnitValue,
-        quantity,
-        setQuantity,
         method,
         setMethod,
+        value,
+        setValue,
+        outflows,
+        filtered,
         selectedDate,
-        setSelectedDate,
         filterType,
         setFilterType,
-        filtered,
-        outflows,
-        columns,
+        setSelectedDate,
+        disabledOutflowsButton,
         isOpen,
         tag,
+        columns,
         createOutflow,
         updateOutflow,
         deleteOutflow,
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel,
-        disabledOutflowsButton
+        handleCancel
     }
 }

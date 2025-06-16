@@ -5,7 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdCategory, MdClose, MdMonetizationOn, MdNotes, MdNumbers } from "react-icons/md"
+import { MdAdd, MdCategory, MdClose, MdMonetizationOn, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Option from "src/components/Option"
 import Select from "src/components/Select"
@@ -20,29 +20,26 @@ export default function InflowsPage() {
         setDescription,
         date,
         setDate,
-        unitValue,
-        setUnitValue,
-        quantity,
-        setQuantity,
         method,
         setMethod,
-        productId,
+        value,
+        setValue,
+        filtered,
         selectedDate,
-        setSelectedDate,
         filterType,
         setFilterType,
-        filtered,
-        columns,
+        setSelectedDate,
+        disabledInflowsButton,
         isOpen,
         tag,
+        columns,
         createInflow,
         updateInflow,
         deleteInflow,
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel,
-        disabledInflowsButton
+        handleCancel
     } = useInflow()
 
     const {
@@ -53,7 +50,7 @@ export default function InflowsPage() {
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Entrada: {formatToBRL(filtered.reduce((sum, item) => sum + parseFloat(item.unitValue), 0))}</Title>
+                    <Title>Entrada: {formatToBRL(filtered.reduce((sum, item) => sum + parseFloat(item.value), 0))}</Title>
 
                     <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-800 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
@@ -141,34 +138,7 @@ export default function InflowsPage() {
                                     placeholder="Data"
                                     onChange={(e) => setDate(e.target.value)}
                                 />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="unitValue"
-                                    name="unitValue"
-                                    type="number"
-                                    placeholder="Valor Unitário"
-                                    step={0.01}
-                                    onChange={(e) => setUnitValue(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="quantity"
-                                    name="quantity"
-                                    type="number"
-                                    placeholder="Quantidade"
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                />
-                            </Div>                     
+                            </Div>                    
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
@@ -192,18 +162,17 @@ export default function InflowsPage() {
                                 </Select>
                             </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="totalValue"
-                                    name="totalValue"
+                                    id="value"
+                                    name="value"
                                     type="number"
-                                    placeholder="Valor Total"
+                                    placeholder="Valor"
                                     step={0.01}
-                                    value={unitValue * quantity}
-                                    readOnly={true}
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 
@@ -231,40 +200,21 @@ export default function InflowsPage() {
 
                             <Title>Editar Entrada</Title>
 
-                            {productId ? (
-                                <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                    <MdNotes className="text-gray-600 text-xl mr-2"/>
+                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdNotes className="text-gray-600 text-xl mr-2"/>
 
-                                    <Input
-                                        className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                        id="description"
-                                        name="description"
-                                        type="text"
-                                        minLength={3}
-                                        maxLength={60}
-                                        placeholder="Descrição"
-                                        value={description}
-                                        readOnly={true}
-                                    />
-                                </Div>
-                            ) : (
-                                <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                    <MdNotes className="text-gray-600 text-xl mr-2"/>
-
-                                    <Input
-                                        className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                        id="description"
-                                        name="description"
-                                        type="text"
-                                        minLength={3}
-                                        maxLength={60}
-                                        placeholder="Descrição"
-                                        value={description}
-                                        onChange={(e) => setDescription(e.target.value)}
-                                    />
-                                </Div>
-                            )}
-
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="description"
+                                    name="description"
+                                    type="text"
+                                    minLength={3}
+                                    maxLength={60}
+                                    placeholder="Descrição"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
                                 <Input
@@ -277,35 +227,6 @@ export default function InflowsPage() {
                                     onChange={(e) => setDate(e.target.value)}
                                 />
                             </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="unitValue"
-                                    name="unitValue"
-                                    type="number"
-                                    placeholder="Valor Unitário"
-                                    step={0.01}
-                                    value={unitValue}
-                                    onChange={(e) => setUnitValue(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="quantity"
-                                    name="quantity"
-                                    type="number"
-                                    placeholder="Quantidade"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                />
-                            </Div>  
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
@@ -329,18 +250,18 @@ export default function InflowsPage() {
                                 </Select>                         
                             </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="totalValue"
-                                    name="totalValue"
+                                    id="value"
+                                    name="value"
                                     type="number"
-                                    placeholder="Valor Total"
+                                    placeholder="Valor"
                                     step={0.01}
-                                    value={unitValue * quantity}
-                                    readOnly={true}
+                                    value={value}
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 

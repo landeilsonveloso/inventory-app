@@ -5,13 +5,13 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdCategory, MdClose, MdMoneyOff, MdNotes, MdNumbers } from "react-icons/md"
+import { MdAdd, MdCategory, MdClose, MdMoneyOff, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
+import Option from "src/components/Option"
+import Select from "src/components/Select"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
-import useOutflow from "src/hooks/useOutflow"
-import Select from "src/components/Select"
-import Option from "src/components/Option"
+import useInflow from "src/hooks/useInflow"
 import useUtilities from "src/hooks/useUtilities"
 
 export default function OutflowsPage() {
@@ -20,29 +20,27 @@ export default function OutflowsPage() {
         setDescription,
         date,
         setDate,
-        unitValue,
-        setUnitValue,
-        quantity,
-        setQuantity,
         method,
         setMethod,
+        value,
+        setValue,
+        filtered,
         selectedDate,
-        setSelectedDate,
         filterType,
         setFilterType,
-        filtered,
-        columns,
+        setSelectedDate,
+        disabledInflowsButton,
         isOpen,
         tag,
-        createOutflow,
-        updateOutflow,
-        deleteOutflow,
+        columns,
+        createInflow,
+        updateInflow,
+        deleteInflow,
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel,
-        disabledOutflowsButton
-    } = useOutflow()
+        handleCancel
+    } = useInflow()
 
     const {
         formatToBRL
@@ -52,9 +50,9 @@ export default function OutflowsPage() {
         <AuthProvider>
             <Div className="text-white min-h-screen bg-black">
                 <Div className="flex justify-between items-center mb-6">
-                    <Title>Saída: {formatToBRL(filtered.reduce((sum, item) => sum + parseFloat(item.totalValue), 0))}</Title>
+                    <Title>Saída: {formatToBRL(filtered.reduce((sum, item) => sum + parseFloat(item.value), 0))}</Title>
 
-                    <Button className="flex items-center gap-2 bg-red-600 hover:bg-red-800 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
+                    <Button className="flex items-center gap-2 bg-green-600 hover:bg-green-800 text-white px-4 py-2 cursor-pointer rounded-md transition" onClick={handleAdd}>
                         <MdAdd size={20}/>
                         Nova Saída
                     </Button>
@@ -92,9 +90,7 @@ export default function OutflowsPage() {
                             
                             if (newValue) {
                                 setSelectedDate(new Date(newValue))
-                            }
-                            
-                            else {
+                            } else {
                                 setSelectedDate(new Date())
                             }
                         }}
@@ -111,7 +107,7 @@ export default function OutflowsPage() {
 
                 {isOpen && tag === "Create" ? (
                     <Modal>
-                        <Form onSubimit={createOutflow}>
+                        <Form onSubimit={createInflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
@@ -127,7 +123,7 @@ export default function OutflowsPage() {
                                     name="description"
                                     type="text"
                                     minLength={3}
-                                    maxLength={30}
+                                    maxLength={60}
                                     placeholder="Descrição"
                                     onChange={(e) => setDescription(e.target.value)}
                                 />
@@ -142,156 +138,12 @@ export default function OutflowsPage() {
                                     placeholder="Data"
                                     onChange={(e) => setDate(e.target.value)}
                                 />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="unitValue"
-                                    name="unitValue"
-                                    type="number"
-                                    placeholder="Valor Unitário"
-                                    step={0.01}
-                                    onChange={(e) => setUnitValue(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="quantity"
-                                    name="quantity"
-                                    type="number"
-                                    placeholder="Quantidade"
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                />
-                            </Div>
+                            </Div>                    
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
-
+                                
                                 <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
-                                    <Option value="">
-                                        Forma de Pagamento
-                                    </Option>
-
-                                    <Option value="Cartão">
-                                        Cartão
-                                    </Option>
-
-                                    <Option value="Espécie">
-                                        Espécie
-                                    </Option>
-
-                                    <Option value="Pix">
-                                        Pix
-                                    </Option>
-                                </Select>                                
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="totalValue"
-                                    name="totalValue"
-                                    type="number"
-                                    placeholder="Valor Total"
-                                    step={0.01}
-                                    value={unitValue * quantity}
-                                    readOnly={true}
-                                />
-                            </Div>
-
-                            <Div className="flex justify-end gap-3">
-                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
-                                    Cancelar
-                                </Button>
-
-                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledOutflowsButton}>
-                                    Adicionar
-                                </Button>
-                            </Div>
-                        </Form>
-                    </Modal>
-                ) : 
-                    null
-                }
-
-                {isOpen && tag === "Edit" ? (
-                    <Modal>
-                        <Form onSubimit={updateOutflow}>
-                            <Div className="w-full flex justify-end">
-                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
-                            </Div>
-
-                            <Title>Editar Saída</Title>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNotes className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="description"
-                                    name="description"
-                                    type="text"
-                                    maxLength={30}
-                                    placeholder="Descrição"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="date"
-                                    name="date"
-                                    type="date"
-                                    placeholder="Data"
-                                    value={date}
-                                    onChange={(e) => setDate(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="unitValue"
-                                    name="unitValue"
-                                    type="number"
-                                    placeholder="Valor Unitário"
-                                    step={0.01}
-                                    value={unitValue}
-                                    onChange={(e) => setUnitValue(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNumbers className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="quantity"
-                                    name="quantity"
-                                    type="number"
-                                    placeholder="Quantidade"
-                                    value={quantity}
-                                    onChange={(e) => setQuantity(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdCategory className="text-gray-600 text-xl mr-2"/>
-
-                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
                                         Forma de Pagamento
                                     </Option>
@@ -310,18 +162,17 @@ export default function OutflowsPage() {
                                 </Select>
                             </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="totalValue"
-                                    name="totalValue"
+                                    id="value"
+                                    name="value"
                                     type="number"
-                                    placeholder="Valor Total"
+                                    placeholder="Valor"
                                     step={0.01}
-                                    value={unitValue * quantity}
-                                    readOnly={true}
+                                    onChange={(e) => setValue(e.target.value)}
                                 />
                             </Div>
 
@@ -330,7 +181,96 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledOutflowsButton}>
+                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledInflowsButton}>
+                                    Adicionar
+                                </Button>
+                            </Div>
+                        </Form>
+                    </Modal>
+                ) : 
+                    null
+                }
+
+                {isOpen && tag === "Edit" ? (
+                    <Modal>
+                        <Form onSubimit={updateInflow}>
+                            <Div className="w-full flex justify-end">
+                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
+                            </Div>
+
+                            <Title>Editar Saída</Title>
+
+                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdNotes className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="description"
+                                    name="description"
+                                    type="text"
+                                    minLength={3}
+                                    maxLength={60}
+                                    placeholder="Descrição"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="date"
+                                    name="date"
+                                    type="date"
+                                    placeholder="Data"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
+                                <MdCategory className="text-gray-600 text-xl mr-2"/>
+                                
+                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
+                                    <Option value="">
+                                        Forma de Pagamento
+                                    </Option>
+
+                                    <Option value="Cartão">
+                                        Cartão
+                                    </Option>
+
+                                    <Option value="Espécie">
+                                        Espécie
+                                    </Option>
+
+                                    <Option value="Pix">
+                                        Pix
+                                    </Option>
+                                </Select>                         
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="value"
+                                    name="value"
+                                    type="number"
+                                    placeholder="Valor"
+                                    step={0.01}
+                                    value={value}
+                                    onChange={(e) => setValue(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex justify-end gap-3">
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
+                                    Cancelar
+                                </Button>
+
+                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledInflowsButton}>
                                     Salvar
                                 </Button>
                             </Div>
@@ -342,7 +282,7 @@ export default function OutflowsPage() {
 
                 {isOpen && tag === "Delete" ? (
                     <Modal>
-                        <Form className="flex flex-col" onSubimit={deleteOutflow}>
+                        <Form className="flex flex-col" onSubimit={deleteInflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
@@ -356,7 +296,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledOutflowsButton}>
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledInflowsButton}>
                                     Excluir
                                 </Button>
                             </Div>

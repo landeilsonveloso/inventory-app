@@ -12,12 +12,12 @@ import useUtilities from "src/hooks/useUtilities"
 
 export default function DashboardPage() {
     const {
-        selectedDate,
-        setSelectedDate,
-        filterType,
-        setFilterType,
         filtered,
+        filterType,
+        selectedDate,
         filteredValues,
+        setSelectedDate,
+        setFilterType,
         columns
     } = useDashboard()
 

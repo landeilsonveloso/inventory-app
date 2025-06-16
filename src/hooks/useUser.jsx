@@ -156,15 +156,15 @@ export default function useUser() {
 
     return {
         email,
-        password,
-        confirmPassword,
         setEmail,
+        password,
         setPassword,
+        confirmPassword,
         setConfirmPassword,
+        disabledUserButton,
         verifyToken,
         signIn,
         forgotPassword,
-        redefinePassword,
-        disabledUserButton
+        redefinePassword
     }
 }
