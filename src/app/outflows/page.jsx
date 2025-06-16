@@ -11,7 +11,7 @@ import Option from "src/components/Option"
 import Select from "src/components/Select"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
-import useInflow from "src/hooks/useInflow"
+import useOutflow from "src/hooks/useOutflow"
 import useUtilities from "src/hooks/useUtilities"
 
 export default function OutflowsPage() {
@@ -29,18 +29,18 @@ export default function OutflowsPage() {
         filterType,
         setFilterType,
         setSelectedDate,
-        disabledInflowsButton,
+        disabledOutflowsButton,
         isOpen,
         tag,
         columns,
-        createInflow,
-        updateInflow,
-        deleteInflow,
+        createOutflow,
+        updateOutflow,
+        deleteOutflow,
         handleAdd,
         handleEdit,
         handleDelete,
         handleCancel
-    } = useInflow()
+    } = useOutflow()
 
     const {
         formatToBRL
@@ -107,7 +107,7 @@ export default function OutflowsPage() {
 
                 {isOpen && tag === "Create" ? (
                     <Modal>
-                        <Form onSubimit={createInflow}>
+                        <Form onSubimit={createOutflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
@@ -181,7 +181,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledInflowsButton}>
+                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledOutflowsButton}>
                                     Adicionar
                                 </Button>
                             </Div>
@@ -193,7 +193,7 @@ export default function OutflowsPage() {
 
                 {isOpen && tag === "Edit" ? (
                     <Modal>
-                        <Form onSubimit={updateInflow}>
+                        <Form onSubimit={updateOutflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
@@ -270,7 +270,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledInflowsButton}>
+                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledOutflowsButton}>
                                     Salvar
                                 </Button>
                             </Div>
@@ -282,7 +282,7 @@ export default function OutflowsPage() {
 
                 {isOpen && tag === "Delete" ? (
                     <Modal>
-                        <Form className="flex flex-col" onSubimit={deleteInflow}>
+                        <Form className="flex flex-col" onSubimit={deleteOutflow}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>
@@ -296,7 +296,7 @@ export default function OutflowsPage() {
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledInflowsButton}>
+                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" disabled={disabledOutflowsButton}>
                                     Excluir
                                 </Button>
                             </Div>
