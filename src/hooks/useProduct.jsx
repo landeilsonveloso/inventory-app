@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation"
 
 export default function useProduct() {
     const [id, setId] = useState(0)
-    const [name, setName] = useState("")
     const [description, setDescription] = useState("")
     const [value, setValue] = useState(0)
     const [quantity, setQuantity] = useState(0)
@@ -27,7 +26,6 @@ export default function useProduct() {
     const deleteProductUrl = `${apiUrlBase}/products/${id}`
 
     const columns = [
-        {key: 'name', label: 'Nome'},
         {key: "description", label: "Descrição"},
         {key: "value", label: "Valor"},
         {key: "quantity", label: "Quantidade"}
@@ -72,7 +70,7 @@ export default function useProduct() {
         setDisabledProductsButton(true)
         
         await axios
-                    .post(createProductUrl, {name, description, value, quantity}, {headers: {
+                    .post(createProductUrl, {description, value, quantity}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -117,7 +115,7 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [createProductUrl, name, description, value, quantity, closingModal, readProducts, router])
+    }, [createProductUrl, description, value, quantity, closingModal, readProducts, router])
 
     const updateProduct = useCallback(async (e) => {
         e.preventDefault()
@@ -125,7 +123,7 @@ export default function useProduct() {
         setDisabledProductsButton(true)
 
         await axios
-                    .put(updateProductUrl, {name, description, value, quantity}, {headers: {
+                    .put(updateProductUrl, {description, value, quantity}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -170,7 +168,7 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [updateProductUrl, name, description, value, quantity, closingModal, readProducts, router])
+    }, [updateProductUrl, description, value, quantity, closingModal, readProducts, router])
 
     const deleteProduct = useCallback(async (e) => {
         e.preventDefault()
@@ -223,7 +221,7 @@ export default function useProduct() {
 
         if (!term) {
             const sorted = [...products].sort((a, b) =>
-                a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: "base"})
+                a.description.localeCompare(b.description, undefined, {numeric: true, sensitivity: "base"})
             )
 
             setFiltered(sorted)
@@ -231,11 +229,11 @@ export default function useProduct() {
         }
 
         const results = products.filter((item) =>
-            item.name.toLowerCase().includes(term)
+            item.description.toLowerCase().includes(term)
         )
 
         const sorted = results.sort((a, b) =>
-            a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: "base"})
+            a.description.localeCompare(b.description, undefined, {numeric: true, sensitivity: "base"})
         )
 
         setFiltered(sorted)
@@ -250,7 +248,6 @@ export default function useProduct() {
         setTag("Edit")
         openingModal()
         setId(item.id)
-        setName(item.name)
         setDescription(item.description)
         setValue(item.value)
         setQuantity(item.quantity)
@@ -267,8 +264,6 @@ export default function useProduct() {
     }, [closingModal])
 
     return {
-        name,
-        setName,
         description,
         setDescription,
         value,

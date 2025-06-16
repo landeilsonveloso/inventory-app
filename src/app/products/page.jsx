@@ -5,7 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
-import { MdAdd, MdClose, MdDescription, MdInventory, MdMonetizationOn, MdMoneyOff, MdNotes, MdNumbers } from "react-icons/md"
+import { MdAdd, MdClose, MdMonetizationOn, MdNotes, MdNumbers } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
@@ -13,8 +13,6 @@ import useProduct from "src/hooks/useProduct"
 
 export default function ProductsPage() {
     const {
-        name,
-        setName,
         description,
         setDescription,
         value,
@@ -75,21 +73,6 @@ export default function ProductsPage() {
                             </Div>
 
                             <Title>Novo Produto</Title>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdInventory className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={60}
-                                    placeholder="Nome"
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
@@ -157,23 +140,7 @@ export default function ProductsPage() {
                             <Title>Editar Produto</Title>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdInventory className="text-gray-600 text-xl mr-2"/>
-
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={60}
-                                    placeholder="Nome"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </Div>
-
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdDescription className="text-gray-600 text-xl mr-2"/>
+                                <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
