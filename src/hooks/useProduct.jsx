@@ -259,6 +259,7 @@ export default function useProduct() {
     const handleDelete = useCallback((item) => {
         setTag("Delete")
         openingModal()
+        setId(item.id)
     }, [openingModal])
 
     const handleCancel = useCallback(() => {

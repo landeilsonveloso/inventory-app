@@ -295,6 +295,7 @@ export default function useInflow() {
     const handleDelete = useCallback((item) => {
         setTag("Delete")
         openingModal()
+        setId(item.id)
     }, [openingModal])
 
     const handleCancel = useCallback(() => {
