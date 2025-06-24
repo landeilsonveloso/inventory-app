@@ -1,6 +1,6 @@
-export default function Option({value, children}) {
+export default function Option({value, children, disabled}) {
     return (
-        <option value={value}>
+        <option value={value} disabled={disabled}>
             {children}
         </option>  
     )

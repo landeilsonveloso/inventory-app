@@ -135,7 +135,6 @@ export default function OutflowsPage() {
                                     id="date"
                                     name="date"
                                     type="date"
-                                    placeholder="Data"
                                     onChange={(e) => setDate(e.target.value)}
                                 />
                             </Div>                    
@@ -145,7 +144,7 @@ export default function OutflowsPage() {
                                 
                                 <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
-                                        Forma de Pagamento
+                                        
                                     </Option>
 
                                     <Option value="Cartão">
@@ -222,7 +221,6 @@ export default function OutflowsPage() {
                                     id="date"
                                     name="date"
                                     type="date"
-                                    placeholder="Data"
                                     value={date}
                                     onChange={(e) => setDate(e.target.value)}
                                 />
@@ -233,7 +231,7 @@ export default function OutflowsPage() {
                                 
                                 <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
-                                        Forma de Pagamento
+                                        
                                     </Option>
 
                                     <Option value="Cartão">
