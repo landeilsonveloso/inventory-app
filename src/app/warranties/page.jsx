@@ -58,7 +58,7 @@ export default function WarrantiesPage() {
                     id="search"
                     name="search"
                     type="search"
-                    placeholder="Busque por um consumidor..."
+                    placeholder="Busque por um cliente..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
@@ -90,7 +90,7 @@ export default function WarrantiesPage() {
                                     type="text"
                                     minLength={3}
                                     maxLength={60}
-                                    placeholder="Consumidor"
+                                    placeholder="Cliente"
                                     onChange={(e) => setClient(e.target.value)}
                                 />
                             </Div>
@@ -225,7 +225,7 @@ export default function WarrantiesPage() {
                                     type="text"
                                     minLength={3}
                                     maxLength={60}
-                                    placeholder="Consumidor"
+                                    placeholder="Cliente"
                                     value={client}
                                     onChange={(e) => setClient(e.target.value)}
                                 />
