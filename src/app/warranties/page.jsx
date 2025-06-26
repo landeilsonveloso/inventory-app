@@ -15,8 +15,8 @@ import useWarranty from "src/hooks/useWarranty"
 
 export default function WarrantiesPage() {
     const {
-        consumer,
-        setConsumer,
+        client,
+        setClient,
         description,
         setDescription,
         value,
@@ -85,13 +85,13 @@ export default function WarrantiesPage() {
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="consumer"
-                                    name="consumer"
+                                    id="client"
+                                    name="client"
                                     type="text"
                                     minLength={3}
                                     maxLength={60}
                                     placeholder="Consumidor"
-                                    onChange={(e) => setConsumer(e.target.value)}
+                                    onChange={(e) => setClient(e.target.value)}
                                 />
                             </Div>
 
@@ -220,14 +220,14 @@ export default function WarrantiesPage() {
 
                                 <Input
                                     className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="consumer"
-                                    name="consumer"
+                                    id="client"
+                                    name="client"
                                     type="text"
                                     minLength={3}
                                     maxLength={60}
                                     placeholder="Consumidor"
-                                    value={consumer}
-                                    onChange={(e) => setConsumer(e.target.value)}
+                                    value={client}
+                                    onChange={(e) => setClient(e.target.value)}
                                 />
                             </Div>
 

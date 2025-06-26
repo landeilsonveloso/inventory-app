@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 
 export default function useWarranty() {
     const [id, setId] = useState(0)
-    const [consumer, setConsumer] = useState("")
+    const [client, setClient] = useState("")
     const [description, setDescription] = useState("")
     const [value, setValue] = useState(0)
     const [date, setDate] = useState(new Date())
@@ -28,7 +28,7 @@ export default function useWarranty() {
     const deleteWarrantyUrl = `${apiUrlBase}/warranties/${id}`
 
     const columns = [
-        {key: "consumer", label: "Consumidor"},
+        {key: "client", label: "Cliente"},
         {key: "description", label: "Descrição"},
         {key: "value", label: "Valor"},
         {key: "date", label: "Data"},
@@ -74,7 +74,7 @@ export default function useWarranty() {
         setDisabledWarrantiesButton(true)
         
         await axios
-                    .post(createWarrantyUrl, {consumer, description, value, date, time}, {headers: {
+                    .post(createWarrantyUrl, {client, description, value, date, time}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -119,7 +119,7 @@ export default function useWarranty() {
                             return
                         }
                     })
-    }, [createWarrantyUrl, consumer, description, value, date, time, closingModal, readWarranties, router])
+    }, [createWarrantyUrl, client, description, value, date, time, closingModal, readWarranties, router])
 
     const updateWarranty = useCallback(async (e) => {
         e.preventDefault()
@@ -127,7 +127,7 @@ export default function useWarranty() {
         setDisabledWarrantiesButton(true)
 
         await axios
-                    .put(updateWarrantyUrl, {consumer, description, value, date, time}, {headers: {
+                    .put(updateWarrantyUrl, {client, description, value, date, time}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -172,7 +172,7 @@ export default function useWarranty() {
                             return
                         }
                     })
-    }, [updateWarrantyUrl, consumer, description, value, date, time, closingModal, readWarranties, router])
+    }, [updateWarrantyUrl, client, description, value, date, time, closingModal, readWarranties, router])
 
     const deleteWarranty = useCallback(async (e) => {
         e.preventDefault()
@@ -225,7 +225,7 @@ export default function useWarranty() {
 
         if (!term) {
             const sorted = [...warranties].sort((a, b) =>
-                a.consumer.localeCompare(b.consumer, undefined, {numeric: true, sensitivity: "base"})
+                a.client.localeCompare(b.client, undefined, {numeric: true, sensitivity: "base"})
             )
 
             setFiltered(sorted)
@@ -233,11 +233,11 @@ export default function useWarranty() {
         }
 
         const results = warranties.filter((item) =>
-            item.consumer.toLowerCase().includes(term)
+            item.client.toLowerCase().includes(term)
         )
 
         const sorted = results.sort((a, b) =>
-            a.consumer.localeCompare(b.consumer, undefined, {numeric: true, sensitivity: "base"})
+            a.client.localeCompare(b.client, undefined, {numeric: true, sensitivity: "base"})
         )
 
         setFiltered(sorted)
@@ -252,7 +252,7 @@ export default function useWarranty() {
         setTag("Edit")
         openingModal()
         setId(item.id)
-        setConsumer(item.consumer)
+        setClient(item.client)
         setDescription(item.description)
         setValue(item.value)
         setDate(item.date)
@@ -270,8 +270,8 @@ export default function useWarranty() {
     }, [closingModal])
 
     return {
-        consumer,
-        setConsumer,
+        client,
+        setClient,
         description,
         setDescription,
         value,
