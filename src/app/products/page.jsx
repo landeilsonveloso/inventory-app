@@ -78,7 +78,7 @@ export default function ProductsPage() {
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="description"
                                     name="description"
                                     type="text"
@@ -92,7 +92,7 @@ export default function ProductsPage() {
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="value"
                                     name="value"
                                     type="number"
@@ -106,7 +106,7 @@ export default function ProductsPage() {
                                 <MdNumbers className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="quantity"
                                     name="quantity"
                                     type="number"
@@ -143,7 +143,7 @@ export default function ProductsPage() {
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="description"
                                     name="description"
                                     type="text"
@@ -158,7 +158,7 @@ export default function ProductsPage() {
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="value"
                                     name="value"
                                     type="number"
@@ -173,7 +173,7 @@ export default function ProductsPage() {
                                 <MdNumbers className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="quantity"
                                     name="quantity"
                                     type="number"

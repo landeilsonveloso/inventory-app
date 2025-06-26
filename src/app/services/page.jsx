@@ -76,7 +76,7 @@ export default function ServicesPage() {
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="description"
                                     name="description"
                                     type="text"
@@ -90,7 +90,7 @@ export default function ServicesPage() {
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="value"
                                     name="value"
                                     type="number"
@@ -128,7 +128,7 @@ export default function ServicesPage() {
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="description"
                                     name="description"
                                     type="text"
@@ -143,7 +143,7 @@ export default function ServicesPage() {
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="value"
                                     name="value"
                                     type="number"

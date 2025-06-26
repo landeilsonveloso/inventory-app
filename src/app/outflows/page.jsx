@@ -61,7 +61,7 @@ export default function OutflowsPage() {
                 <Div className="w-full flex items-center justify-center gap-4 mb-8">
                     <Title>Filtrar</Title>
                     
-                    <Select className="w-1/5 bg-black border rounded px-4 py-2 mb-4" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
+                    <Select className="w-1/5 bg-black border rounded px-4 py-[10px] mb-4" value={filterType} onChange={(e) => setFilterType(e.target.value)}>
                         <Option value="">
                             
                         </Option>
@@ -80,20 +80,11 @@ export default function OutflowsPage() {
                     </Select>
 
                     <Input
-                        className="border rounded px-4 py-2 mb-4"
+                        className="border rounded px-4 py-2 mb-4 custom-date-icon"
                         id="date"
                         name="date"
                         type="date"
-                        value={selectedDate ? selectedDate.toISOString().split('T')[0] : ""}
-                        onChange={(e) => {
-                            const newValue = e.target.value
-                            
-                            if (newValue) {
-                                setSelectedDate(new Date(newValue))
-                            } else {
-                                setSelectedDate(new Date())
-                            }
-                        }}
+                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
                     />
                 </Div>
                 
@@ -118,7 +109,7 @@ export default function OutflowsPage() {
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="description"
                                     name="description"
                                     type="text"
@@ -131,7 +122,7 @@ export default function OutflowsPage() {
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full px-2 outline-none bg-transparent"
                                     id="date"
                                     name="date"
                                     type="date"
@@ -142,7 +133,7 @@ export default function OutflowsPage() {
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
                                 
-                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
+                                <Select className="w-full px-2 outline-none bg-transparent" onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
                                         
                                     </Option>
@@ -165,7 +156,7 @@ export default function OutflowsPage() {
                                 <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="value"
                                     name="value"
                                     type="number"
@@ -203,7 +194,7 @@ export default function OutflowsPage() {
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="description"
                                     name="description"
                                     type="text"
@@ -217,7 +208,7 @@ export default function OutflowsPage() {
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full px-2 outline-none bg-transparent"
                                     id="date"
                                     name="date"
                                     type="date"
@@ -229,7 +220,7 @@ export default function OutflowsPage() {
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
                                 <MdCategory className="text-gray-600 text-xl mr-2"/>
                                 
-                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
+                                <Select className="w-full px-2 outline-none bg-transparent" value={method} onChange={(e) => setMethod(e.target.value)}>
                                     <Option value="">
                                         
                                     </Option>
@@ -252,7 +243,7 @@ export default function OutflowsPage() {
                                 <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
                                     id="value"
                                     name="value"
                                     type="number"

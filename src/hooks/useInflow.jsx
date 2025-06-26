@@ -30,7 +30,7 @@ export default function useInflow() {
     const columns = [
         {key: "description", label: "Descrição"},
         {key: "date", label: "Data"},
-        {key: "method", label: "Forma de Pagamento"},
+        {key: "method", label: "Método"},
         {key: "value", label: "Valor"}
     ]
     

@@ -56,20 +56,11 @@ export default function DashboardPage() {
                     </Select>
 
                     <Input
-                        className="border rounded px-4 py-2 mb-4"
+                        className="border rounded px-4 py-2 mb-4 custom-date-icon"
                         id="date"
                         name="date"
                         type="date"
-                        value={selectedDate ? selectedDate.toISOString().split('T')[0] : ""}
-                        onChange={(e) => {
-                            const newValue = e.target.value
-
-                            if (newValue) {
-                                setSelectedDate(new Date(newValue))
-                            } else {
-                                setSelectedDate(new Date())
-                            }
-                        }}
+                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
                     />
                 </Div>
                 
