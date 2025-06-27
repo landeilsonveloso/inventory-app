@@ -25,7 +25,6 @@ export default function OutflowsPage() {
         value,
         setValue,
         filtered,
-        selectedDate,
         filterType,
         setFilterType,
         setSelectedDate,

@@ -370,7 +370,6 @@ export default function WarrantiesPage() {
                 ) : 
                     null
                 }
-
             </Div>
         </AuthProvider>
     )

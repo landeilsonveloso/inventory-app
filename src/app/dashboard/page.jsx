@@ -14,10 +14,9 @@ export default function DashboardPage() {
     const {
         filtered,
         filterType,
-        selectedDate,
+        setFilterType,
         filteredValues,
         setSelectedDate,
-        setFilterType,
         columns
     } = useDashboard()
 
