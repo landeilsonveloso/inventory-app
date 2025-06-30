@@ -189,7 +189,7 @@ export default function OutflowsPage() {
 
                             <Title>Editar Saída</Title>
 
-                            <Div className="flex items-center w-full mb-6 p-3 bg-gray-100 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdNotes className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
