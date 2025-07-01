@@ -61,43 +61,53 @@ export default function useDashboard() {
         setTransactions(result.sort((a, b) => new Date(b.date) - new Date(a.date)))
     }, [groupByDate, inflows, outflows])
 
-    const filterByDay = useCallback(() =>  {
+    const filterByDay = useCallback(() => {
+        const selDate = new Date(selectedDate)
+        const selDay = selDate.getUTCDate()
+        const selMonth = selDate.getUTCMonth()
+        const selYear = selDate.getUTCFullYear()
+
         return transactions.filter(transaction => {
             const transactionDate = new Date(transaction.date)
-                return (
-                    transactionDate.getDate() === selectedDate.getDate() &&
-                    transactionDate.getMonth() === selectedDate.getMonth() &&
-                    transactionDate.getFullYear() === selectedDate.getFullYear()
-                )
-            })
+            return (
+                transactionDate.getUTCDate() === selDay &&
+                transactionDate.getUTCMonth() === selMonth &&
+                transactionDate.getUTCFullYear() === selYear
+            )
+        })
     }, [transactions, selectedDate])
 
-    const filterByWeek = useCallback(() =>  {
-        const startOfWeek = new Date(selectedDate)
+    const filterByWeek = useCallback(() => {
+        const date = new Date(selectedDate)
+        const dayOfWeek = date.getUTCDay()
 
-        startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay())
-        startOfWeek.setHours(0, 0, 0, 0)
+        const startOfWeek = new Date(date)
+        startOfWeek.setUTCDate(date.getUTCDate() - dayOfWeek)
+        startOfWeek.setUTCHours(0, 0, 0, 0)
 
         const endOfWeek = new Date(startOfWeek)
+        endOfWeek.setUTCDate(startOfWeek.getUTCDate() + 6)
+        endOfWeek.setUTCHours(23, 59, 59, 999)
 
-        endOfWeek.setDate(startOfWeek.getDate() + 6)
-        endOfWeek.setHours(23, 59, 59, 999)
-
-        return transactions.filter(inflow => {
-            const transactionDate = new Date(inflow.date)
-            return transactionDate >= startOfWeek && transactionDate <= endOfWeek
-        })
-    }, [selectedDate, transactions])
-
-    const filterByMonth = useCallback(() =>  {
         return transactions.filter(transaction => {
             const transactionDate = new Date(transaction.date)
-                return (
-                    transactionDate.getMonth() === selectedDate.getMonth() &&
-                    transactionDate.getFullYear() === selectedDate.getFullYear()
-                )
-            })
-    }, [selectedDate, transactions])
+            return transactionDate >= startOfWeek && transactionDate <= endOfWeek
+        })
+    }, [transactions, selectedDate])
+    
+    const filterByMonth = useCallback(() => {
+        const selMonth = selectedDate.getUTCMonth()
+        const selYear = selectedDate.getUTCFullYear()
+
+        return transactions.filter(transaction => {
+            const transactionDate = new Date(transaction.date)
+            return (
+                transactionDate.getUTCMonth() === selMonth &&
+                transactionDate.getUTCFullYear() === selYear
+            )
+        })
+    }, [transactions, selectedDate])
+
 
     const filterTransactions = useCallback(() => {
         switch (filterType) {
@@ -138,10 +148,10 @@ export default function useDashboard() {
     return {
         filtered,
         filterType,
-        selectedDate,
-        filteredValues,
-        setSelectedDate,
         setFilterType,
+        filteredValues,
+        selectedDate,
+        setSelectedDate,
         columns
     }
 }

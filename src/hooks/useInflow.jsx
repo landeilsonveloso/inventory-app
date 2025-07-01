@@ -219,43 +219,52 @@ export default function useInflow() {
         readInflows()
     }, [readInflows])
 
-    const filterByDay = useCallback(() =>  {
+    const filterByDay = useCallback(() => {
+        const selDate = new Date(selectedDate)
+        const selDay = selDate.getUTCDate()
+        const selMonth = selDate.getUTCMonth()
+        const selYear = selDate.getUTCFullYear()
+
         return inflows.filter(inflow => {
             const inflowDate = new Date(inflow.date)
-                return (
-                    inflowDate.getDate() === selectedDate.getDate() &&
-                    inflowDate.getMonth() === selectedDate.getMonth() &&
-                    inflowDate.getFullYear() === selectedDate.getFullYear()
-                )
-            })
+            return (
+                inflowDate.getUTCDate() === selDay &&
+                inflowDate.getUTCMonth() === selMonth &&
+                inflowDate.getUTCFullYear() === selYear
+            )
+        })
     }, [inflows, selectedDate])
 
-    const filterByWeek = useCallback(() =>  {
-        const startOfWeek = new Date(selectedDate)
+    const filterByWeek = useCallback(() => {
+        const date = new Date(selectedDate)
+        const dayOfWeek = date.getUTCDay()
 
-        startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay())
-        startOfWeek.setHours(0, 0, 0, 0)
+        const startOfWeek = new Date(date)
+        startOfWeek.setUTCDate(date.getUTCDate() - dayOfWeek)
+        startOfWeek.setUTCHours(0, 0, 0, 0)
 
         const endOfWeek = new Date(startOfWeek)
-
-        endOfWeek.setDate(startOfWeek.getDate() + 6)
-        endOfWeek.setHours(23, 59, 59, 999)
+        endOfWeek.setUTCDate(startOfWeek.getUTCDate() + 6)
+        endOfWeek.setUTCHours(23, 59, 59, 999)
 
         return inflows.filter(inflow => {
             const inflowDate = new Date(inflow.date)
             return inflowDate >= startOfWeek && inflowDate <= endOfWeek
         })
-    }, [selectedDate, inflows])
+    }, [inflows, selectedDate])
+    
+    const filterByMonth = useCallback(() => {
+        const selMonth = selectedDate.getUTCMonth()
+        const selYear = selectedDate.getUTCFullYear()
 
-    const filterByMonth = useCallback(() =>  {
         return inflows.filter(inflow => {
             const inflowDate = new Date(inflow.date)
-                return (
-                    inflowDate.getMonth() === selectedDate.getMonth() &&
-                    inflowDate.getFullYear() === selectedDate.getFullYear()
-                )
-            })
-    }, [selectedDate, inflows])
+            return (
+                inflowDate.getUTCMonth() === selMonth &&
+                inflowDate.getUTCFullYear() === selYear
+            )
+        })
+    }, [inflows, selectedDate])
 
     const filterInflows = useCallback(() => {
         switch (filterType) {
@@ -316,6 +325,7 @@ export default function useInflow() {
         selectedDate,
         filterType,
         setFilterType,
+        selectedDate,
         setSelectedDate,
         disabledInflowsButton,
         isOpen,

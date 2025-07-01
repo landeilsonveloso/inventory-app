@@ -16,6 +16,7 @@ export default function DashboardPage() {
         filterType,
         setFilterType,
         filteredValues,
+        selectedDate,
         setSelectedDate,
         columns
     } = useDashboard()
@@ -59,7 +60,8 @@ export default function DashboardPage() {
                         id="date"
                         name="date"
                         type="date"
-                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                        value={selectedDate ? selectedDate.toISOString().split("T")[0] : ""}
+                        onChange={(e) => {e.target.value ? setSelectedDate(new Date(e.target.value)) : setSelectedDate(null)}}
                     />
                 </Div>
                 

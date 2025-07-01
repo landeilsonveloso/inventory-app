@@ -27,6 +27,7 @@ export default function OutflowsPage() {
         filtered,
         filterType,
         setFilterType,
+        selectedDate,
         setSelectedDate,
         disabledOutflowsButton,
         isOpen,
@@ -83,7 +84,8 @@ export default function OutflowsPage() {
                         id="date"
                         name="date"
                         type="date"
-                        onChange={(e) => setSelectedDate(new Date(e.target.value))}
+                        value={selectedDate ? selectedDate.toISOString().split("T")[0] : ""}
+                        onChange={(e) => {e.target.value ? setSelectedDate(new Date(e.target.value)) : setSelectedDate(null)}}
                     />
                 </Div>
                 

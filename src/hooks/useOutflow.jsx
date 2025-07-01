@@ -219,43 +219,53 @@ export default function useOutflow() {
         readOutflows()
     }, [readOutflows])
 
-    const filterByDay = useCallback(() =>  {
-        return outflows.filter(inflow => {
-            const inflowDate = new Date(inflow.date)
-                return (
-                    inflowDate.getDate() === selectedDate.getDate() &&
-                    inflowDate.getMonth() === selectedDate.getMonth() &&
-                    inflowDate.getFullYear() === selectedDate.getFullYear()
-                )
-            })
+    const filterByDay = useCallback(() => {
+        const selDate = new Date(selectedDate)
+        const selDay = selDate.getUTCDate()
+        const selMonth = selDate.getUTCMonth()
+        const selYear = selDate.getUTCFullYear()
+
+        return outflows.filter(outflow => {
+            const outflowDate = new Date(outflow.date)
+            return (
+                outflowDate.getUTCDate() === selDay &&
+                outflowDate.getUTCMonth() === selMonth &&
+                outflowDate.getUTCFullYear() === selYear
+            )
+        })
     }, [outflows, selectedDate])
 
-    const filterByWeek = useCallback(() =>  {
-        const startOfWeek = new Date(selectedDate)
+    const filterByWeek = useCallback(() => {
+        const date = new Date(selectedDate)
+        const dayOfWeek = date.getUTCDay()
 
-        startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay())
-        startOfWeek.setHours(0, 0, 0, 0)
+        const startOfWeek = new Date(date)
+        startOfWeek.setUTCDate(date.getUTCDate() - dayOfWeek)
+        startOfWeek.setUTCHours(0, 0, 0, 0)
 
         const endOfWeek = new Date(startOfWeek)
+        endOfWeek.setUTCDate(startOfWeek.getUTCDate() + 6)
+        endOfWeek.setUTCHours(23, 59, 59, 999)
 
-        endOfWeek.setDate(startOfWeek.getDate() + 6)
-        endOfWeek.setHours(23, 59, 59, 999)
-
-        return outflows.filter(inflow => {
-            const inflowDate = new Date(inflow.date)
-            return inflowDate >= startOfWeek && inflowDate <= endOfWeek
+        return outflows.filter(outflow => {
+            const outflowDate = new Date(outflow.date)
+            return outflowDate >= startOfWeek && outflowDate <= endOfWeek
         })
-    }, [selectedDate, outflows])
+    }, [outflows, selectedDate])
+    
+    const filterByMonth = useCallback(() => {
+        const selMonth = selectedDate.getUTCMonth()
+        const selYear = selectedDate.getUTCFullYear()
 
-    const filterByMonth = useCallback(() =>  {
-        return outflows.filter(inflow => {
-            const inflowDate = new Date(inflow.date)
-                return (
-                    inflowDate.getMonth() === selectedDate.getMonth() &&
-                    inflowDate.getFullYear() === selectedDate.getFullYear()
-                )
-            })
-    }, [selectedDate, outflows])
+        return outflows.filter(outflow => {
+            const outflowDate = new Date(outflow.date)
+            return (
+                outflowDate.getUTCMonth() === selMonth &&
+                outflowDate.getUTCFullYear() === selYear
+            )
+        })
+    }, [outflows, selectedDate])
+
 
     const filterOutflows = useCallback(() => {
         switch (filterType) {
@@ -313,9 +323,9 @@ export default function useOutflow() {
         setValue,
         outflows,
         filtered,
-        selectedDate,
         filterType,
         setFilterType,
+        selectedDate,
         setSelectedDate,
         disabledOutflowsButton,
         isOpen,
