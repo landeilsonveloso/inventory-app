@@ -15,6 +15,7 @@ export default function useOutflow() {
     const [filterType, setFilterType] = useState("")
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [disabledOutflowsButton, setDisabledOutflowsButton] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
@@ -213,7 +214,12 @@ export default function useOutflow() {
     }, [deleteOutflowUrl, closingModal, readOutflows, router])
 
     useEffect(() => {
-        readOutflows()
+        const fetch = async () => {
+            await readOutflows()
+            setLoading(false)
+        }
+
+        fetch()
     }, [readOutflows])
 
     const filterByDay = useCallback(() => {
@@ -325,6 +331,7 @@ export default function useOutflow() {
         selectedDate,
         setSelectedDate,
         disabledOutflowsButton,
+        loading,
         isOpen,
         tag,
         columns,

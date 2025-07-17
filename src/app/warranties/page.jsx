@@ -5,6 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
+import Loading from "src/components/Loading"
 import { MdAdd, MdClose, MdMonetizationOn, MdNotes, MdPerson, MdTimer } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Option from "src/components/Option"
@@ -29,6 +30,7 @@ export default function WarrantiesPage() {
         search,
         setSearch,
         disabledWarrantiesButton,
+        loading,
         isOpen,
         tag,
         columns,
@@ -40,6 +42,10 @@ export default function WarrantiesPage() {
         handleDelete,
         handleCancel
     } = useWarranty()
+
+    if (loading) {
+        return <Loading/>
+    }
 
     return (
         <AuthProvider>

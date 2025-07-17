@@ -5,6 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
+import Loading from "src/components/Loading"
 import { MdAdd, MdClose, MdMonetizationOn, MdNotes, MdNumbers } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
@@ -23,6 +24,7 @@ export default function ProductsPage() {
         search,
         setSearch,
         disabledProductsButton,
+        loading,
         isOpen,
         tag,
         columns,
@@ -34,6 +36,10 @@ export default function ProductsPage() {
         handleDelete,
         handleCancel
     } = useProduct()
+
+    if (loading) {
+        return <Loading/>
+    }
     
     return (
         <AuthProvider>

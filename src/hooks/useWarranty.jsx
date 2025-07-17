@@ -15,6 +15,7 @@ export default function useWarranty() {
     const [filtered, setFiltered]  = useState([])
     const [search, setSearch] = useState("")
     const [disabledWarrantiesButton, setDisabledWarrantiesButton] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
@@ -214,7 +215,12 @@ export default function useWarranty() {
     }, [deleteWarrantyUrl, closingModal, readWarranties, router])
 
     useEffect(() => {
-        readWarranties()
+        const fetch = async () => {
+            await readWarranties()
+            setLoading(false)
+        }
+
+        fetch()
     }, [readWarranties])
 
     useEffect(() => {
@@ -282,6 +288,7 @@ export default function useWarranty() {
         search,
         setSearch,
         disabledWarrantiesButton,
+        loading,
         isOpen,
         tag,
         columns,

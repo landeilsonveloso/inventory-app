@@ -4,11 +4,12 @@ import useOutflow from "./useOutflow"
 
 export default function useDashboard() {
     const [transactions, setTransactions] = useState([])
-    const [filtered, setFiltered]  = useState([])
+    const [filtered, setFiltered] = useState([])
     const [filterType, setFilterType] = useState("")
     const [filteredValues, setFilteredValues] = useState({})
     const [selectedDate, setSelectedDate] = useState(new Date())
-    
+    const [loading, setLoading] = useState(true)
+
     const {inflows} = useInflow()
     const {outflows} = useOutflow()
 
@@ -21,21 +22,17 @@ export default function useDashboard() {
 
     const groupByDate = useCallback((dataArray) => {
         const grouped = {}
-
         for (const item of dataArray) {
             const date = new Date(item.date).toISOString().split("T")[0]
-
             if (!grouped[date]) {
                 grouped[date] = []
             }
-
             grouped[date].push(item)
         }
-
         return grouped
     }, [])
 
-    const calculateProfitTable = useCallback(() => {
+    const calculateProfitTable = useCallback(async () => {
         const inflowsByDate = groupByDate(inflows)
         const outflowsByDate = groupByDate(outflows)
 
@@ -94,7 +91,7 @@ export default function useDashboard() {
             return transactionDate >= startOfWeek && transactionDate <= endOfWeek
         })
     }, [transactions, selectedDate])
-    
+
     const filterByMonth = useCallback(() => {
         const selMonth = selectedDate.getUTCMonth()
         const selYear = selectedDate.getUTCFullYear()
@@ -108,18 +105,14 @@ export default function useDashboard() {
         })
     }, [transactions, selectedDate])
 
-
     const filterTransactions = useCallback(() => {
         switch (filterType) {
             case "day":
                 return filterByDay()
-
             case "week":
                 return filterByWeek()
-
-            case 'month':
+            case "month":
                 return filterByMonth()
-
             default:
                 return transactions
         }
@@ -129,17 +122,21 @@ export default function useDashboard() {
         const inflow = filtered.reduce((sum, item) => sum + item.inflow, 0)
         const outflow = filtered.reduce((sum, item) => sum + item.outflow, 0)
         const lucre = filtered.reduce((sum, item) => sum + item.lucre, 0)
-
-        return {inflow, outflow, lucre}
+        return { inflow, outflow, lucre }
     }, [filtered])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await calculateProfitTable()
+            setLoading(false)
+        }
+
+        fetchData()
+    }, [calculateProfitTable])
 
     useEffect(() => {
         setFiltered(filterTransactions())
     }, [filterTransactions])
-
-    useEffect(() => {
-        calculateProfitTable()
-    }, [calculateProfitTable])
 
     useEffect(() => {
         setFilteredValues(getTotals())
@@ -152,6 +149,7 @@ export default function useDashboard() {
         filteredValues,
         selectedDate,
         setSelectedDate,
+        loading,
         columns
     }
 }

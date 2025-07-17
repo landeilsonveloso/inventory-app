@@ -3,6 +3,7 @@
 import AuthProvider from "src/contexts/AuthContext"
 import Div from "src/containers/Div"
 import Input from "src/components/Input"
+import Loading from "src/components/Loading"
 import Option from "src/components/Option"
 import Select from "src/components/Select"
 import Table from "src/components/Table"
@@ -18,12 +19,17 @@ export default function DashboardPage() {
         filteredValues,
         selectedDate,
         setSelectedDate,
+        loading,
         columns
     } = useDashboard()
 
     const {
         formatToBRL
     } = useUtilities()
+
+    if (loading) {
+        return <Loading/>
+    }
     
     return (
         <AuthProvider>

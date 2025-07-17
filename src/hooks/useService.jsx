@@ -12,6 +12,7 @@ export default function useService() {
     const [filtered, setFiltered] = useState([])
     const [search, setSearch] = useState("")
     const [disabledServicesButton, setDisabledServicesButton] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
@@ -208,7 +209,12 @@ export default function useService() {
     }, [deleteServiceUrl, closingModal, readServices, router])
 
     useEffect(() => {
-        readServices()
+        const fetch = async () => {
+            await readServices()
+            setLoading(false)
+        }
+
+        fetch()
     }, [readServices])
 
     useEffect(() => {
@@ -266,6 +272,7 @@ export default function useService() {
         search,
         setSearch,
         disabledServicesButton,
+        loading,
         isOpen,
         tag,
         columns,

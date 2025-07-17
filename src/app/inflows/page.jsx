@@ -5,6 +5,7 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
+import Loading from "src/components/Loading"
 import { MdAdd, MdCategory, MdClose, MdMonetizationOn, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Option from "src/components/Option"
@@ -30,6 +31,7 @@ export default function InflowsPage() {
         selectedDate,
         setSelectedDate,
         disabledInflowsButton,
+        loading,
         isOpen,
         tag,
         columns,
@@ -45,6 +47,10 @@ export default function InflowsPage() {
     const {
         formatToBRL
     } = useUtilities()
+
+    if (loading) {
+        return <Loading/>
+    }
     
     return (
         <AuthProvider>

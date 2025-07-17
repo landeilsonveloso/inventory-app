@@ -13,6 +13,7 @@ export default function useProduct() {
     const [filtered, setFiltered] = useState([])
     const [search, setSearch] = useState("")
     const [disabledProductsButton, setDisabledProductsButton] = useState(false)
+    const [loading, setLoading] =useState(true)
 
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
@@ -210,7 +211,12 @@ export default function useProduct() {
     }, [deleteProductUrl, closingModal, readProducts, router])
 
     useEffect(() => {
-        readProducts()
+        const fetch = async () => {
+            await readProducts()
+            setLoading(false)
+        }
+
+        fetch()
     }, [readProducts])
 
     useEffect(() => {
@@ -271,6 +277,7 @@ export default function useProduct() {
         search,
         setSearch,
         disabledProductsButton,
+        loading,
         isOpen,
         tag,
         columns,

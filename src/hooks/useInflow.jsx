@@ -15,6 +15,7 @@ export default function useInflow() {
     const [filterType, setFilterType] = useState("")
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [disabledInflowsButton, setDisabledInflowsButton] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
@@ -213,7 +214,12 @@ export default function useInflow() {
     }, [deleteInflowUrl, closingModal, readInflows, router])
 
     useEffect(() => {
-        readInflows()
+        const fetch = async () => {
+            await readInflows()
+            setLoading(false)
+        }
+
+        fetch()
     }, [readInflows])
 
     const filterByDay = useCallback(() => {
@@ -325,6 +331,7 @@ export default function useInflow() {
         selectedDate,
         setSelectedDate,
         disabledInflowsButton,
+        loading,
         isOpen,
         tag,
         columns,
