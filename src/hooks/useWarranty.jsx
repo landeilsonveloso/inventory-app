@@ -82,7 +82,6 @@ export default function useWarranty() {
                     .then((res) => {
                         if (res.status === 201) {
                             setDisabledWarrantiesButton(false)
-                            alert(res.data)
                             closingModal()
                             readWarranties()
                             return
@@ -135,7 +134,6 @@ export default function useWarranty() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledWarrantiesButton(false)
-                            alert(res.data)
                             closingModal()
                             readWarranties()
                             return
@@ -188,7 +186,6 @@ export default function useWarranty() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledWarrantiesButton(false)
-                            alert(res.data)
                             closingModal()
                             readWarranties()
                             return

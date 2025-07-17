@@ -81,7 +81,6 @@ export default function useOutflow() {
                     .then((res) => {
                         if (res.status === 201) {
                             setDisabledOutflowsButton(false)
-                            alert(res.data)
                             closingModal()
                             readOutflows()
                             return
@@ -134,7 +133,6 @@ export default function useOutflow() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledOutflowsButton(false)
-                            alert(res.data)
                             closingModal()
                             readOutflows()
                             return
@@ -187,7 +185,6 @@ export default function useOutflow() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledOutflowsButton(false)
-                            alert(res.data)
                             closingModal()
                             readOutflows()
                             return

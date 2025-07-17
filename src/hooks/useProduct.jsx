@@ -78,7 +78,6 @@ export default function useProduct() {
                     .then((res) => {
                         if (res.status === 201) {
                             setDisabledProductsButton(false)
-                            alert(res.data)
                             closingModal()
                             readProducts()
                             return
@@ -131,7 +130,6 @@ export default function useProduct() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledProductsButton(false)
-                            alert(res.data)
                             closingModal()
                             readProducts()
                             return
@@ -184,7 +182,6 @@ export default function useProduct() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledProductsButton(false)
-                            alert(res.data)
                             closingModal()
                             readProducts()
                             return

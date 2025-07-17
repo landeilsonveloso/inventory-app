@@ -76,7 +76,6 @@ export default function useService() {
                     .then((res) => {
                         if (res.status === 201) {
                             setDisabledServicesButton(false)
-                            alert(res.data)
                             closingModal()
                             readServices()
                             return
@@ -129,7 +128,6 @@ export default function useService() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledServicesButton(false)
-                            alert(res.data)
                             closingModal()
                             readServices()
                             return
@@ -182,7 +180,6 @@ export default function useService() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledServicesButton(false)
-                            alert(res.data)
                             closingModal()
                             readServices()
                             return

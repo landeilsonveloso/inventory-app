@@ -115,7 +115,6 @@ export default function useUser() {
                     .then((res) => {
                         if (res.status === 200) {
                             setDisabledUserButton(false)
-                            alert(res.data)
                             localStorage.clear()
                             router.replace("/")
                             return
