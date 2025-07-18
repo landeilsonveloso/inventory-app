@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation"
 export default function useProduct() {
     const [id, setId] = useState(0)
     const [description, setDescription] = useState("")
-    const [value, setValue] = useState(0)
+    const [cost, setCost] = useState(0)
+    const [price, setPrice] = useState(0)
     const [quantity, setQuantity] = useState(0)
     const [products, setProducts] = useState([])
     const [filtered, setFiltered] = useState([])
@@ -28,7 +29,8 @@ export default function useProduct() {
 
     const columns = [
         {key: "description", label: "Descrição"},
-        {key: "value", label: "Valor"},
+        {key: "cost", label: "Custo"},
+        {key: "price", label: "Preço"},
         {key: "quantity", label: "Quantidade"}
     ]
     
@@ -71,7 +73,7 @@ export default function useProduct() {
         setDisabledProductsButton(true)
         
         await axios
-                    .post(createProductUrl, {description, value, quantity}, {headers: {
+                    .post(createProductUrl, {description, cost, price, quantity}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -115,7 +117,7 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [createProductUrl, description, value, quantity, closingModal, readProducts, router])
+    }, [createProductUrl, description, cost, price, quantity, closingModal, readProducts, router])
 
     const updateProduct = useCallback(async (e) => {
         e.preventDefault()
@@ -123,7 +125,7 @@ export default function useProduct() {
         setDisabledProductsButton(true)
 
         await axios
-                    .put(updateProductUrl, {description, value, quantity}, {headers: {
+                    .put(updateProductUrl, {description, cost, price, quantity}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -167,7 +169,7 @@ export default function useProduct() {
                             return
                         }
                     })
-    }, [updateProductUrl, description, value, quantity, closingModal, readProducts, router])
+    }, [updateProductUrl, description, cost, price, quantity, closingModal, readProducts, router])
 
     const deleteProduct = useCallback(async (e) => {
         e.preventDefault()
@@ -252,7 +254,8 @@ export default function useProduct() {
         openingModal()
         setId(item.id)
         setDescription(item.description)
-        setValue(item.value)
+        setCost(item.cost)
+        setPrice(item.price)
         setQuantity(item.quantity)
     }, [openingModal])
 
@@ -269,8 +272,10 @@ export default function useProduct() {
     return {
         description,
         setDescription,
-        value,
-        setValue,
+        cost,
+        setCost,
+        price,
+        setPrice,
         quantity,
         setQuantity,
         filtered,

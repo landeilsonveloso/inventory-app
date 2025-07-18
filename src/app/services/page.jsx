@@ -6,7 +6,7 @@ import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
 import Loading from "src/components/Loading"
-import { MdAdd, MdClose, MdMonetizationOn, MdNotes } from "react-icons/md"
+import { MdAdd, MdClose, MdMonetizationOn, MdMoneyOff, MdNotes } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
@@ -16,8 +16,10 @@ export default function ServicesPage() {
     const {
         description,
         setDescription,
-        value,
-        setValue,
+        cost,
+        setCost,
+        price,
+        setPrice,
         filtered,
         search,
         setSearch,
@@ -93,16 +95,30 @@ export default function ServicesPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="cost"
+                                    name="cost"
+                                    type="number"
+                                    placeholder="Custo"
+                                    step={0.01}
+                                    onChange={(e) => setCost(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="value"
-                                    name="value"
+                                    id="price"
+                                    name="price"
                                     type="number"
-                                    placeholder="Valor"
+                                    placeholder="Preço"
                                     step={0.01}
-                                    onChange={(e) => setValue(e.target.value)}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 />
                             </Div>
 
@@ -146,17 +162,32 @@ export default function ServicesPage() {
                             </Div>
 
                             <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
+                                <MdMoneyOff className="text-gray-600 text-xl mr-2"/>
+
+                                <Input
+                                    className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
+                                    id="cost"
+                                    name="cost"
+                                    type="number"
+                                    placeholder="Custo"
+                                    step={0.01}
+                                    value={cost}
+                                    onChange={(e) => setCost(e.target.value)}
+                                />
+                            </Div>
+
+                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
                                 <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
 
                                 <Input
                                     className="w-full placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="value"
-                                    name="value"
+                                    id="price"
+                                    name="price"
                                     type="number"
-                                    placeholder="Valor"
+                                    placeholder="Preço"
                                     step={0.01}
-                                    value={value}
-                                    onChange={(e) => setValue(e.target.value)}
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
                                 />
                             </Div>
 

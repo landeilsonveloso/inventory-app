@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation"
 export default function useService() {
     const [id, setId] = useState(0)
     const [description, setDescription] = useState("")
-    const [value, setValue] = useState(0)
+    const [cost, setCost] = useState(0)
+    const [price, setPrice] = useState(0)
     const [services, setServices] = useState([])
     const [filtered, setFiltered] = useState([])
     const [search, setSearch] = useState("")
@@ -27,7 +28,8 @@ export default function useService() {
 
     const columns = [
         {key: "description", label: "Descrição"},
-        {key: "value", label: "Valor"},
+        {key: "cost", label: "Custo"},
+        {key: "price", label: "Preço"}
     ]
     
     const readServices = useCallback(async () => {
@@ -69,7 +71,7 @@ export default function useService() {
         setDisabledServicesButton(true)
         
         await axios
-                    .post(createServiceUrl, {description, value}, {headers: {
+                    .post(createServiceUrl, {description, cost, price}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -113,7 +115,7 @@ export default function useService() {
                             return
                         }
                     })
-    }, [createServiceUrl, description, value, closingModal, readServices, router])
+    }, [createServiceUrl, description, cost, price, closingModal, readServices, router])
 
     const updateService = useCallback(async (e) => {
         e.preventDefault()
@@ -121,7 +123,7 @@ export default function useService() {
         setDisabledServicesButton(true)
 
         await axios
-                    .put(updateServiceUrl, {description, value}, {headers: {
+                    .put(updateServiceUrl, {description, cost, price}, {headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json",
                         "Authorization": localStorage.getItem("token")
@@ -165,7 +167,7 @@ export default function useService() {
                             return
                         }
                     })
-    }, [updateServiceUrl, description, value, closingModal, readServices, router])
+    }, [updateServiceUrl, description, cost, price, closingModal, readServices, router])
 
     const deleteService = useCallback(async (e) => {
         e.preventDefault()
@@ -250,7 +252,8 @@ export default function useService() {
         openingModal()
         setId(item.id)
         setDescription(item.description)
-        setValue(item.value)
+        setCost(item.cost)
+        setPrice(item.price)
     }, [openingModal])
 
     const handleDelete = useCallback((item) => {
@@ -266,8 +269,10 @@ export default function useService() {
     return {
         description,
         setDescription,
-        value,
-        setValue,
+        cost,
+        setCost,
+        price,
+        setPrice,
         filtered,
         search,
         setSearch,

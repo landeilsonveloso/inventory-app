@@ -28,7 +28,7 @@ export default function Table({name, columns, data, onEdit, onDelete}) {
                                 {columns.map((col) => {
                                     const value = item[col.key]
 
-                                    if (["value", "inflow", "outflow", "lucre"].includes(col.key)) {
+                                    if (["value", "cost", "price", "inflow", "outflow", "lucre"].includes(col.key)) {
                                         return (
                                             <td key={col.key} className="px-6 py-4">
                                                 {formatToBRL(value)}
