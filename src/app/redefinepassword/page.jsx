@@ -29,6 +29,7 @@ export default function RedefinePasswordPage() {
     } = useUtilities()
 
     return (
+        <AuthProvider>
             <Main>
                 <Form className="flex flex-col" onSubimit={redefinePassword}>
                     <Logo/>
@@ -80,5 +81,6 @@ export default function RedefinePasswordPage() {
                     </Button>
                 </Form>
             </Main>
+        </AuthProvider>
     )
 }
