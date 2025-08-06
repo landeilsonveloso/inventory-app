@@ -1,4 +1,4 @@
-import { MdEdit, MdDelete, MdShoppingCart } from 'react-icons/md'
+import { MdEdit, MdDelete } from 'react-icons/md'
 import useUtilities from 'src/hooks/useUtilities'
 
 export default function Table({name, columns, data, onEdit, onDelete}) {
