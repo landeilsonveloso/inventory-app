@@ -22,7 +22,6 @@ export default function SideBar() {
                         <nav className="flex flex-col gap-4">
                             <NavItem href="/dashboard" label="Painel" icon={<MdDashboard size={20}/>} />
                             <NavItem href="/products" label="Produtos" icon={<MdInventory size={20}/>} />
-                            <NavItem href="/services" label="Serviços" icon={<MdConstruction size={20}/>} />
                             <NavItem href="/warranties" label="Garantias" icon={<MdDescription size={20}/>} />
                             <NavItem href="/inflows" label="Entradas" icon={<MdMonetizationOn size={20}/>} />
                             <NavItem href="/outflows" label="Saídas" icon={<MdMoneyOff size={20}/>} />
@@ -43,7 +42,6 @@ export default function SideBar() {
                         <nav className="flex flex-col items-center gap-4">
                             <NavItem href="/dashboard" icon={<MdDashboard title="Painel" size={20}/>}/>
                             <NavItem href="/products" icon={<MdInventory title="Produtos" size={20}/>}/>
-                            <NavItem href="/services" icon={<MdConstruction title="Serviços" size={20}/>}/>
                             <NavItem href="/warranties" icon={<MdDescription title="Garantias" size={20}/>} />
                             <NavItem href="/inflows" icon={<MdMonetizationOn title="Entradas" size={20}/>} />
                             <NavItem href="/outflows" icon={<MdMoneyOff title="Saídas" size={20}/>} />
