@@ -1,5 +1,6 @@
 import axios from "axios"
 import config from "src/config/config"
+import { toast } from "react-toastify"
 import { useCallback, useEffect, useState } from "react"
 import useModal from "./useModal"
 import { useRouter } from "next/navigation"
@@ -8,12 +9,18 @@ export default function useInflow() {
     const [id, setId] = useState(0)
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(new Date())
-    const [method, setMethod] = useState("")
-    const [value, setValue] = useState(0)
+    const [firstMethod, setFirstMethod] = useState("")
+    const [firstValue, setFirstValue] = useState(0)
+    const [secondMethod, setSecondMethod] = useState("")
+    const [secondValue, setSecondValue] = useState(0)
+    const [thirdMethod, setThirdMethod] = useState("")
+    const [thirdValue, setThirdValue] = useState(0)
     const [inflows, setInflows] = useState([])
     const [filtered, setFiltered]  = useState([])
     const [filterType, setFilterType] = useState("")
     const [selectedDate, setSelectedDate] = useState(new Date())
+    const [showSecondMethod, setShowSecondMethod] = useState(false)
+    const [showThirdMethod, setShowThirdMethod] = useState(false)
     const [disabledInflowsButton, setDisabledInflowsButton] = useState(false)
     const [loading, setLoading] = useState(true)
 
@@ -31,41 +38,44 @@ export default function useInflow() {
     const columns = [
         {key: "description", label: "Descrição"},
         {key: "date", label: "Data"},
-        {key: "method", label: "Método"},
-        {key: "value", label: "Valor"}
+        {key: "method", label: "Método de Pagamento"},
+        {key: "valueTotal", label: "Valor Total"}
     ]
     
     const readInflows = useCallback(async () => {
-        await axios
-                    .get(readInflowsUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setInflows(res.data)
-                            return
-                        }
-                        
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (err.response.status >= 500) {
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            const res = await axios.get(readInflowsUrl, {headers})
+
+            if (res.status === 200) {
+                setInflows(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inespirado.")
+            }
+        }
     }, [readInflowsUrl, router])
 
     const createInflow = useCallback(async (e) => {
@@ -73,144 +83,157 @@ export default function useInflow() {
 
         setDisabledInflowsButton(true)
         
-        await axios
-                    .post(createInflowUrl, {description, date, method, value}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 201) {
-                            setDisabledInflowsButton(false)
-                            closingModal()
-                            readInflows()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledInflowsButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.post(createInflowUrl, {description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledInflowsButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 201) {
+                toast.success(res.data)
+                closingModal()
+                setShowSecondMethod(false)
+                setShowThirdMethod(false)
+                readInflows()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                       }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledInflowsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-    }, [createInflowUrl, description, date, method, value, closingModal, readInflows, router])
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledInflowsButton(false)
+        }
+    }, [createInflowUrl, description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue, closingModal, readInflows, router])
 
     const updateInflow = useCallback(async (e) => {
         e.preventDefault()
 
         setDisabledInflowsButton(true)
 
-        await axios
-                    .put(updateInflowUrl, {description, date, method, value}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledInflowsButton(false)
-                            closingModal()
-                            readInflows()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledInflowsButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.put(updateInflowUrl, {description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledInflowsButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                setShowSecondMethod(false)
+                setShowThirdMethod(false)
+                readInflows()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledInflowsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-    }, [updateInflowUrl, description, date, method, value, closingModal, readInflows, router])
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledInflowsButton(false)
+        }
+    }, [updateInflowUrl, description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue, closingModal, readInflows, router])
 
     const deleteInflow = useCallback(async (e) => {
         e.preventDefault()
 
         setDisabledInflowsButton(true)
 
-        await axios
-                    .delete(deleteInflowUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledInflowsButton(false)
-                            closingModal()
-                            readInflows()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            const res = await axios.delete(deleteInflowUrl, {headers})
 
-                        else if (err.response.status >= 500) {
-                            setDisabledInflowsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-                    
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                readInflows()
+            }
+
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledInflowsButton(false)
+        }
     }, [deleteInflowUrl, closingModal, readInflows, router])
 
     useEffect(() => {
@@ -230,6 +253,7 @@ export default function useInflow() {
 
         return inflows.filter(inflow => {
             const inflowDate = new Date(inflow.date)
+
             return (
                 inflowDate.getUTCDate() === selDay &&
                 inflowDate.getUTCMonth() === selMonth &&
@@ -291,17 +315,29 @@ export default function useInflow() {
 
     const handleAdd = useCallback(() => {
         setTag("Create")
+        setShowSecondMethod(false)
+        setShowThirdMethod(false)
+        setSecondMethod("")
+        setSecondValue(0)
+        setThirdMethod("")
+        setThirdValue(0)
         openingModal()
     }, [openingModal])
 
     const handleEdit = useCallback((item) => {
         setTag("Edit")
+        setShowSecondMethod(false)
+        setShowThirdMethod(false)
         openingModal()
         setId(item.id)
         setDescription(item.description)
         setDate(item.date)
-        setMethod(item.method)
-        setValue(item.value)
+        setFirstMethod(item.firstMethod)
+        setFirstValue(item.firstValue)
+        setSecondMethod(item.secondMethod)
+        setSecondValue(item.secondValue)
+        setThirdMethod(item.thirdMethod)
+        setThirdValue(item.thirdValue)
     }, [openingModal])
 
     const handleDelete = useCallback((item) => {
@@ -312,24 +348,59 @@ export default function useInflow() {
 
     const handleCancel = useCallback(() => {
         closingModal()
+        setShowSecondMethod(false)
+        setShowThirdMethod(false)
+        setSecondMethod("")
+        setSecondValue(0)
+        setThirdMethod("")
+        setThirdValue(0)
     }, [closingModal])
+
+    const handleNewMethod = useCallback(() => {
+        if (!showSecondMethod) {
+            setShowSecondMethod(true)
+        }
+
+        else if (!showThirdMethod) {
+            setShowThirdMethod(true)
+        }
+    }, [showSecondMethod, showThirdMethod])
+
+    const handleRemoveSecondMethod = useCallback(() => {
+        setShowSecondMethod(false)
+    }, [])
+
+    const handleRemoveThirdMethod = useCallback(() => {
+        setShowThirdMethod(false)
+    }, [])
 
     return {
         description,
         setDescription,
         date,
         setDate,
-        method,
-        setMethod,
-        value,
-        setValue,
+        firstMethod,
+        setFirstMethod,
+        firstValue,
+        setFirstValue,
+        secondMethod,
+        setSecondMethod,
+        secondValue,
+        setSecondValue,
+        thirdMethod,
+        setThirdMethod,
+        thirdValue,
+        setThirdValue,
         inflows,
         filtered,
-        selectedDate,
         filterType,
         setFilterType,
         selectedDate,
         setSelectedDate,
+        showSecondMethod,
+        setShowSecondMethod,
+        showThirdMethod,
+        setShowThirdMethod,
         disabledInflowsButton,
         loading,
         isOpen,
@@ -341,6 +412,9 @@ export default function useInflow() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        handleNewMethod,
+        handleRemoveSecondMethod,
+        handleRemoveThirdMethod
     }
 }

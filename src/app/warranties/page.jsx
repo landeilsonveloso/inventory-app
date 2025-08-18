@@ -5,11 +5,13 @@ import Button from "src/components/Button"
 import Div from "src/containers/Div"
 import Form from "src/components/Form"
 import Input from "src/components/Input"
+import Label from "src/containers/Label"
 import Loading from "src/components/Loading"
 import { MdAdd, MdClose, MdMonetizationOn, MdNotes, MdPerson, MdTimer } from "react-icons/md"
 import Modal from "src/components/Modal"
 import Option from "src/components/Option"
 import Select from "src/components/Select"
+import Spinner from "src/components/Spinner"
 import Table from "src/components/Table"
 import Title from "src/components/Title"
 import useWarranty from "src/hooks/useWarranty"
@@ -79,131 +81,102 @@ export default function WarrantiesPage() {
 
                 {isOpen && tag === "Create" ? (
                     <Modal>
-                        <Form onSubimit={createWarranty}>
+                        <Form onSubmit={createWarranty}>
                             <Div className="w-full flex justify-end">
-                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
+                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel} title="Fechar Modal"/>
                             </Div>
+                            
+                            <Title className="text-center mb-4 text-xl font-bold">Nova Garantia</Title>
+                            
+                            <Div className="space-y-4">
+                                <Label className="font-medium" htmlFor="client">Cliente</Label>
 
-                            <Title>Nova Garantia</Title>
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdPerson className="text-gray-600 mr-2"/>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdPerson className="text-gray-600 text-xl mr-2"/>
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="client"
+                                        name="client"
+                                        type="text"
+                                        placeholder="Cliente"
+                                        onChange={(e) => setClient(e.target.value)}
+                                    />
+                                </Div>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="client"
-                                    name="client"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={60}
-                                    placeholder="Cliente"
-                                    onChange={(e) => setClient(e.target.value)}
-                                />
-                            </Div>
+                                <Label className="font-medium" htmlFor="description">Descrição</Label>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNotes className="text-gray-600 text-xl mr-2"/>
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdNotes className="text-gray-600 mr-2"/>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="description"
-                                    name="description"
-                                    type="text"
-                                    maxLength={60}
-                                    placeholder="Descrição"
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                            </Div>
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="description"
+                                        name="description"
+                                        type="text"
+                                        placeholder="Descrição"
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
+                                <Label className="font-medium" htmlFor="value">Valor</Label>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="value"
-                                    name="value"
-                                    type="number"
-                                    placeholder="Valor"
-                                    step={0.01}
-                                    onChange={(e) => setValue(e.target.value)}
-                                />
-                            </Div>
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdMonetizationOn className="text-gray-600 mr-2"/>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="date"
-                                    name="date"
-                                    type="date"
-                                    onChange={(e) => setDate(e.target.value)}
-                                />
-                            </Div>
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="value"
+                                        name="value"
+                                        type="number"
+                                        step={0.01}
+                                        placeholder="0,00"
+                                        onChange={(e) => setValue(e.target.value)}
+                                    />
+                                </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
-                                <MdTimer className="text-gray-600 text-xl mr-2"/>
+                                <Label className="font-medium" htmlFor="date">Data</Label>
+
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="date"
+                                        name="date"
+                                        type="date"
+                                        onChange={(e) => setDate(e.target.value)}
+                                    />
+                                </Div>
+
+                                <Label className="font-medium">Tempo</Label>
+
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdTimer className="text-gray-600 mr-2"/>
                                 
-                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" onChange={(e) => setTime(e.target.value)}>
-                                    <Option value="">
-                                        
-                                    </Option>
-
-                                    <Option value="1 mês">
-                                        1 mês
-                                    </Option>
-
-                                    <Option value="2 meses">
-                                        2 meses
-                                    </Option>
-
-                                    <Option value="3 meses">
-                                        3 meses
-                                    </Option>
-
-                                    <Option value="4 meses">
-                                        4 meses
-                                    </Option>
-
-                                    <Option value="5 meses">
-                                        5 meses
-                                    </Option>
-
-                                    <Option value="6 meses">
-                                        6 meses
-                                    </Option>
-
-                                    <Option value="7 meses">
-                                        7 meses
-                                    </Option>
-
-                                    <Option value="8 meses">
-                                        8 meses
-                                    </Option>
-
-                                    <Option value="9 meses">
-                                        9 meses
-                                    </Option>
-
-                                    <Option value="10 meses">
-                                        10 meses
-                                    </Option>
-
-                                    <Option value="11 meses">
-                                        11 meses
-                                    </Option>
-
-                                    <Option value="12 meses">
-                                        12 meses
-                                    </Option>
-                                </Select>                  
+                                    <Select className="w-full p-0.5 cursor-pointer bg-transparent outline-none" onChange={(e) => setTime(e.target.value)} required>
+                                        <Option value=""></Option>
+                                        <Option value="1 mês">1 mês</Option>
+                                        <Option value="2 meses">2 meses</Option>
+                                        <Option value="3 meses">3 meses</Option>
+                                        <Option value="4 meses">4 meses</Option>
+                                        <Option value="5 meses">5 meses</Option>
+                                        <Option value="6 meses">6 meses</Option>
+                                        <Option value="7 meses">7 meses</Option>
+                                        <Option value="8 meses">8 meses</Option>
+                                        <Option value="9 meses">9 meses</Option>
+                                        <Option value="10 meses">10 meses</Option>
+                                        <Option value="11 meses">11 meses</Option>
+                                        <Option value="12 meses">12 meses</Option>
+                                    </Select>
+                                </Div>
                             </Div>
 
-                            <Div className="flex justify-end gap-3">
-                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
+                            <Div className="flex justify-end gap-4 mt-6">
+                                <Button className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded cursor-pointer" type="button" onClick={handleCancel}>
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-green-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-green-800 transition" disabled={disabledWarrantiesButton}>
-                                    Adicionar
+                                <Button className={`flex justify-center w-28 bg-green-600 text-white py-2 rounded transition ${disabledWarrantiesButton ? "cursor-default opacity-70" : "hover:bg-green-800 cursor-pointer"}`} disabled={disabledWarrantiesButton}>
+                                    {disabledWarrantiesButton ? <Spinner/> : <>Adicionar</>}
                                 </Button>
                             </Div>
                         </Form>
@@ -214,135 +187,106 @@ export default function WarrantiesPage() {
 
                 {isOpen && tag === "Edit" ? (
                     <Modal>
-                        <Form onSubimit={updateWarranty}>
+                        <Form onSubmit={updateWarranty}>
                             <Div className="w-full flex justify-end">
-                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
+                                <MdClose className="cursor-pointer" size={30} onClick={handleCancel} title="Fechar Modal"/>
                             </Div>
+                            
+                            <Title className="text-center mb-4 text-xl font-bold">Editar Garantia</Title>
+                            
+                            <Div className="space-y-4">
+                                <Label className="font-medium" htmlFor="client">Cliente</Label>
 
-                            <Title>Editar Garantia</Title>
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdPerson className="text-gray-600 mr-2"/>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdPerson className="text-gray-600 text-xl mr-2"/>
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="client"
+                                        name="client"
+                                        type="text"
+                                        placeholder="Cliente"
+                                        value={client}
+                                        onChange={(e) => setClient(e.target.value)}
+                                    />
+                                </Div>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="client"
-                                    name="client"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={60}
-                                    placeholder="Cliente"
-                                    value={client}
-                                    onChange={(e) => setClient(e.target.value)}
-                                />
-                            </Div>
+                                <Label className="font-medium" htmlFor="description">Descrição</Label>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdNotes className="text-gray-600 text-xl mr-2"/>
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdNotes className="text-gray-600 mr-2"/>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="description"
-                                    name="description"
-                                    type="text"
-                                    maxLength={60}
-                                    placeholder="Descrição"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                />
-                            </Div>
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="description"
+                                        name="description"
+                                        type="text"
+                                        placeholder="Descrição"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                    />
+                                </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <MdMonetizationOn className="text-gray-600 text-xl mr-2"/>
+                                <Label className="font-medium" htmlFor="value">Valor</Label>
 
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="value"
-                                    name="value"
-                                    type="number"
-                                    placeholder="Valor"
-                                    step={0.01}
-                                    value={value}
-                                    onChange={(e) => setValue(e.target.value)}
-                                />
-                            </Div>
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdMonetizationOn className="text-gray-600 mr-2"/>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">
-                                <Input
-                                    className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent"
-                                    id="date"
-                                    name="date"
-                                    type="date"
-                                    value={date}
-                                    onChange={(e) => setDate(e.target.value)}
-                                />
-                            </Div>
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="value"
+                                        name="value"
+                                        type="number"
+                                        step={0.01}
+                                        placeholder="0,00"
+                                        value={value}
+                                        onChange={(e) => setValue(e.target.value)}
+                                    />
+                                </Div>
 
-                            <Div className="flex items-center w-full mb-6 p-3 border border-gray-400 rounded-lg focus-within:ring-2 focus-within:ring-gray-400 transition-all">                                
-                                <MdTimer className="text-gray-600 text-xl mr-2"/>
+                                <Label className="font-medium" htmlFor="date">Data</Label>
+
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <Input
+                                        className="w-full outline-none bg-transparent"
+                                        id="date"
+                                        name="date"
+                                        type="date"
+                                        value={date}
+                                        onChange={(e) => setDate(e.target.value)}
+                                    />
+                                </Div>
+
+                                <Label className="font-medium">Tempo</Label>
+
+                                <Div className="flex items-center border rounded-lg p-2 mt-1">
+                                    <MdTimer className="text-gray-600 mr-2"/>
                                 
-                                <Select className="w-full text-black placeholder-gray-500 px-2 outline-none bg-transparent" value={time} onChange={(e) => setTime(e.target.value)}>
-                                    <Option value="">
-                                        
-                                    </Option>
-
-                                    <Option value="1 mês">
-                                        1 mês
-                                    </Option>
-
-                                    <Option value="2 meses">
-                                        2 meses
-                                    </Option>
-
-                                    <Option value="3 meses">
-                                        3 meses
-                                    </Option>
-
-                                    <Option value="4 meses">
-                                        4 meses
-                                    </Option>
-
-                                    <Option value="5 meses">
-                                        5 meses
-                                    </Option>
-
-                                    <Option value="6 meses">
-                                        6 meses
-                                    </Option>
-
-                                    <Option value="7 meses">
-                                        7 meses
-                                    </Option>
-
-                                    <Option value="8 meses">
-                                        8 meses
-                                    </Option>
-
-                                    <Option value="9 meses">
-                                        9 meses
-                                    </Option>
-
-                                    <Option value="10 meses">
-                                        10 meses
-                                    </Option>
-
-                                    <Option value="11 meses">
-                                        11 meses
-                                    </Option>
-
-                                    <Option value="12 meses">
-                                        12 meses
-                                    </Option>
-                                </Select>                  
+                                    <Select className="w-full p-0.5 cursor-pointer bg-transparent outline-none" value={time} onChange={(e) => setTime(e.target.value)} required>
+                                        <Option value=""></Option>
+                                        <Option value="1 mês">1 mês</Option>
+                                        <Option value="2 meses">2 meses</Option>
+                                        <Option value="3 meses">3 meses</Option>
+                                        <Option value="4 meses">4 meses</Option>
+                                        <Option value="5 meses">5 meses</Option>
+                                        <Option value="6 meses">6 meses</Option>
+                                        <Option value="7 meses">7 meses</Option>
+                                        <Option value="8 meses">8 meses</Option>
+                                        <Option value="9 meses">9 meses</Option>
+                                        <Option value="10 meses">10 meses</Option>
+                                        <Option value="11 meses">11 meses</Option>
+                                        <Option value="12 meses">12 meses</Option>
+                                    </Select>
+                                </Div>
                             </Div>
 
-                            <Div className="flex justify-end gap-3">
-                                <Button className="bg-red-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-800 transition" type="button" onClick={handleCancel}>
+                            <Div className="flex justify-end gap-4 mt-6">
+                                <Button className="bg-red-600 hover:bg-red-800 text-white px-4 py-2 rounded cursor-pointer" type="button" onClick={handleCancel}>
                                     Cancelar
                                 </Button>
 
-                                <Button className="bg-blue-600 text-white px-4 py-2 cursor-pointer rounded hover:bg-blue-800 transition" disabled={disabledWarrantiesButton}>
-                                    Salvar
+                                <Button className={`flex justify-center w-28 bg-blue-600 text-white py-2 rounded transition ${disabledWarrantiesButton ? "cursor-default opacity-70" : "hover:bg-blue-800 cursor-pointer"}`} disabled={disabledWarrantiesButton}>
+                                    {disabledWarrantiesButton ? <Spinner/> : <>Salvar</>}
                                 </Button>
                             </Div>
                         </Form>
@@ -353,7 +297,7 @@ export default function WarrantiesPage() {
 
                 {isOpen && tag === "Delete" ? (
                     <Modal>
-                        <Form className="flex flex-col" onSubimit={deleteWarranty}>
+                        <Form className="flex flex-col" onSubmit={deleteWarranty}>
                             <Div className="w-full flex justify-end">
                                 <MdClose className="cursor-pointer" size={30} onClick={handleCancel}/>
                             </Div>

@@ -3,6 +3,7 @@ import config from "src/config/config"
 import { useCallback, useEffect, useState } from "react"
 import useModal from "./useModal"
 import { useRouter } from "next/navigation"
+import { toast } from "react-toastify"
 
 export default function useWarranty() {
     const [id, setId] = useState(0)
@@ -37,36 +38,39 @@ export default function useWarranty() {
     ]
 
     const readWarranties = useCallback(async () => {
-        await axios
-                    .get(readWarrantiesUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setWarranties(res.data)
-                            return
-                        }
-                        
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (err.response.status >= 500) {
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            const res = await axios.get(readWarrantiesUrl, {headers})
+
+            if (res.status === 200) {
+                setWarranties(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inespirado.")
+            }
+        }
     }, [readWarrantiesUrl, router])
 
     const createWarranty = useCallback(async (e) => {
@@ -74,51 +78,53 @@ export default function useWarranty() {
 
         setDisabledWarrantiesButton(true)
         
-        await axios
-                    .post(createWarrantyUrl, {client, description, value, date, time}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 201) {
-                            setDisabledWarrantiesButton(false)
-                            closingModal()
-                            readWarranties()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledWarrantiesButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.post(createWarrantyUrl, {client, description, value, date, time}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledWarrantiesButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 201) {
+                toast.success(res.data)
+                closingModal()
+                readWarranties()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                       }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledWarrantiesButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledWarrantiesButton(false)
+        }
     }, [createWarrantyUrl, client, description, value, date, time, closingModal, readWarranties, router])
 
     const updateWarranty = useCallback(async (e) => {
@@ -126,51 +132,53 @@ export default function useWarranty() {
 
         setDisabledWarrantiesButton(true)
 
-        await axios
-                    .put(updateWarrantyUrl, {client, description, value, date, time}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledWarrantiesButton(false)
-                            closingModal()
-                            readWarranties()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledWarrantiesButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.put(updateWarrantyUrl, {client, description, value, date, time}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledWarrantiesButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                readWarranties()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledWarrantiesButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledWarrantiesButton(false)
+        }
     }, [updateWarrantyUrl, client, description, value, date, time, closingModal, readWarranties, router])
 
     const deleteWarranty = useCallback(async (e) => {
@@ -178,40 +186,45 @@ export default function useWarranty() {
 
         setDisabledWarrantiesButton(true)
 
-        await axios
-                    .delete(deleteWarrantyUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledWarrantiesButton(false)
-                            closingModal()
-                            readWarranties()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            const res = await axios.delete(deleteWarrantyUrl, {headers})
 
-                        else if (err.response.status >= 500) {
-                            setDisabledWarrantiesButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-                    
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                readWarranties()
+            }
+
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledWarrantiesButton(false)
+        }  
     }, [deleteWarrantyUrl, closingModal, readWarranties, router])
 
     useEffect(() => {

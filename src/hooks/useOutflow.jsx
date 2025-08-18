@@ -1,5 +1,6 @@
 import axios from "axios"
 import config from "src/config/config"
+import { toast } from "react-toastify"
 import { useCallback, useEffect, useState } from "react"
 import useModal from "./useModal"
 import { useRouter } from "next/navigation"
@@ -8,15 +9,21 @@ export default function useOutflow() {
     const [id, setId] = useState(0)
     const [description, setDescription] = useState("")
     const [date, setDate] = useState(new Date())
-    const [method, setMethod] = useState("")
-    const [value, setValue] = useState(0)
+    const [firstMethod, setFirstMethod] = useState("")
+    const [firstValue, setFirstValue] = useState(0)
+    const [secondMethod, setSecondMethod] = useState("")
+    const [secondValue, setSecondValue] = useState(0)
+    const [thirdMethod, setThirdMethod] = useState("")
+    const [thirdValue, setThirdValue] = useState(0)
     const [outflows, setOutflows] = useState([])
     const [filtered, setFiltered]  = useState([])
     const [filterType, setFilterType] = useState("")
     const [selectedDate, setSelectedDate] = useState(new Date())
+    const [showSecondMethod, setShowSecondMethod] = useState(false)
+    const [showThirdMethod, setShowThirdMethod] = useState(false)
     const [disabledOutflowsButton, setDisabledOutflowsButton] = useState(false)
     const [loading, setLoading] = useState(true)
-
+    
     const {isOpen, openingModal, closingModal, tag, setTag} = useModal()
 
     const router = useRouter()
@@ -31,41 +38,44 @@ export default function useOutflow() {
     const columns = [
         {key: "description", label: "Descrição"},
         {key: "date", label: "Data"},
-        {key: "method", label: "Método"},
-        {key: "value", label: "Valor"}
+        {key: "method", label: "Método de Pagamento"},
+        {key: "valueTotal", label: "Valor Total"}
     ]
     
     const readOutflows = useCallback(async () => {
-        await axios
-                    .get(readOutflowsUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setOutflows(res.data)
-                            return
-                        }
-                        
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (err.response.status >= 500) {
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            const res = await axios.get(readOutflowsUrl, {headers})
+
+            if (res.status === 200) {
+                setOutflows(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inespirado.")
+            }
+        }
     }, [readOutflowsUrl, router])
 
     const createOutflow = useCallback(async (e) => {
@@ -73,144 +83,157 @@ export default function useOutflow() {
 
         setDisabledOutflowsButton(true)
         
-        await axios
-                    .post(createOutflowUrl, {description, date, method, value}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 201) {
-                            setDisabledOutflowsButton(false)
-                            closingModal()
-                            readOutflows()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledOutflowsButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.post(createOutflowUrl, {description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledOutflowsButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 201) {
+                toast.success(res.data)
+                closingModal()
+                setShowSecondMethod(false)
+                setShowThirdMethod(false)
+                readOutflows()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                       }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledOutflowsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-    }, [createOutflowUrl, description, date, method, value, closingModal, readOutflows, router])
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledOutflowsButton(false)
+        }
+    }, [createOutflowUrl, description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue, closingModal, readOutflows, router])
 
     const updateOutflow = useCallback(async (e) => {
         e.preventDefault()
 
         setDisabledOutflowsButton(true)
 
-        await axios
-                    .put(updateOutflowUrl, {description, date, method, value}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledOutflowsButton(false)
-                            closingModal()
-                            readOutflows()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledOutflowsButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.put(updateOutflowUrl, {description, date, firstMethod, firstValue,secondMethod, secondValue, thirdMethod, thirdValue}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledOutflowsButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                setShowSecondMethod(false)
+                setShowThirdMethod(false)
+                readOutflows()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledOutflowsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-    }, [updateOutflowUrl, description, date, method, value, closingModal, readOutflows, router])
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledOutflowsButton(false)
+        }
+    }, [updateOutflowUrl, description, date, firstMethod, firstValue, secondMethod, secondValue, thirdMethod, thirdValue, closingModal, readOutflows, router])
 
     const deleteOutflow = useCallback(async (e) => {
         e.preventDefault()
 
         setDisabledOutflowsButton(true)
 
-        await axios
-                    .delete(deleteOutflowUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledOutflowsButton(false)
-                            closingModal()
-                            readOutflows()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            const res = await axios.delete(deleteOutflowUrl, {headers})
 
-                        else if (err.response.status >= 500) {
-                            setDisabledOutflowsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-                    
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                readOutflows()
+            }
+
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledOutflowsButton(false)
+        }
     }, [deleteOutflowUrl, closingModal, readOutflows, router])
 
     useEffect(() => {
@@ -292,17 +315,25 @@ export default function useOutflow() {
 
     const handleAdd = useCallback(() => {
         setTag("Create")
+        setShowSecondMethod(false)
+        setShowThirdMethod(false)
         openingModal()
     }, [openingModal])
 
     const handleEdit = useCallback((item) => {
         setTag("Edit")
+        setShowSecondMethod(false)
+        setShowThirdMethod(false)
         openingModal()
         setId(item.id)
         setDescription(item.description)
         setDate(item.date)
-        setMethod(item.method)
-        setValue(item.value)
+        setFirstMethod(item.firstMethod)
+        setFirstValue(item.firstValue)
+        setSecondMethod(item.secondMethod)
+        setSecondValue(item.secondValue)
+        setThirdMethod(item.thirdMethod)
+        setThirdValue(item.thirdValue)
     }, [openingModal])
 
     const handleDelete = useCallback((item) => {
@@ -313,23 +344,55 @@ export default function useOutflow() {
 
     const handleCancel = useCallback(() => {
         closingModal()
+        setShowSecondMethod(false)
+        setShowThirdMethod(false)
     }, [closingModal])
+
+    const handleNewMethod = useCallback(() => {
+        if (!showSecondMethod) {
+            setShowSecondMethod(true)
+        }
+
+        else if (!showThirdMethod) {
+            setShowThirdMethod(true)
+        }
+    }, [showSecondMethod, showThirdMethod])
+
+    const handleRemoveSecondMethod = useCallback(() => {
+        setShowSecondMethod(false)
+    }, [])
+
+    const handleRemoveThirdMethod = useCallback(() => {
+        setShowThirdMethod(false)
+    }, [])
 
     return {
         description,
         setDescription,
         date,
         setDate,
-        method,
-        setMethod,
-        value,
-        setValue,
+        firstMethod,
+        setFirstMethod,
+        firstValue,
+        setFirstValue,
+        secondMethod,
+        setSecondMethod,
+        secondValue,
+        setSecondValue,
+        thirdMethod,
+        setThirdMethod,
+        thirdValue,
+        setThirdValue,
         outflows,
         filtered,
         filterType,
         setFilterType,
         selectedDate,
         setSelectedDate,
+        showSecondMethod,
+        setShowSecondMethod,
+        showThirdMethod,
+        setShowThirdMethod,
         disabledOutflowsButton,
         loading,
         isOpen,
@@ -341,6 +404,9 @@ export default function useOutflow() {
         handleAdd,
         handleEdit,
         handleDelete,
-        handleCancel
+        handleCancel,
+        handleNewMethod,
+        handleRemoveSecondMethod,
+        handleRemoveThirdMethod
     }
 }

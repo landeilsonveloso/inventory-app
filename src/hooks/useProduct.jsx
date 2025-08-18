@@ -1,5 +1,6 @@
 import axios from "axios"
 import config from "src/config/config"
+import { toast } from "react-toastify"
 import { useCallback, useEffect, useState } from "react"
 import useModal from "./useModal"
 import { useRouter } from "next/navigation"
@@ -35,36 +36,39 @@ export default function useProduct() {
     ]
     
     const readProducts = useCallback(async () => {
-        await axios
-                    .get(readProductsUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setProducts(res.data)
-                            return
-                        }
-                        
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (err.response.status >= 500) {
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            const res = await axios.get(readProductsUrl, {headers})
+
+            if (res.status === 200) {
+                setProducts(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inespirado.")
+            }
+        }
     }, [readProductsUrl, router])
 
     const createProduct = useCallback(async (e) => {
@@ -72,51 +76,53 @@ export default function useProduct() {
 
         setDisabledProductsButton(true)
         
-        await axios
-                    .post(createProductUrl, {description, cost, price, quantity}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 201) {
-                            setDisabledProductsButton(false)
-                            closingModal()
-                            readProducts()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledProductsButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.post(createProductUrl, {description, cost, price, quantity}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledProductsButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 201) {
+                toast.success(res.data)
+                closingModal()
+                readProducts()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                       }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledProductsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledProductsButton(false)
+        }
     }, [createProductUrl, description, cost, price, quantity, closingModal, readProducts, router])
 
     const updateProduct = useCallback(async (e) => {
@@ -124,51 +130,53 @@ export default function useProduct() {
 
         setDisabledProductsButton(true)
 
-        await axios
-                    .put(updateProductUrl, {description, cost, price, quantity}, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledProductsButton(false)
-                            closingModal()
-                            readProducts()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 400) {
-                            setDisabledProductsButton(false)
-                            alert(res.data)
-                            return
-                        }
+            const res = await axios.put(updateProductUrl, {description, cost, price, quantity}, {headers})
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 400) {
-                            setDisabledProductsButton(false)
-                            alert(err.response.data)
-                            return
-                        }
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                readProducts()
+            }
 
-                        else if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            else if (res.status === 400) {
+                toast.error(res.data)
+            }
+                        
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 400) {
+                toast.error(err.response.data)
+            }
 
-                        else if (err.response.status >= 500) {
-                            setDisabledProductsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
+            else if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledProductsButton(false)
+        }
     }, [updateProductUrl, description, cost, price, quantity, closingModal, readProducts, router])
 
     const deleteProduct = useCallback(async (e) => {
@@ -176,40 +184,45 @@ export default function useProduct() {
 
         setDisabledProductsButton(true)
 
-        await axios
-                    .delete(deleteProductUrl, {headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json",
-                        "Authorization": localStorage.getItem("token")
-                    }})
-                    .then((res) => {
-                        if (res.status === 200) {
-                            setDisabledProductsButton(false)
-                            closingModal()
-                            readProducts()
-                            return
-                        }
+        try {
+            const headers = {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
+            }
 
-                        else if (res.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            localStorage.clear()
-                            router.replace("/")
-                            return
-                        }
+            const res = await axios.delete(deleteProductUrl, {headers})
 
-                        else if (err.response.status >= 500) {
-                            setDisabledProductsButton(false)
-                            alert("Erro no servidor, recarregue a página!")
-                            return
-                        }
-                    })
-                    
+            if (res.status === 200) {
+                toast.success(res.data)
+                closingModal()
+                readProducts()
+            }
+
+            else if (res.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+        }
+        
+        catch (err) {
+            if (err.response?.status === 401) {
+                localStorage.clear()
+                router.replace("/")
+            }
+
+            else if (err.response?.status >= 500) {
+                toast.error("Erro no servidor, recarregue a página!")
+            }
+
+            else {
+                toast.error("Erro inesperado.")
+            }
+        }
+
+        finally {
+            setDisabledProductsButton(false)
+        }            
     }, [deleteProductUrl, closingModal, readProducts, router])
 
     useEffect(() => {
